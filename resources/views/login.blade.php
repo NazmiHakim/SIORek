@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | SIOREK</title>
+    <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/icon-siorek.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="h-screen flex items-center justify-center bg-gradient-to-b from-gray-200 to-blue-500">
