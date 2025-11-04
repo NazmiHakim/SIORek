@@ -27,7 +27,7 @@ class LoginController extends Controller
             // Regenerasi sesi untuk mencegah serangan fiksasi sesi
             $request->session()->regenerate();
 
-            return redirect()->intended('/home');
+            return redirect()->intended('/dashboard');
         }
 
         // Jika autentikasi gagal

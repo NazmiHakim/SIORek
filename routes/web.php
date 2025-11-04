@@ -11,6 +11,18 @@ Route::get('/', function () {
 // Route POST untuk memproses login
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.post');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+Route::get('/barang', function () {
+    return view('barang');
+})->name('barang');
+Route::get('/daftar-pengguna', function () {
+    return view('daftar-pengguna');
+})->name('daftar-pengguna');
+Route::get('/riwayat-peminjaman', function () {
+    return view('riwayat-peminjaman');
+})->name('riwayat-peminjaman');
 // Kumpulan route yang memerlukan autentikasi ('auth' middleware)
 Route::middleware('auth')->group(function () {
     
@@ -19,7 +31,6 @@ Route::middleware('auth')->group(function () {
         // Anda harus membuat file view 'home.blade.php'
         return view('home'); 
     })->name('home');
-
     // Route Logout (disarankan menggunakan POST)
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

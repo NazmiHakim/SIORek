@@ -12,7 +12,18 @@ export default {
         "./resources/**/*.vue",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'biru-primary': '#125BFB',
+                'warning-stroke': '#FF9D00',
+                'warning-fill': '#FFEBD5',
+                'warning-btn': '#FF9327',
+                'caution-stroke': '#FFE000',
+                'caution-fill': '#FFFBCE',
+                'notice-stroke': '#0095FF',
+                'notice-fill': '#FFEBD5',
+            }
+        },
     },
     plugins: [],
 };

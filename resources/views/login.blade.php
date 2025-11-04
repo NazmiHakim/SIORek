@@ -6,6 +6,7 @@
     <title>Login</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('images/icon-siorek.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-screen flex items-center justify-center bg-gradient-to-b from-gray-200 to-blue-500">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
