@@ -1,16 +1,14 @@
-<form
-    method="POST"
-    action="/link-persetujuan-peminjaman" 
-    x-show="isPermintaanPeminjamanModalOpen"
+<div 
+    x-show="isPengembalianBermasalahModalOpen"
     style="display: none;"
     x-cloak
-    @keydown.escape.window="isPermintaanPeminjamanModalOpen = false"
+    @keydown.escape.window="isPengembalianBermasalahModalOpen = false"
     class="fixed inset-0 z-50 flex items-center justify-center p-4">
 
     <div 
-        @click="isPermintaanPeminjamanModalOpen = false" 
+        @click="isPengembalianBermasalahModalOpen = false" 
         class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-        x-show="isPermintaanPeminjamanModalOpen"
+        x-show="isPengembalianBermasalahModalOpen"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
@@ -20,7 +18,7 @@
     </div>
 
         <div
-            x-show="isPermintaanPeminjamanModalOpen"
+            x-show="isPengembalianBermasalahModalOpen"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100"
@@ -33,21 +31,20 @@
                 <div class="p-6">
                     <div class="mb-4 flex justify-between">
                         <div>
-                            <h2 class="text-xl font-bold text-biru-primary">Permintaan Peminjaman</h2>
-                            <p class="text-gray-600">Informasi lengkap peminjaman barang</p>
+                            <h2 class="text-xl font-bold text-biru-primary">Pengembalian Bermasalah</h2>
+                            <p class="text-gray-600">Informasi lengkap Pengembalian barang</p>
                         </div>
-                        <button type="button" @click="isPermintaanPeminjamanModalOpen = false" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times fa-lg"></i></button>
                     </div>
 
 
                     <div class="space-y-4">
                         <div>
                             <span class="text-sm text-gray-500 block">Nama Barang</span>
-                            <span class="text-md font-semibold text-gray-800">Tripod Manfrotto</span>
+                            <span class="text-md font-semibold text-gray-800">Kamera Fujifilm XA-10</span>
                         </div>
                         <div>
                             <span class="text-sm text-gray-500 block">Jumlah Unit</span>
-                            <span class="text-md font-semibold text-gray-800">2 unit</span>
+                            <span class="text-md font-semibold text-gray-800">1 unit</span>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -60,16 +57,20 @@
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Tanggal Mulai</span>
-                                <span class="text-md font-semibold text-gray-800">Senin, 30 Oktober 2025</span>
+                                <span class="text-md font-semibold text-gray-800">Senin, 1 November 2025</span>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Tanggal Selesai</span>
-                                <span class="text-md font-semibold text-gray-800">Minggu, 3 November 2025</span>
+                                <span class="text-md font-semibold text-gray-800">Minggu, 5 November 2025</span>
                             </div>
                         </div>
                         <div>
                             <span class="text-sm text-gray-500 block mb-2">Status</span>
-                            <span class="bg-warning-fill text-warning-stroke border-warning-stroke border text-sm font-medium px-3 py-1 rounded-full inline-block">Menunggu Persetujuan Dari Pemilik</span>
+                            <span class="bg-danger-fill text-danger-stroke border-danger-stroke border text-sm font-medium px-3 py-1 rounded-full inline-block">Mendapatkan Sanksi</span>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-500 block mb-2">Sanksi</span>
+                            <p class="text-sm">Membayarkan Denda sebesar Rp 20.000,00 akibat keterlambatan pengembalian selama 2 hari. Silahkan hubungi nomor 0823-5204-3533 untuk menyelesaikan sanksi</p>
                         </div>
                     </div>
 
@@ -94,21 +95,24 @@
                     </div>
 
                     <div class="mt-6">
-                        <label for="alasan-penolakan-persetujuan" class="block text-sm font-medium text-gray-700">
-                            Alasan Penolakan (Opsional)
-                        </label>
-                        <textarea id="alasan-penolakan-persetujuan" name="alasan" rows="3" placeholder="Jika menolak, masukkan alasan di sini..." class="mt-1 block w-full rounded-md border border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
-                        <div class="bg-danger-fill border rounded-lg border-danger-stroke p-4 mt-4">
-                            <p class="text-sm text-danger-stroke">
-                                <strong>Informasi:</strong> Foto ini akan digunakan pemilik untuk memeriksa kondisi barang sebelum menerima pengembalian.
-                            </p>
+                        <h3 class="text-lg font-bold text-biru-primary mb-3">Perbandingan Foto Kondisi</h3>
+                        <div class="mb-3">
+                            <span class="text-sm font-medium text-gray-700 block mb-1">Foto Kondisi Awal</span>
+                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-40 flex items-center justify-center">
+                                <span class="text-gray-500">Foto awal tersimpan</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-700 block mb-1">Foto Kondisi Terakhir</span>
+                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-40 flex items-center justify-center">
+                                <span class="text-gray-500">Foto akhir tersimpan</span>
+                            </div>
                         </div>
                     </div>
                 </div> 
             </div> 
-            <div class="p-6 bg-gray-50 rounded-b-lg flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3 gap-2">
-                <button class="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-600">Setujui</button>
-                <button class="flex-1 bg-red-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-red-600">Tolak</button>
+            <div class="p-6 bg-gray-50 rounded-b-lg ">
+                <button @click="isPengembalianBermasalahModalOpen = false" class="w-full py-2 px-3 rounded-lg text-sm font-medium border border-black">Tutup</button>
             </div>
         </div>
-</form>
+    </div>

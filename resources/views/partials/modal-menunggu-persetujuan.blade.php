@@ -1,14 +1,14 @@
 <div
-    x-show="isPersetujuanPemilikModalOpen"
+    x-show="isMenungguDiambilModalOpen"
     style="display: none;"
     x-cloak
-    @keydown.escape.window="isPersetujuanPemilikModalOpen = false"
+    @keydown.escape.window="isMenungguDiambilModalOpen = false"
     class="fixed inset-0 z-50 flex items-center justify-center p-4">
 
     <div 
-        @click="isPersetujuanPemilikModalOpen = false" 
+        @click="isMenungguDiambilModalOpen = false" 
         class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-        x-show="isPersetujuanPemilikModalOpen"
+        x-show="isMenungguDiambilModalOpen"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
@@ -18,7 +18,7 @@
     </div>
 
         <div
-            x-show="isPersetujuanPemilikModalOpen"
+            x-show="isMenungguDiambilModalOpen"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100"
@@ -30,7 +30,7 @@
             <div class="max-h-[85vh] overflow-y-auto ">
                 <div class="p-6"> 
                     <div class="mb-4">
-                        <h2 class="text-xl font-bold text-biru-primary">Detail Peminjaman</h2>
+                        <h2 class="text-xl font-bold text-biru-primary">Menunggu Persetujuan</h2>
                         <p class="text-gray-600">Informasi lengkap peminjaman barang</p>
                     </div>
                     <div class="space-y-4">
@@ -71,18 +71,24 @@
                     <div>
                         <h3 class="text-lg font-bold text-biru-primary mb-3">Dokumen Peminjaman</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
-                                <span class="text-gray-500">Foto KTP tersimpan</span>
+                            <div>
+                                <span class="text-sm font-medium text-gray-700 block mb-1">Foto KIM</span>
+                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
+                                    <span class="text-gray-500">Foto KIM tersimpan</span>
+                                </div>
                             </div>
-                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
-                                <span class="text-gray-500">Surat tersimpan</span>
+                            <div>
+                                <span class="text-sm font-medium text-gray-700 block mb-1">Surat Peminjaman</span>
+                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
+                                    <span class="text-gray-500">Surat tersimpan</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div> 
             </div> 
             <div class="p-6 ">
-                <button @click="isPersetujuanPemilikModalOpen = false" type="button" class="w-full  px-6 py-2 bg-white border border-black rounded-lg text-gray-700 font-medium hover:bg-gray-50">Tutup</button>
+                <button @click="isMenungguDiambilModalOpen = false" type="button" class="w-full  px-6 py-2 bg-white border border-black rounded-lg text-gray-700 font-medium hover:bg-gray-50">Tutup</button>
             </div>
         </div> 
 </div>

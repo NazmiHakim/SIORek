@@ -33,7 +33,7 @@
                 <div class="">
                     <div class="mb-4 flex justify-between">
                         <div>
-                            <h2 class="text-xl font-bold text-biru-primary">Konfirmasi Pengembalian</h2>
+                            <h2 class="text-xl font-bold text-biru-primary">Permintaan Pengembalian</h2>
                             <p class="text-gray-600">Periksa barang dan konfirmasi pengembalian</p>
                         </div>
                         <button type="button" @click="isPermintaanPengembalianModalOpen = false" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times fa-lg"></i></button>
@@ -42,28 +42,28 @@
                     <div class="space-y-4">
                         <div>
                             <span class="text-sm text-gray-500 block">Nama Barang</span>
-                            <span class="text-md font-semibold text-gray-800">Wireless Mouse Logitech</span>
+                            <span class="text-md font-semibold text-gray-800">Microphone USB</span>
                         </div>
                         <div>
                             <span class="text-sm text-gray-500 block">Jumlah Unit</span>
-                            <span class="text-md font-semibold text-gray-800">5 unit</span>
+                            <span class="text-md font-semibold text-gray-800">3 unit</span>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <span class="text-sm text-gray-500 block">Peminjam</span>
-                                <span class="text-md font-semibold text-gray-800">Himpunan Mahasiswa Teknologi Informasi</span>
+                                <span class="text-md font-semibold text-gray-800">Koperasi Mahasiswa</span>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Pemilik</span>
-                                <span class="text-md font-semibold text-gray-800">Rektorat</span>
+                                <span class="text-md font-semibold text-gray-800">Himpunan Mahasiswa Teknologi Informasi </span>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Tanggal Mulai</span>
-                                <span class="text-md font-semibold text-gray-800">Senin, 1 Desember 2025</span>
+                                <span class="text-md font-semibold text-gray-800">Senin, 28 November 2025</span>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Tanggal Selesai</span>
-                                <span class="text-md font-semibold text-gray-800">Minggu, 7 Desember 2025</span>
+                                <span class="text-md font-semibold text-gray-800">Minggu, 2 Desember 2025</span>
                             </div>
                         </div>
                         <div>
@@ -79,29 +79,33 @@
                     <div>
                         <h3 class="text-lg font-bold text-biru-primary mb-3">Dokumen Peminjaman</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
-                                <span class="text-gray-500">Foto KTP tersimpan</span>
+                            <div>
+                                <span class="text-sm font-medium text-gray-700 block mb-1">Foto KIM</span>
+                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
+                                    <span class="text-gray-500">Foto KIM tersimpan</span>
+                                </div>
                             </div>
-                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
-                                <span class="text-gray-500">Surat tersimpan</span>
+                            <div>
+                                <span class="text-sm font-medium text-gray-700 block mb-1">Surat Peminjaman</span>
+                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
+                                    <span class="text-gray-500">Surat tersimpan</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="mt-6">
                         <h3 class="text-lg font-bold text-biru-primary mb-3">Perbandingan Foto Kondisi</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <span class="text-sm font-medium text-gray-700 block mb-1">Foto Kondisi Awal</span>
-                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-40 flex items-center justify-center">
-                                    <span class="text-gray-500">Foto awal tersimpan</span>
-                                </div>
+                        <div class="mb-3">
+                            <span class="text-sm font-medium text-gray-700 block mb-1">Foto Kondisi Awal</span>
+                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-40 flex items-center justify-center">
+                                <span class="text-gray-500">Foto awal tersimpan</span>
                             </div>
-                            <div>
-                                <span class="text-sm font-medium text-gray-700 block mb-1">Foto Kondisi Terakhir</span>
-                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-40 flex items-center justify-center">
-                                    <span class="text-gray-500">Foto akhir tersimpan</span>
-                                </div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-700 block mb-1">Foto Kondisi Terakhir</span>
+                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-40 flex items-center justify-center">
+                                <span class="text-gray-500">Foto akhir tersimpan</span>
                             </div>
                         </div>
                     </div>

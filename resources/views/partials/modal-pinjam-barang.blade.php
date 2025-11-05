@@ -66,12 +66,12 @@
 
                 <div>
                     <label class="flex items-center text-sm font-medium text-gray-700 mb-1">
-                        <i class="fa-regular fa-id-card mr-2"></i>Foto KTP <span class="text-red-500">*</span>
+                        <i class="fa-regular fa-id-card mr-2"></i>Foto KIM <span class="text-red-500">*</span>
                     </label>
                     <label for="foto-ktp"  class="mt-1 flex justify-center w-full h-36 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-blue-500">
                         <div class="space-y-1 text-center flex flex-col justify-center items-center">
                             <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400"></i> 
-                            <p class="text-sm text-gray-600">Klik untuk upload foto KTP</p>
+                            <p class="text-sm text-gray-600">Klik untuk upload foto KIM</p>
                         </div>
                     </label>
                     <input id="foto-ktp" name="foto_ktp" type="file" class="hidden" required>

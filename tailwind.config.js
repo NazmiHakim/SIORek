@@ -15,6 +15,8 @@ export default {
         extend: {
             colors: {
                 'biru-primary': '#125BFB',
+                'danger-stroke': '#FB2C36',
+                'danger-fill': '#FFE2E2',
                 'warning-stroke': '#FF9D00',
                 'warning-fill': '#FFEBD5',
                 'warning-btn': '#FF9327',
@@ -22,6 +24,7 @@ export default {
                 'caution-fill': '#FFFBCE',
                 'notice-stroke': '#0095FF',
                 'notice-fill': '#FFEBD5',
+
             }
         },
     },
