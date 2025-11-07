@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     
-    // Ganti email menjadi username
     protected $table = 'users';
 
     /**
@@ -19,15 +19,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username', // Ganti 'name' dan 'email' dengan 'username' jika itu yang digunakan
+        'username', 
         'password',
+        'role',
     ];
     
-    // Tambahkan method untuk mengubah kolom autentikasi
-    public function getAuthIdentifierName(): string
-    {
-        return 'username';
-    }
+    // public function getAuthIdentifierName(): string
+    // {
+    //     return 'username';
+    // }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,8 +47,28 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            // Pastikan tidak ada 'email_verified_at' jika Anda tidak menggunakannya
             'password' => 'hashed',
         ];
+    }
+
+    
+    // mendapatkan semua item yang dimiliki pengguna ini
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class, 'user_id');
+    }
+
+    
+    // mendapatkan semua transaksi, user ini adalah peminjam barang
+    public function loans_as_borrower(): HasMany
+    {
+        return $this->hasMany(Loan::class, 'peminjam_id');
+    }
+
+    
+    //  mendapatkan semua transaksi, user adalah pemilik barang
+    public function loans_as_owner(): HasMany
+    {
+        return $this->hasMany(Loan::class, 'pemilik_id');
     }
 }

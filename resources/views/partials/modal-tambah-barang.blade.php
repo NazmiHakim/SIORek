@@ -19,7 +19,7 @@
 
         <form
             method="POST" 
-            action="/link-untuk-tambah-barang" 
+            action="{{ route('barang.store') }}"
             x-show="isTambahBarangModalOpen"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95"
@@ -28,6 +28,8 @@
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95"
             class="relative bg-white w-full max-w-lg rounded-lg shadow-xl">
+
+            @csrf
 
             <div class="flex items-start justify-between p-6">
                 <div>
@@ -40,7 +42,7 @@
             <div class="px-6 space-y-4">
                 <div>
                     <label for="nama_barang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
-                    <input type="text"  name="nama_barang"  id="nama_barang"  placeholder="Masukkan nama barang" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <input type="text"  name="nama_item"  id="nama_barang"  placeholder="Masukkan nama barang" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
                 
                 <div>
@@ -50,7 +52,7 @@
                 
                 <div>
                     <label for="jumlah_barang" class="block text-sm font-medium text-gray-700">Jumlah Barang</label>
-                    <input  type="number"  name="jumlah_barang"  id="jumlah_barang"  value="1" min="1" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <input  type="number"  name="jumlah_total"  id="jumlah_barang"  value="1" min="1" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
                 
                 <div>

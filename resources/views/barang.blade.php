@@ -27,45 +27,73 @@
 
 </div>
 
+    @if (session('success'))
+        <div class="mb-4 rounded-lg bg-green-100 p-4 text-sm text-green-700">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+    <div class="mb-4 rounded-lg bg-red-100 p-4 text-sm text-red-700">
+        {{ session('error') }}
+    </div>
+    @endif
+
 <div class="flex flex-wrap gap-8 justify-center">
-    @for ($i = 0; $i < 10; $i++)
+    @forelse ($items as $item)
     <div class="max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden">
-        <img src="https://picsum.photos/seed/picsum/200/300" alt="" class="h-[150px] w-full">
+        <!-- <img src="https://picsum.photos/seed/{{ $item->id }}/300/150" alt="{{ $item->nama_item }}" class="h-[150px] w-full"> -->
         <div class="p-4">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-gray-900">Tripod Manfrotto</h2>
+                <h2 class="text-xl font-semibold text-gray-900">{{ $item->nama_item }}</h2>
                 
                 <div class="flex space-x-3">
-                    <a href=""><i class="fa-solid fa-pen-to-square"></i></a> 
-                    <a href=""><i class="fa-solid fa-trash "></i></a>
+                    <!-- link edit barang -->
+                    <a href="{{ route('barang.edit', $item->id) }}">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    
+                    <!-- tombol hapus (form) -->
+                    <form action="{{ route('barang.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="cursor-pointer">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         
             <div class="flex gap-2 mb-4">
-                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full border border-gray-300">Fotografi</span>
-                <span class="bg-green-500 text-white text-xs font-medium px-3 py-1 rounded-full">Tersedia</span>
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full border border-gray-300">{{ $item->kategori ?? 'Tanpa Kategori' }}</span>
+                {{-- TODO: Logic ketersediaan barang (Tersedia/Dipinjam) --}}
+                <span class="bg-green-500 text-white text-xs font-medium px-3 py-1 rounded-full">Tersedia</span> 
             </div>
         
-            <p class=" text-sm text-gray-600 mb-6">Tripod professional untuk kamera DSLR</p>
+            <p class=" text-sm text-gray-600 mb-6">{{ $item->deskripsi }}</p>
         
             <div class="grid grid-cols-3 gap-4 border-t border-gray-200 pt-4">
                 <div>
                     <span class="text-sm text-gray-500 block">Jumlah Total</span>
-                    <span class="text-lg font-bold text-gray-900">3 unit</span>
+                    <span class="text-lg font-bold text-gray-900">{{ $item->jumlah_total }} unit</span>
                 </div>
                 <div>
                     <span class="text-sm text-gray-500 block">Tersedia</span>
-                    <span class="text-lg font-bold text-green-600">1 unit</span>
+                    {{-- TODO: Logic jumlah tersedia (Total - Dipinjam) --}}
+                    <span class="text-lg font-bold text-green-600">{{ $item->jumlah_total }} unit</span>
                 </div>
                 <div>
                     <span class="text-sm text-gray-500 block">Dipinjam</span>
-                    <span class="text-lg font-bold text-blue-600">2 unit</span>
+                    <span class="text-lg font-bold text-blue-600">0 unit</span>
                 </div>
             </div>
         </div>
     </div>
-        
-    @endfor
+    @empty
+    {{-- Tampilan jika pengguna belum punya barang sama sekali --}}
+    <div classm="text-center text-gray-500">
+        <p>Anda belum menambahkan barang apapun.</p>
+    </div>
+    @endforelse
 </div>
 
 @endsection
