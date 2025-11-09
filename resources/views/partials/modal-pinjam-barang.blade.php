@@ -35,7 +35,6 @@
         <div class="flex items-start justify-between p-6 sticky top-0 bg-white z-10">
             <div>
                 <h2 class="text-xl font-bold text-gray-900">
-                    {{-- Judul dinamis berdasarkan item yang dipilih --}}
                     Pinjam Barang: <span x-text="selectedItem ? selectedItem.nama_item : '...' "></span>
                 </h2>
                 <p class="text-gray-600 mt-1">
@@ -47,12 +46,11 @@
 
         <div class="px-6 space-y-4">
             
-            {{-- Input tersembunyi untuk ID Item --}}
             <input type="hidden" name="item_id" :value="selectedItem ? selectedItem.id : ''">
 
             <div>
                 <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah yang Dipinjam</label>
-                {{-- Kita batasi jumlah pinjam berdasarkan stok --}}
+                {{-- batasi jumlah pinjam berdasarkan stok --}}
                 <input type="number" name="jumlah" id="jumlah" value="1" min="1" :max="selectedItem ? selectedItem.jumlah_total : 1" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 <p class="text-xs text-gray-500 mt-1">
                     Stok tersedia: <span x-text="selectedItem ? selectedItem.jumlah_total : '...' "></span> unit
@@ -70,7 +68,6 @@
                 </div>
             </div>
 
-            {{-- Frontend Anda meminta file-file ini di modal lain, jadi kita tambahkan di sini --}}
             <div>
                 <label for="foto_kim" class="block text-sm font-medium text-gray-700">Upload KTM/KTP (Foto)</label>
                 <input type="file" name="foto_kim" id="foto_kim" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>

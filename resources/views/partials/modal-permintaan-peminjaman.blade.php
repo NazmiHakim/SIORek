@@ -12,7 +12,7 @@
         x-transition:enter="ease-out duration-300" ... >
     </div>
 
-    {{-- Kita gunakan 'selectedLoan.id' untuk membuat action URL yang unik --}}
+    {{-- selectedLoan.id untuk membuat action URL yang unik --}}
     <form
         method="POST" 
         :action="'/loan/handle-permintaan/' + (selectedLoan ? selectedLoan.id : '')"
@@ -21,7 +21,7 @@
         class="relative bg-white w-full max-w-lg rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
 
         @csrf
-        @method('POST') {{-- Kita akan gunakan POST untuk ini --}}
+        @method('POST')
 
         <div class="flex items-start justify-between p-6 sticky top-0 bg-white z-10">
             <div>

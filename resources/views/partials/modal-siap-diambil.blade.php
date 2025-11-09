@@ -30,7 +30,7 @@
 
         <div class="px-6 space-y-4">
             <p class="text-sm text-gray-700">
-                Sebagai bukti serah terima, silakan **upload foto kondisi awal barang** yang Anda terima dari pemilik.
+                Sebagai bukti serah terima, silakan upload foto kondisi awal barang yang Anda terima dari pemilik.
             </p>
             <div>
                 <label for="foto_kondisi_awal" class="block text-sm font-medium text-gray-700">Foto Kondisi Awal</label>

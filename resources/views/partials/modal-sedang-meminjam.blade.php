@@ -30,7 +30,7 @@
 
         <div class="px-6 space-y-4">
             <p class="text-sm text-gray-700">
-                Untuk menyelesaikan peminjaman, silakan **upload foto kondisi akhir barang** yang akan Anda kembalikan.
+                Untuk menyelesaikan peminjaman, silakan upload foto kondisi akhir barang yang akan Anda kembalikan.
             </p>
             <div>
                 <label for="foto_kondisi_akhir" class="block text-sm font-medium text-gray-700">Foto Kondisi Akhir</label>
@@ -39,9 +39,9 @@
                        required>
             </div>
 
-            {{-- Menampilkan foto kondisi awal sebagai perbandingan --}}
+            {{-- menampilkan foto kondisi awal sebagai perbandingan --}}
             <div x-show="selectedLoan && selectedLoan.foto_kondisi_awal">
-                <span class="text-sm text-gray-500 block">Foto Kondisi Awal (Perbandingan)</span>
+                <span class="text-sm text-gray-500 block">Foto Kondisi Awal</span>
                 <img :src="'/storage/' + selectedLoan.foto_kondisi_awal" alt="Foto Awal" class="mt-2 rounded-md border max-h-48">
             </div>
         </div>
