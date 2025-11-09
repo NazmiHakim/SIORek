@@ -4,9 +4,9 @@
     x-cloak
     @keydown.escape.window="isPinjamModalOpen = false"
     class="fixed inset-0 z-50 flex items-center justify-center p-4">
-    
+
     <div 
-        @click="isPinjamModalOpen = false"
+        @click="isPinjamModalOpen = false" 
         class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
         x-show="isPinjamModalOpen"
         x-transition:enter="ease-out duration-300"
@@ -17,82 +17,75 @@
         x-transition:leave-end="opacity-0">
     </div>
 
-        <form
-            method="POST" 
-            action="/link-untuk-ajukan-peminjaman" 
-            enctype="multipart/form-data"
-            x-show="isPinjamModalOpen"
-            x-transition:enter="ease-out duration-300"
-            x-transition:enter-start="opacity-0 scale-95"
-            x-transition:enter-end="opacity-100 scale-100"
-            x-transition:leave="ease-in duration-200"
-            x-transition:leave-start="opacity-100 scale-100"
-            x-transition:leave-end="opacity-0 scale-95"
-            class="relative bg-white w-full max-w-lg rounded-lg shadow-xl">
+    <form
+        method="POST" 
+        action="{{ route('loan.store') }}" {{-- Kita akan buat rute ini nanti --}}
+        enctype="multipart/form-data" {{-- Wajib untuk upload file --}}
+        x-show="isPinjamModalOpen"
+        x-transition:enter="ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95"
+        class="relative bg-white w-full max-w-lg rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
+
+        @csrf
+
+        <div class="flex items-start justify-between p-6 sticky top-0 bg-white z-10">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">
+                    {{-- Judul dinamis berdasarkan item yang dipilih --}}
+                    Pinjam Barang: <span x-text="selectedItem ? selectedItem.nama_item : '...' "></span>
+                </h2>
+                <p class="text-gray-600 mt-1">
+                    Pemilik: <span x-text="selectedItem ? selectedItem.user.username : '...' "></span>
+                </p>
+            </div>
+            <button type="button" @click="isPinjamModalOpen = false" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times fa-lg"></i></button>
+        </div>
+
+        <div class="px-6 space-y-4">
             
-            <div class="flex items-start justify-between p-6">
-                <div>
-                    <h2 class="text-xl font-bold text-gray-900">Pinjam Barang</h2>
-                    <p class="text-gray-600 mt-1">Isi detail peminjaman untuk Proyektor Epson EB-X41</p>
-                </div>
-                <button type="button" @click="isPinjamModalOpen = false" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times fa-lg"></i></button>
+            {{-- Input tersembunyi untuk ID Item --}}
+            <input type="hidden" name="item_id" :value="selectedItem ? selectedItem.id : ''">
+
+            <div>
+                <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah yang Dipinjam</label>
+                {{-- Kita batasi jumlah pinjam berdasarkan stok --}}
+                <input type="number" name="jumlah" id="jumlah" value="1" min="1" :max="selectedItem ? selectedItem.jumlah_total : 1" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                <p class="text-xs text-gray-500 mt-1">
+                    Stok tersedia: <span x-text="selectedItem ? selectedItem.jumlah_total : '...' "></span> unit
+                </p>
             </div>
 
-            <div class="px-6 space-y-5">
-                <div x-data="{ count: 1, max: 3 }">
-                    <label for="jumlah_unit" class="block text-sm font-medium text-gray-700">
-                        Jumlah Unit <span class="text-red-500">*</span>
-                    </label>
-                    <div class="flex items-center gap-3 mt-1">
-                        <input type="number" id="jumlah_unit" name="jumlah" min="1" :max="max" class="w-20 px-3 py-1 text-center rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>                    
-                        <span class="text-sm text-gray-600">Tersedia: 3 unit</span>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                        <div class="relative mt-1">
-                            <input type="date"  name="tanggal_mulai"  id="tanggal_mulai"  class="w-full px-3 py-1 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Pilih tanggal" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
-                        <div class="relative mt-1">
-                            <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="w-full px-3 py-1 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Pilih tanggal" required>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="flex items-center text-sm font-medium text-gray-700 mb-1">
-                        <i class="fa-regular fa-id-card mr-2"></i>Foto KIM <span class="text-red-500">*</span>
-                    </label>
-                    <label for="foto-ktp"  class="mt-1 flex justify-center w-full h-36 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-blue-500">
-                        <div class="space-y-1 text-center flex flex-col justify-center items-center">
-                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400"></i> 
-                            <p class="text-sm text-gray-600">Klik untuk upload foto KIM</p>
-                        </div>
-                    </label>
-                    <input id="foto-ktp" name="foto_ktp" type="file" class="hidden" required>
+                    <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+                    <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
-                
                 <div>
-                    <label class="flex items-center text-sm font-medium text-gray-700 mb-1">
-                        <i class="fa-regular fa-file-lines mr-2"></i> Surat Peminjaman <span class="text-red-500">*</span>
-                    </label>
-                    <label for="surat-peminjaman"  class="mt-1 flex justify-center w-full h-36 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-blue-500">
-                        <div class="space-y-1 text-center flex flex-col justify-center items-center">
-                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400"></i> 
-                            <p class="text-sm text-gray-600">Klik untuk upload surat peminjaman</S>
-                        </div>
-                    </label>
-                    <input id="surat-peminjaman" name="surat_peminjaman" type="file" class="hidden" required>
+                    <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</glabel>
+                    <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
             </div>
 
-            <div class="p-6 bg-gray-50 rounded-b-lg">
-                <button type="submit"  class="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-blue-700">Ajukan Peminjaman</button>
+            {{-- Frontend Anda meminta file-file ini di modal lain, jadi kita tambahkan di sini --}}
+            <div>
+                <label for="foto_kim" class="block text-sm font-medium text-gray-700">Upload KTM/KTP (Foto)</label>
+                <input type="file" name="foto_kim" id="foto_kim" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
             </div>
-        </form>
+            
+            <div>
+                <label for="surat_peminjaman" class="block text-sm font-medium text-gray-700">Upload Surat Peminjaman (PDF)</label>
+                <input type="file" name="surat_peminjaman" id="surat_peminjaman" accept="application/pdf" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+            </div>
+        </div>
+
+        <div class="p-6 bg-gray-50 rounded-b-lg mt-6">
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700">
+                Kirim Permintaan
+            </button>
+        </div>
+    </form>
 </div>

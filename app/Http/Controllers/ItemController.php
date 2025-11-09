@@ -14,29 +14,41 @@ class ItemController extends Controller
      */
     public function index()
     {
-        // mengambil id user yang sedang login
         $userId = Auth::id();
 
-        // mengambil semua item database dari pengguna
-        $items = Item::where('user_id', $userId)->get();
+        // status barang
+        $activeStatuses = [
+            'menunggu_persetujuan',
+            'disetujui',
+            'sedang_dipinjam',
+            'menunggu_konfirmasi_pengembalian',
+            'bermasalah'
+        ];
 
-        // mengirim data item ke view
+        // mengambil semua item dan menghitung jumlah dari peminjaman (yang aktif)
+        $items = Item::where('user_id', $userId)
+                    ->withSum(['loans' => function ($query) use ($activeStatuses) {
+                        $query->whereIn('status', $activeStatuses);
+                    }], 'jumlah')
+                    ->get();
+
+        // hitung sisa stok di sisi PHP
+        foreach ($items as $item) {
+            $item->jumlah_dipinjam = $item->loans_sum_jumlah ?? 0;
+            $item->jumlah_tersedia = $item->jumlah_total - $item->jumlah_dipinjam;
+        }
+
+        // kirim data items keview
         return view('barang', [
             'items' => $items
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // validasi input
@@ -58,33 +70,24 @@ class ItemController extends Controller
         return redirect()->route('barang')->with('success', 'Barang berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Item $item)
     {
-        // Pengecekan Keamanan (Sama seperti destroy)
+        // Pengecekan Keamanan (sama seperti destroy)
         if ($item->user_id != Auth::id()) {
             return redirect()->route('barang')->with('error', 'Anda tidak berhak mengedit barang ini!');
         }
 
-        // Tampilkan view dari edit-barang.blade dan mengirim data item
+        // menampilkan view dari edit-barang.blade dan mengirim data item
         return view('edit-barang', [
             'item' => $item
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Item $item)
     {
         // pengecekan Keamanan
@@ -107,13 +110,9 @@ class ItemController extends Controller
         return redirect()->route('barang')->with('success', 'Barang berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Item $item) // Perhatikan: 'Item $item'
+    public function destroy(Item $item)
     {
-        // pengecekan Keamanan
-        // memastikan pengguna yang login adalah pemilik barang
+        // pengecekan Keamanan dan memastikan pengguna yang login adalah pemilik barang
         if ($item->user_id != Auth::id()) {
             // jika bukan pemilik, tolak dan kirim pesan error dalam menghapus
             return redirect()->route('barang')->with('error', 'Anda tidak berhak menghapus barang ini!');

@@ -47,7 +47,7 @@
     <div x-show="tab === 'saya_meminjam'" class="space-y-6">
         
         <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold mb-4">Barang yang Saya Pinjam</h3>
+            <h3 class="text-xl font-semibold mb-4">Barang yang saya pinjam</h3>
             
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -62,35 +62,44 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Proyektor Epson EB-X41</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 unit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rektorat</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">28/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2/11/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Microphone Rode NT-USB</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 unit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rektorat</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">19/10/2025</td>
-                        </tr>
-
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Kabel HDMI 5m</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3 unit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Orbit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">22/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">21/10/2025</td>
-                        </tr>
-
-                        </tbody>
+                        @forelse ($pinjamanSaya as $loan)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ $loan->item->nama_item }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $loan->jumlah }} unit
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $loan->pemilik->username }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}
+                                </td>
+                                {{-- Kolom Status (Menggantikan "Dikembalikan") --}}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    @if($loan->status == 'selesai')
+                                        <span class="text-green-600">Selesai</span>
+                                    @elseif($loan->status == 'ditolak')
+                                        <span class="text-red-600">Ditolak</span>
+                                    @elseif($loan->status == 'bermasalah')
+                                        <span class="text-red-600">Bermasalah</span>
+                                    @else
+                                        <span class="text-yellow-600 capitalize">{{ str_replace('_', ' ', $loan->status) }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                    Anda belum pernah meminjam barang.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -99,7 +108,7 @@
     <div x-show="tab === 'orang_lain'" class="space-y-6" style="display: none;">
         
         <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold mb-4">Barang yang Dipinjam Orang Lain</h3>
+            <h3 class="text-xl font-semibold mb-4">Barang yang dipinjam orang Lain</h3>
             
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -115,48 +124,46 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Tripod Manfrotto</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 unit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">BEM Fakultas Teknik</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">30/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3/11/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Whiteboard Portable</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 unit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Koperasi Mahasiswa</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">Tepat Waktu</td>
-                        </tr>
-
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Whiteboard Portable</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 unit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Himpunan Mahasiswa...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">26/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">Terlambat 1 hari</td>
-                        </tr>
-
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Hard Drive External 1TB</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 unit</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Koperasi Mahasiswa</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18/10/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">Terlambat 6 hari</td>
-                        </tr>
-
-                        </tbody>
+                        @forelse ($pinjamanOrangLain as $loan)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ $loan->item->nama_item }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $loan->jumlah }} unit
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $loan->peminjam->username }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $loan->tanggal_pengembalian_aktual ? \Carbon\Carbon::parse($loan->tanggal_pengembalian_aktual)->format('d/m/Y') : '-' }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    @if($loan->status == 'selesai')
+                                        <span class="text-green-600">Selesai</span>
+                                    @elseif($loan->status == 'ditolak')
+                                        <span class="text-red-600">Ditolak</span>
+                                    @elseif($loan->status == 'bermasalah')
+                                        <span class="text-red-600">Bermasalah</span>
+                                    @else
+                                        <span class="text-yellow-600 capitalize">{{ str_replace('_', ' ', $loan->status) }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                    Belum ada barang Anda yang dipinjam.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -171,19 +178,19 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div class="text-center md:text-left">
                 <span class="text-sm text-gray-500 block">Total Saya Pinjam</span>
-                <span class="text-4xl font-bold text-gray-900">9</span>
+                <span class="text-4xl font-bold text-gray-900">{{ $totalSayaPinjam }}</span>
             </div>
             <div class="text-center md:text-left">
                 <span class="text-sm text-gray-500 block">Dipinjam Orang Lain</span>
-                <span class="text-4xl font-bold text-gray-900">9</span>
+                <span class="text-4xl font-bold text-gray-900">{{ $totalDipinjamOrang }}</span>
             </div>
             <div class="text-center md:text-left">
                 <span class="text-sm text-gray-500 block">Aktif Saat Ini</span>
-                <span class="text-4xl font-bold text-blue-600">5</span>
+                <span class="text-4xl font-bold text-blue-600">{{ $totalAktif }}</span>
             </div>
             <div class="text-center md:text-left">
                 <span class="text-sm text-gray-500 block">Sanksi Diberikan</span>
-                <span class="text-4xl font-bold text-red-600">3</span>
+                <span class="text-4xl font-bold text-red-600">{{ $totalSanksi }}</span>
             </div>
         </div>
     </div>

@@ -16,20 +16,17 @@
         <div class="flex-1 transition-all duration-300 " :class="isSidebarOpen ? 'lg:ml-64' : 'lg:ml-0'">
             <header class= "bg-white p-2 flex justify-between items-center sticky top-0 z-30">
 
-            <!-- tombol buka dan tutup  -->
             <button @click="isSidebarOpen = !isSidebarOpen" class="text-gray-700 hover:text-blue-600 p-2 rounded-md">
                 <i class="fa-solid fa-bars fa-xl"></i>
             </button>
 
-            <!-- dropdown profil -->
             <div x-data="{ isProfileOpen: false }" class="relative">
                 
-                <!-- tombol buka dropdown -->
                 <button @click="isProfileOpen = !isProfileOpen" class="flex items-center gap-4">
                     <div class="text-end">
-                        <!-- mengambil nama user login -->
+                        <!-- mengambil nama user yang login -->
                         <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3> 
-                        <!-- juga mengambil role user login -->
+                        <!-- juga mengambil role user yang login -->
                         <p class="text-sm text-gray-600 capitalize">{{ Auth::user()->role }}</p>
                     </div>
                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->username }}&background=random" alt="{{ Auth::user()->username }}" class="w-10 h-10 rounded-full">
@@ -80,5 +77,7 @@
              x-transition:leave-end="opacity-0">
         </div>
     </div>
+
+    @stack('scripts')
 </body>
 </html>

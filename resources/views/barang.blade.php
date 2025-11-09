@@ -78,12 +78,11 @@
                 </div>
                 <div>
                     <span class="text-sm text-gray-500 block">Tersedia</span>
-                    {{-- TODO: Logic jumlah tersedia (Total - Dipinjam) --}}
-                    <span class="text-lg font-bold text-green-600">{{ $item->jumlah_total }} unit</span>
+                    <span class="text-lg font-bold text-green-600">{{ $item->jumlah_tersedia }} unit</span>
                 </div>
                 <div>
                     <span class="text-sm text-gray-500 block">Dipinjam</span>
-                    <span class="text-lg font-bold text-blue-600">0 unit</span>
+                    <span class="text-lg font-bold text-blue-600">{{ $item->jumlah_dipinjam }} unit</span>
                 </div>
             </div>
         </div>

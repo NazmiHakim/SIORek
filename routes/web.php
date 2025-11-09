@@ -3,36 +3,33 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\DaftarPenggunaController; 
-// use App\Http\Controllers\DashboardController;
-// use App\Http\Controllers\RiwayatPeminjamanController;
+use App\Http\Controllers\DaftarPenggunaController;
+use App\Http\Controllers\LoanController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RiwayatPeminjamanController;
 
-// Akses Publik
-// Halaman utama (login)
+// akses untuk upblik
+// halaman login
 Route::get('/', function () {
     return view('login');
 })->name('login');
 
-// Proses login
+// proses login
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.post');
 
-// Akses Login (terproteksi)
+// akses login yang terproteksi
 Route::middleware('auth')->group(function () {
 
-    // Logout
+    // ;ogout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Riwayat Peminjaman
-    Route::get('/riwayat-peminjaman', function () {
-        return view('riwayat-peminjaman');
-    })->name('riwayat-peminjaman');
+    // riwayat peminjaman
+    Route::get('/riwayat-peminjaman', [RiwayatPeminjamanController::class, 'index'])->name('riwayat-peminjaman');
 
-    // Daftar Pengguna (Yang akan Anda kerjakan)
+    // daftar pengguna
     Route::get('/daftar-pengguna', [DaftarPenggunaController::class, 'index'])->name('daftar-pengguna');
 
     // CRUD
@@ -43,5 +40,16 @@ Route::middleware('auth')->group(function () {
         Route::put('/barang/{item}', 'update')->name('barang.update');
         Route::delete('/barang/{item}', 'destroy')->name('barang.destroy');
     });
+
+    // peminjaman
+    Route::post('/loan', [LoanController::class, 'store'])->name('loan.store');
+    // persetujuan peminjaman
+    Route::post('/loan/handle-permintaan/{loan}', [LoanController::class, 'handlePermintaan'])->name('loan.handlePermintaan');
+    // konfirmasi pengambilan
+    Route::post('/loan/konfirmasi-pengambilan/{loan}', [LoanController::class, 'konfirmasiPengambilan'])->name('loan.konfirmasiPengambilan');
+    // mengajukan pengembalian
+    Route::post('/loan/ajukan-pengembalian/{loan}', [LoanController::class, 'ajukanPengembalian'])->name('loan.ajukanPengembalian');
+    // konfirmasi pengembalian
+    Route::post('/loan/konfirmasi-pengembalian/{loan}', [LoanController::class, 'konfirmasiPengembalian'])->name('loan.konfirmasiPengembalian');
 
 });
