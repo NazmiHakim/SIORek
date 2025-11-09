@@ -3,22 +3,31 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+use App\Models\User; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Hash; // <-- TAMBAHKAN INI
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Jalankan seeder untuk tabel users.
-     */
     public function run(): void
     {
-        DB::table('users')->insert([
+
+        User::create([
             'username' => 'siorek',
             'password' => Hash::make('123'),
-            'role' => 'admin',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'role'     => 'superadmin'
         ]);
+
+        User::create([
+            'username' => 'Himpunan Mahasiswa Teknologi Informasi',
+            'password' => Hash::make('HMTI123'),
+            'role'     => 'Admin HMTI'
+        ]);
+
+        User::create([
+            'username' => 'erikamaulidya',
+            'password' => Hash::make('1234'),
+            'role'     => 'Admin'
+        ]);
+        
     }
 }
