@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         User::create([
             'username' => 'Himpunan Mahasiswa Teknologi Informasi',
             'password' => Hash::make('HMTI123'),
-            'role'     => 'Admin HMTI'
+            'role'     => 'User'
         ]);
 
         User::create([
