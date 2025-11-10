@@ -65,7 +65,7 @@
         
             <div class="flex gap-2 mb-4">
                 <span class="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full border border-gray-300">{{ $item->kategori ?? 'Tanpa Kategori' }}</span>
-                {{-- TODO: Logic ketersediaan barang (Tersedia/Dipinjam) --}}
+                {{-- Logika ketersediaan barang (Tersedia/Dipinjam) --}}
                 <span class="bg-green-500 text-white text-xs font-medium px-3 py-1 rounded-full">Tersedia</span> 
             </div>
         

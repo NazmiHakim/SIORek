@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
 
     
-    // mendapatkan semua transaksi, user ini adalah peminjam barang
+    // mendapatkan semua transaksi, user adalah peminjam barang
     public function loans_as_borrower(): HasMany
     {
         return $this->hasMany(Loan::class, 'peminjam_id');

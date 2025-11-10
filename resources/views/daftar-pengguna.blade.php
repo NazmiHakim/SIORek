@@ -40,9 +40,8 @@
                 <h2 class="text-xl font-semibold flex items-center gap-2 mb-8 text-biru-primary"><i class="fa-solid fa-users w-6 text-center"></i>Pengguna</h2>
                 <div class="space-y-4">
                     @forelse ($users as $user)
-                            {{-- Kita akan buat ini bisa diklik nanti --}}
                             <a href="#" class="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg">
-                                {{-- Avatar placeholder dinamis --}}
+                                {{-- avatar placeholder --}}
                                 <img src="https://ui-avatars.com/api/?name={{ $user->username }}&background=random" alt="{{ $user->username }}" class="w-10 h-10 rounded-full object-cover">
                                 <div>
                                     <h4 class="font-semibold text-gray-900">{{ $user->username }}</h4>
@@ -61,7 +60,8 @@
             
             <div class="bg-white p-4 rounded-lg shadow-md max-h-[75vh] overflow-y-auto">
                 <h2 class="text-xl font-semibold text-biru-primary flex items-center gap-2 mb-8"><i class="fa-solid fa-archive w-6 text-cente"></i>Semua Barang</h2>
-                    <div x-data="{isPinjamModalOpen: false, selectedItem: null}" class="flex flex-wrap gap-8">                        @forelse ($items as $item)
+                    <div x-data="{isPinjamModalOpen: false, selectedItem: null}" class="flex flex-wrap gap-8">                        
+                        @forelse ($items as $item)
                                 <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
                                     <div class="p-5">
                                         <div class="flex justify-between items-start mb-2">
@@ -75,7 +75,7 @@
                                         <div>
                                             <span class="text-sm text-gray-500">Tersedia</span>
                                             <div class="flex justify-between items-center">
-                                                {{-- Tampilkan jumlah tersedia / total --}}
+                                                {{-- tampilkan jumlah tersedia/total --}}
                                                 <span class="text-lg font-bold"
                                                     :class="{
                                                         'text-green-500': {{ $item->jumlah_tersedia }} > 0,
@@ -84,7 +84,7 @@
                                                     {{ $item->jumlah_tersedia }} / {{ $item->jumlah_total }} unit
                                                 </span>
                                                 
-                                                {{-- Tampilkan status badge --}}
+                                                {{-- tampilkan status --}}
                                                 @if ($item->jumlah_tersedia > 0)
                                                     <span class="bg-green-400 text-white text-xs font-semibold px-3 py-1 rounded-md">Tersedia</span>
                                                 @else
@@ -95,7 +95,7 @@
                                     </div>
                                     
                                     <div class="bg-gray-50 p-4">
-                                        {{-- Nonaktifkan tombol jika stok habis --}}
+                                        {{-- nonaktifkan tombol jika stok habis --}}
                                         @if ($item->jumlah_tersedia > 0)
                                             <button @click="isPinjamModalOpen = true; selectedItem = {{ $item->toJson() }}" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700">
                                                 Pinjam

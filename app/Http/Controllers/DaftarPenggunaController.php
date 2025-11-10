@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 class DaftarPenggunaController extends Controller
 {
     
-    // menampilkan halaman daftar pengguna dan barang mereka
     public function index()
     {
         $currentUserId = Auth::id();

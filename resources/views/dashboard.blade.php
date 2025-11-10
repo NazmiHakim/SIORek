@@ -22,7 +22,7 @@
                 <div class="container mx-auto">
                     <div class="bg-white rounded-lg shadow overflow-hidden">
 
-                        {{-- Header Kalender (Bulan/Tahun dan Tombol Navigasi) --}}
+                        {{-- header Kalender (Bulan/Tahun dan Tombol Navigasi) --}}
                         <div class="flex items-center justify-between py-2 px-6">
                             <div>
                                 <span x-text="MONTH_NAMES[month]" class="text-lg font-bold text-gray-800"></span>
@@ -47,7 +47,7 @@
                             </div>
                         </div>
 
-                        {{-- Grid Hari (Sen, Sel, Rab...) --}}
+                        {{-- grid Hari --}}
                         <div class="-mx-1 -mb-1">
                             <div class="flex flex-wrap" style="margin-bottom: -40px;">
                                 <template x-for="(day, index) in days" :key="index">	
@@ -57,13 +57,13 @@
                                 </template>
                             </div>
 
-                            {{-- Grid Tanggal (1, 2, 3...) --}}
+                            {{-- grid Tanggal --}}
                             <div class="flex flex-wrap border-t border-l">
-                                {{-- Kotak kosong sebelum tanggal 1 --}}
+                                {{-- kotak kosong untuk sebelum tanggal 1 --}}
                                 <template x-for="blankday in blankdays">
                                     <div style="width: 14.28%; height: 6rem;" class="text-center border-r border-b px-4 pt-2"></div>
                                 </template>	
-                                {{-- Tanggal --}}
+                                {{-- tanggal --}}
                                 <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">	
                                     <div style="width: 14.28%; height: 6rem;" class="px-2 pt-2 border-r border-b relative cursor-pointer"
                                         :class="{'bg-blue-50': isToday(date) == true, 'text-gray-700 hover:bg-blue-100': isToday(date) == false }"
@@ -72,7 +72,7 @@
                                         <div x-text="date" class="inline-flex items-center justify-center w-6 h-6 rounded-full text-center"
                                             :class="{'bg-blue-600 text-white': isToday(date) == true, 'text-gray-700': isToday(date) == false }"></div>
                                         
-                                        {{-- Titik event (jika ada) --}}
+                                        {{-- titik event jika ada --}}
                                         <div style="height: 1rem;" class="overflow-y-hidden mt-1">
                                             <div class="absolute bottom-2 left-2 flex -mx-1">
                                                 <template x-for="event in events.filter(e => new Date(e.event_date).toDateString() === new Date(year, month, date).toDateString())">
@@ -90,22 +90,17 @@
         </div>
 
         <div class="mt-10 flex-1">
-            {{-- Judul dinamis --}}
             <h2 class="text-lg font-semibold mb-4">
                 Agenda peminjaman barang pada <span x-text="selected_date"></span>
             </h2>
             
-            {{-- Looping untuk event --}}
+            {{-- ;ooping untuk event --}}
             <div class="space-y-3">
-                {{-- Gunakan event.type sebagai 'key' unik --}}
+                {{-- event.type key unik --}}
                 <template x-for="event in events_on_selected_date" :key="event.event_title + event.type">
                     
-                    {{-- 
-                      Ubah warna kartu berdasarkan TIPE 
-                      Biru = Saya Meminjam
-                      Hijau = Saya Meminjamkan
-                    --}}
-                    <div class="p-4 rounded-lg border" 
+                {{-- warna berdasarkan type --}}
+                <div class="p-4 rounded-lg border" 
                          :class="{
                             'bg-blue-50 border-blue-200': event.type === 'meminjam',
                             'bg-green-50 border-green-200': event.type === 'meminjamkan',
@@ -115,7 +110,7 @@
                         
                         <h3 class="font-semibold" x-text="event.event_title"></h3>
                         
-                        {{-- Tampilkan info yang relevan berdasarkan 'type' --}}
+                        {{-- menampilkan info berdasarkan type --}}
                         <template x-if="event.type === 'meminjam'">
                             <p class="text-sm text-gray-600">Dipinjam dari: <span x-text="event.pemilik"></span></p>
                         </template>
@@ -128,7 +123,7 @@
 
                 </template>
                 
-                {{-- Tampilan jika tidak ada event --}}
+                {{-- tampilan jika tidak ada event --}}
                 <template x-if="events_on_selected_date.length === 0">
                     <p class="text-sm text-gray-500">Tidak ada agenda peminjaman pada tanggal ini.</p>
                 </template>
@@ -144,12 +139,7 @@
             <div class="space-y-4">
                 <div >
                     <h1 class="font-semibold mb-4 text-[#FF9D00]">Menunggu Persetujuan:</h1>
-                    {{-- 
-                      Perbaikan x-data: 'isMenungguPersetujuanModalOpen'
-                      dan tambahkan 'selectedLoan'
-                    --}}
                     <div x-data="{ isMenungguPersetujuanModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >                        
-                        {{-- Ganti kartu statis dengan looping @forelse --}}
                         @forelse ($saya_menunggu_persetujuan as $loan)
                             <div @click="isMenungguPersetujuanModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
                                  class="bg-warning-fill border-2 border-warning-stroke  p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -168,7 +158,6 @@
                 <div>
                     <h1 class="font-semibold mb-4 text-[#EACD00]">Siap Diambil:</h1>
                     <div x-data="{ isSiapDIambilModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        {{-- Card Pengambilan Barang dari Pemilik --}}
                         @forelse ($saya_siap_diambil as $loan)
                             <div @click="isSiapDIambilModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
                                 class="bg-caution-fill border-2 border-caution-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -187,7 +176,6 @@
                 <div>
                     <h1 class="font-semibold mb-4 text-[#0095FF]">Sedang Dipinjam:</h1>
                     <div x-data="{ isSedangMeminjamModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        {{-- Card Barang yang Dipinjam dari Pemilik --}}
                         @forelse ($saya_sedang_meminjam as $loan)
                             <div @click="isSedangMeminjamModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
                                  class="bg-white border-2 border-notice-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -205,15 +193,8 @@
 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#0095FF]">Proses Pengembalian:</h1>
-                    {{-- Kita buat x-data "pintar" dengan 'selectedLoan' --}}
                     <div x-data="{ isProsesPengembalianModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        
-                        {{-- Ganti kartu statis dengan looping @forelse --}}
                         @forelse ($saya_proses_pengembalian as $loan)
-                            {{-- 
-                                Modal 'modal-proses-pengembalian' ini sepertinya
-                                hanya untuk melihat detail, jadi kita buat bisa diklik.
-                            --}}
                             <div @click="isProsesPengembalianModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
                                  class="bg-white border-2 border-notice-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
                                 
@@ -233,8 +214,6 @@
                     <h1 class="font-semibold mb-4 text-danger-stroke">Pengembalian Bermasalah:</h1>
                     {{-- Kita buat x-data "pintar" dengan 'selectedLoan' --}}
                     <div x-data="{ isPengembalianBermasalahModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        
-                        {{-- Ganti kartu statis dengan looping @forelse --}}
                         @forelse ($saya_bermasalah as $loan)
                             <div @click="isPengembalianBermasalahModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
                                  class="bg-danger-fill border-2 border-danger-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -259,7 +238,6 @@
                 <div>
                     <h1 class="font-semibold mb-4 text-[#FF9D00]">Permintaan Peminjaman:</h1>
                     <div x-data="{isPermintaanPeminjamanModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        {{-- Card Permintaan Peminjaman Barang Oleh Peminjam--}}
                         @forelse ($permintaan_masuk as $loan)
                             <div @click="isPermintaanPeminjamanModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
                                 class="bg-warning-fill border-2 border-warning-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -278,7 +256,6 @@
                 <div>
                     <h1 class="font-semibold mb-4 text-[#EACD00]">Permintaan Pengembalian:</h1>
                     <div x-data="{isPermintaanPengembalianModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        {{-- Card Permintaan Pengembalian Barang Dari Peminjam--}}
                         @forelse ($permintaan_pengembalian as $loan)
                             <div @click="isPermintaanPengembalianModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
                                 class="bg-caution-fill border-2 border-caution-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -297,9 +274,7 @@
                 <div>
                     <h1 class="font-semibold mb-4 text-[#EACD00]">Menunggu diambil:</h1>
                     <div x-data="{isMenungguDiambilModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        {{-- Card Menunggu Pengambilan Barang Oleh Peminjam--}}
                         @forelse ($menunggu_diambil_peminjam as $loan)
-                            {{-- Kita juga buat @click-nya pintar --}}
                             <div @click="isMenungguDiambilModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
                                 class="bg-caution-fill border-2 border-caution-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
 
@@ -316,7 +291,7 @@
 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#0095FF]">Sedang Dipinjam:</h1>
-                    <div x-data="{isSedangDipinjamModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >                        {{-- Card Barang yang Sedang Dipinjam Orang Lain--}}
+                    <div x-data="{isSedangDipinjamModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($sedang_dipinjam_orang as $loan)
                             <div @click="isSedangDipinjamModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
                                  class="bg-white border-2 border-notice-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -334,14 +309,7 @@
             
                 <div>
                     <h1 class="font-semibold mb-4 text-danger-stroke">Pengembalian Bermasalah:</h1>
-                    {{-- 
-                      Perbaikan x-data: 'isSedangDipinjamModalOpen'
-                      (Modal 'modal-sedang-dipinjam' mungkin digunakan lagi di sini)
-                      dan tambahkan 'selectedLoan'
-                    --}}
                     <div x-data="{isSedangDipinjamModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
-                        
-                        {{-- Ganti kartu statis dengan looping @forelse --}}
                         @forelse ($dipinjam_bermasalah as $loan)
                             <div @click="isSedangDipinjamModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
                                  class="bg-danger-fill border-2 border-danger-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
@@ -353,11 +321,6 @@
                         @empty
                             <p class="text-sm text-gray-400">Tidak ada barang bermasalah.</p>
                         @endforelse
-
-                        {{-- 
-                          Ini mungkin perlu diubah ke modal 'modal-bermasalah-detail'
-                          tapi untuk sekarang kita gunakan modal 'sedang-dipinjam'
-                        --}}
                         @include('partials.modal-sedang-dipinjam')
                     </div>
                 </div>
