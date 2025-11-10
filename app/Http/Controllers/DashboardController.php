@@ -14,7 +14,6 @@ class DashboardController extends Controller
         $userId = Auth::id();
 
         // mengambil semua data peminjaman user ini, peminjam/pemilik
-        // menggunakan with/Eager Loading agar query lebih efisien
         $loans = Loan::where('peminjam_id', $userId)
                     ->orWhere('pemilik_id', $userId)
                     ->with(['item', 'peminjam', 'pemilik'])
