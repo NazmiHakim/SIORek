@@ -14,6 +14,14 @@ Route::get('/', function () {
     return view('login');
 })->name('login');
 
+Route::get('/daftar-pengguna-admin', function () {
+    return view('daftar-pengguna-admin');
+})->name('daftarPenggunaAdmin');
+
+Route::get('/rekab-transaksi-admin', function () {
+    return view('rekab-transaksi-admin');
+})->name('rekabTransaksiAdmin');
+
 // proses login
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.post');
 
