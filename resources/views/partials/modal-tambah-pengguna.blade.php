@@ -19,8 +19,7 @@
 
     <form
         method="POST" 
-        action="/link-untuk-tambah-pengguna" 
-        enctype="multipart/form-data"
+        action="{{ route('admin.pengguna.store') }}"
         x-show="isTambahPenggunaModalOpen"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-95"
@@ -30,6 +29,7 @@
         x-transition:leave-end="opacity-0 scale-95"
         class="relative bg-white w-full max-w-lg rounded-lg shadow-xl"
     >
+        @csrf
         <div class="max-h-[85vh] overflow-y-auto">
             
             <div class="flex items-start justify-between p-6 border-b">
@@ -42,50 +42,38 @@
                 </button>
             </div>
 
-            <div class="p-6 space-y-4">
-                
+            @if ($errors->any())
+                <div class="p-6">
+                    <div class="rounded-lg bg-red-100 p-4 text-sm text-red-700">
+                        <strong>Error, gagal</strong>
+                        <ul class="list-disc pl-5 mt-2">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+
+            <div class="p-6 space-y-4">                
                 <div>
-                    <label for="nama_organisasi" class="block text-sm font-medium text-gray-700">Nama Organisasi</label>
-                    <input type="text" name="nama_organisasi" id="nama_organisasi" placeholder="Masukkan nama Organisasi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Masukkan username" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required value="{{ old('username') }}">
                 </div>
                 
                 <div>
-                    <label for="program_studi" class="block text-sm font-medium text-gray-700">Program Studi</label>
-                    <input type="text" name="program_studi" id="program_studi" placeholder="Masukkan Nama Program Studi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Minimal 6 karakter" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
                 
                 <div>
-                    <label for="fakultas" class="block text-sm font-medium text-gray-700">Fakultas</label>
-                    <input type="text" name="fakultas" id="fakultas" placeholder="Contoh: Teknik, Kehutanan, dll" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                    <select id="role" name="role" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
                 </div>
                 
-                <div>
-                    <label for="nama_pj" class="block text-sm font-medium text-gray-700">Nama Penanggung Jawab</label>
-                    <input type="text" name="nama_pj" id="nama_pj" placeholder="Masukkan Nama Penanggung Jawab" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-                </div>
-                
-                <div>
-                    <label for="nomor_pj" class="block text-sm font-medium text-gray-700">Nomor Penanggung Jawab</label>
-                    <input type="tel" name="nomor_pj" id="nomor_pj" placeholder="Masukkan Nomor Penanggung Jawab" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-                </div>
-                
-                <div>
-                    <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                    <textarea id="alamat" name="alamat" rows="3" placeholder="Masukkan Alamat dari Lokasi Sekretariat Organisasi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
-                </div>
-                
-                <div>
-                    <label for="logo-upload" class="block text-sm font-medium text-gray-700">
-                        Logo Organisasi
-                    </label>
-                    <label for="logo-upload" class="mt-2 flex justify-center w-full h-36 px-6 pt-5 pb-6 border-2 border-gray-300 bg-gray-100 p-2 border-dashed rounded-md cursor-pointer hover:border-blue-500">
-                        <div class="space-y-1 text-center flex flex-col justify-center items-center">
-                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400"></i>
-                            <p class="text-sm text-gray-600">Klik untuk upload Logo Organisasi</p>
-                        </div>
-                    </label>
-                    <input id="logo-upload" name="logo" type="file" class="hidden">
-                </div>
             </div> 
         </div> 
         <div class="p-6 border-t rounded-b-lg">

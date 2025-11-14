@@ -41,7 +41,13 @@
 <div class="flex flex-wrap gap-8 justify-center">
     @forelse ($items as $item)
     <div class="max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- <img src="https://picsum.photos/seed/{{ $item->id }}/300/150" alt="{{ $item->nama_item }}" class="h-[150px] w-full"> -->
+        @if($item->foto_item)
+            <img src="{{ asset('storage/' . $item->foto_item) }}" alt="{{ $item->nama_item }}" class="h-[150px] w-full object-cover">
+        @else
+            <div class="h-[150px] w-full bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-500 text-sm">(Tidak ada foto)</span>
+            </div>
+        @endif
         <div class="p-4">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-gray-900">{{ $item->nama_item }}</h2>
@@ -52,7 +58,7 @@
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                     
-                    <!-- tombol hapus (form) -->
+                    <!-- tombol hapus -->
                     <form action="{{ route('barang.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
                         @csrf
                         @method('DELETE')
@@ -88,7 +94,6 @@
         </div>
     </div>
     @empty
-    {{-- Tampilan jika pengguna belum punya barang sama sekali --}}
     <div classm="text-center text-gray-500">
         <p>Anda belum menambahkan barang apapun.</p>
     </div>

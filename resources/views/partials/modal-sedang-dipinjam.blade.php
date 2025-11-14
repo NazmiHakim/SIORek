@@ -29,7 +29,7 @@
             
             <div class="max-h-[85vh] mt-4 sm:mt-0 p-6 overflow-y-auto">
                 
-                <div>
+                <div x-show="selectedLoan">
                     <div class="mb-4">
                         <h2 class="text-xl font-bold text-biru-primary">Detail Peminjaman</h2>
                         <p class="text-gray-600">Informasi lengkap peminjaman barang</p>
@@ -39,29 +39,29 @@
                         
                         <div>
                             <span class="text-sm text-gray-500 block">Nama Barang</span>
-                            <span class="text-md font-semibold text-gray-800">Gimbal Stabilizer</span>
+                            <span class="text-md font-semibold text-gray-800" x-text="selectedLoan.item.nama_item"></span>
                         </div>
                         <div>
                             <span class="text-sm text-gray-500 block">Jumlah Unit</span>
-                            <span class="text-md font-semibold text-gray-800">1 unit</span>
+                            <span class="text-md font-semibold text-gray-800" x-text="selectedLoan.jumlah + ' unit'"></span>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <span class="text-sm text-gray-500 block">Peminjam</span>
-                                <span class="text-md font-semibold text-gray-800">Kampung Seni Budaya</span>
+                                <span class="text-md font-semibold text-gray-800" x-text="selectedLoan.peminjam.username"></span>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Pemilik</span>
-                                <span class="text-md font-semibold text-gray-800">Himpunan Mahasiswa Teknologi Informasi</span>
+                                <span class="text-md font-semibold text-gray-800" x-text="selectedLoan.pemilik.username"></span>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Tanggal Mulai</span>
-                                <span class="text-md font-semibold text-gray-800">Jumat, 28 November 2025</span>
+                                <span class="text-md font-semibold text-gray-800" x-text="new Date(selectedLoan.tanggal_mulai).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })"></span>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-500 block">Tanggal Selesai</span>
-                                <span class="text-md font-semibold text-gray-800">Selasa, 2 Desember 2025</span>
+                                <span class="text-md font-semibold text-gray-800" x-text="new Date(selectedLoan.tanggal_selesai).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })"></span>
                             </div>
                         </div>
 
@@ -78,29 +78,32 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <span class="text-sm font-medium text-gray-700 block mb-1">Foto KIM</span>
-                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
-                                    <span class="text-gray-500">Foto KIM tersimpan</span>
-                                </div>
+                                <a :href="'/storage/' + selectedLoan.foto_kim" target="_blank" x-show="selectedLoan.foto_kim">
+                                    <img :src="'/storage/' + selectedLoan.foto_kim" alt="Foto KIM" class="w-full h-32 object-cover rounded-lg border border-gray-300">
+                                </a>
+                                <span class="text-gray-500" x-show="!selectedLoan.foto_kim">Tidak ada file.</span>
                             </div>
                             <div>
                                 <span class="text-sm font-medium text-gray-700 block mb-1">Surat Peminjaman</span>
-                                <div class="bg-gray-100 border border-gray-300 rounded-lg h-32 flex items-center justify-center">
-                                    <span class="text-gray-500">Surat tersimpan</span>
-                                </div>
+                                <a :href="'/storage/' + selectedLoan.surat_peminjaman" target="_blank" class="flex items-center justify-center bg-gray-100 border border-gray-300 rounded-lg h-32 text-blue-600 underline hover:text-blue-800" x-show="selectedLoan.surat_peminjaman">
+                                    Lihat Surat (PDF)
+                                </a>
+                                <span class="text-gray-500" x-show="!selectedLoan.surat_peminjaman">Tidak ada file.</span>
                             </div>
                         </div>
 
                         <div class="mt-4 mb-4">
                             <span class="text-sm font-medium text-gray-700 block mb-1">Foto Kondisi Awal Barang</span>
-                            <div class="bg-gray-100 border border-gray-300 rounded-lg h-40 flex items-center justify-center">
-                                <span class="text-gray-500">Foto kondisi barang tersimpan</span>
-                            </div>
+                            <a :href="'/storage/' + selectedLoan.foto_kondisi_awal" target="_blank" x-show="selectedLoan.foto_kondisi_awal">
+                                <img :src="'/storage/' + selectedLoan.foto_kondisi_awal" alt="Foto Kondisi Awal" class="w-full h-40 object-cover rounded-lg border border-gray-300">
+                            </a>
+                            <span class="text-gray-500" x-show="!selectedLoan.foto_kondisi_awal">Tidak ada file.</span>
                         </div>
                     </div>
                 </div> 
             </div> 
             <div class="p-6">
-                <button type="button"  @click="isSedangDipinjamModalOpen = false" class="w-full px-6 py-2 bg-white border border-black rounded-lg text-gray-700 font-medium hover:bg-gray-50">Tutup</button>
+                <button type="button" @click="isSedangDipinjamModalOpen = false" class="w-full px-6 py-2 bg-white border border-black rounded-lg text-gray-700 font-medium hover:bg-gray-50">Tutup</button>
             </div>
         </div> 
 </div>

@@ -35,4 +35,24 @@ class Item extends Model
     {
         return $this->hasMany(Loan::class);
     }
+
+    public function getJumlahTersedia()
+    {
+        // status barang
+        $activeStatuses = [
+            'menunggu_persetujuan',
+            'disetujui',
+            'sedang_dipinjam',
+            'menunggu_konfirmasi_pengembalian',
+            'bermasalah'
+        ];
+
+        // menghitung barang yang sedang aktif
+        $jumlahDipinjam = $this->loans()
+                               ->whereIn('status', $activeStatuses)
+                               ->sum('jumlah');
+
+        // stok tersedia = total - yang dipinjam
+        return $this->jumlah_total - $jumlahDipinjam;
+    }
 }

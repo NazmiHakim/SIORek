@@ -5,13 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facedes\Storage;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $userId = Auth::id();
@@ -57,11 +54,17 @@ class ItemController extends Controller
             'kategori'     => 'nullable|string|max:100',
             'jumlah_total' => 'required|integer|min:1',
             'deskripsi'    => 'nullable|string',
+            'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         // siapkan data untuk disimpan
         $dataToStore = $validated;
-        $dataToStore['user_id'] = Auth::id(); // Tambahkan ID pemilik barang
+        $dataToStore['user_id'] = Auth::id();
+
+        if ($request->hasFile('foto_item')) {
+            $path = $request->file('foto_item')->store('public/foto_barang');
+            $dataToStore['foto_item'] = str_replace('public/', '', $path);
+        }
 
         // simpan ke database
         Item::create($dataToStore);
@@ -95,18 +98,29 @@ class ItemController extends Controller
             return redirect()->route('barang')->with('error', 'Anda tidak berhak mengedit barang ini!');
         }
 
-        // Validasi input
+        // validasi input
         $validated = $request->validate([
             'nama_item'    => 'required|string|max:255',
             'kategori'     => 'nullable|string|max:100',
             'jumlah_total' => 'required|integer|min:1',
             'deskripsi'    => 'nullable|string',
+            'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
-        // update data item di database
+        if ($request->hasFile('foto_item')) {
+            // hapus foto lama
+            if ($item->foto_item) {
+                Storage::delete('public/' . $item->foto_item);
+            }
+
+            // simpan foto baru
+            $path = $request->file('foto_item')->store('public/foto_barang');
+            $validated['foto_item'] = str_replace('public/', '', $path);
+        }
+
+        // update data item ke db
         $item->update($validated);
 
-        // kembalikan ke halaman dengan pesan sukses
         return redirect()->route('barang')->with('success', 'Barang berhasil diperbarui.');
     }
 
@@ -116,6 +130,10 @@ class ItemController extends Controller
         if ($item->user_id != Auth::id()) {
             // jika bukan pemilik, tolak dan kirim pesan error dalam menghapus
             return redirect()->route('barang')->with('error', 'Anda tidak berhak menghapus barang ini!');
+        }
+
+        if ($item->foto_item) {
+            Storage::delete('public/' . $item->foto_item);
         }
 
         // aman, hapus barang

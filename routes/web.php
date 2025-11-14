@@ -7,20 +7,14 @@ use App\Http\Controllers\DaftarPenggunaController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RiwayatPeminjamanController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 
 // akses untuk upblik
 // halaman login
 Route::get('/', function () {
     return view('login');
 })->name('login');
-
-Route::get('/daftar-pengguna-admin', function () {
-    return view('daftar-pengguna-admin');
-})->name('daftarPenggunaAdmin');
-
-Route::get('/rekab-transaksi-admin', function () {
-    return view('rekab-transaksi-admin');
-})->name('rekabTransaksiAdmin');
 
 // proses login
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.post');
@@ -59,5 +53,29 @@ Route::middleware('auth')->group(function () {
     Route::post('/loan/ajukan-pengembalian/{loan}', [LoanController::class, 'ajukanPengembalian'])->name('loan.ajukanPengembalian');
     // konfirmasi pengembalian
     Route::post('/loan/konfirmasi-pengembalian/{loan}', [LoanController::class, 'konfirmasiPengembalian'])->name('loan.konfirmasiPengembalian');
+
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    
+    // rute daftar pengguna (admin)
+    Route::get('/daftar-pengguna-admin', [AdminUserController::class, 'index'])
+         ->name('daftarPenggunaAdmin');
+    
+    // rute rekap transaksi (admin)
+    Route::get('/rekab-transaksi-admin', [AdminTransactionController::class, 'index'])
+         ->name('rekabTransaksiAdmin');
+
+    // rute untuk menyimpan pengguna baru
+    Route::post('/admin/pengguna', [AdminUserController::class, 'store'])
+         ->name('admin.pengguna.store');
+    
+    // rute memperbarui pengguna
+    Route::put('/admin/pengguna/{user}', [AdminUserController::class, 'update'])
+         ->name('admin.pengguna.update');
+    
+    // Rute delete pengguna
+    Route::delete('/admin/pengguna/{user}', [AdminUserController::class, 'destroy'])
+         ->name('admin.pengguna.destroy');
 
 });

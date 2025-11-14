@@ -309,9 +309,9 @@
             
                 <div>
                     <h1 class="font-semibold mb-4 text-danger-stroke">Pengembalian Bermasalah:</h1>
-                    <div x-data="{isSedangDipinjamModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{isPengembalianBermasalahModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($dipinjam_bermasalah as $loan)
-                            <div @click="isSedangDipinjamModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
+                            <div @click="isPengembalianBermasalahModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
                                  class="bg-danger-fill border-2 border-danger-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
                                 
                                 <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
@@ -321,7 +321,7 @@
                         @empty
                             <p class="text-sm text-gray-400">Tidak ada barang bermasalah.</p>
                         @endforelse
-                        @include('partials.modal-sedang-dipinjam')
+                        @include('partials.modal-pengembalian-bermasalah')
                     </div>
                 </div>
             </div>

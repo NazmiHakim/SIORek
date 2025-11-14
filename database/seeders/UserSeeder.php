@@ -14,19 +14,19 @@ class UserSeeder extends Seeder
         User::create([
             'username' => 'siorek',
             'password' => Hash::make('123'),
-            'role'     => 'Admin'
+            'role'     => 'admin'
         ]);
 
         User::create([
             'username' => 'Himpunan Mahasiswa Teknologi Informasi',
             'password' => Hash::make('HMTI123'),
-            'role'     => 'User'
+            'role'     => 'user'
         ]);
 
         User::create([
             'username' => 'Erika123',
             'password' => Hash::make('Maulidya456'),
-            'role'     => 'Admin'
+            'role'     => 'admin'
         ]);
         
     }

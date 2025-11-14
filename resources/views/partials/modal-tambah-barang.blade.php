@@ -20,6 +20,7 @@
         <form
             method="POST" 
             action="{{ route('barang.store') }}"
+            enctype="multipart/form-data"
             x-show="isTambahBarangModalOpen"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95"
@@ -58,6 +59,10 @@
                 <div>
                     <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                     <textarea  id="deskripsi" name="deskripsi" rows="3" placeholder="Deskripsikan barang Anda" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                </div>
+                <div>
+                    <label for="foto_item" class="block text-sm font-medium text-gray-700">Foto Barang (Opsional)</label>
+                    <input type="file" name="foto_item" id="foto_item" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 </div>
             </div>
 

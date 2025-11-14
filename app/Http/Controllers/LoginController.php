@@ -8,9 +8,6 @@ use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
-    /**
-     * Menangani upaya autentikasi.
-     */
     public function authenticate(Request $request): RedirectResponse
     {
         // validasi
@@ -22,8 +19,19 @@ class LoginController extends Controller
         if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
             
             $request->session()->regenerate();
+            // mengambil data pengguna yang baru saja login
+            $user = Auth::user(); 
 
-            return redirect()->intended('/dashboard');
+            // cek role
+            if ($user->role === 'admin') {
+                // adminn
+                return redirect()->route('daftarPenggunaAdmin');
+            
+            } else {
+                // user
+                return redirect()->intended('/dashboard');
+            }
+            
         }
 
         // jika autentikasi gagal

@@ -30,8 +30,10 @@ class LoanController extends Controller
         $pemilikId = $item->user_id;
 
         // cek stok
-        if ($validated['jumlah'] > $item->jumlah_total) {
-            return back()->with('error', 'Jumlah pinjam melebihi stok yang tersedia.');
+        $jumlahTersedia = $item->getJumlahTersedia();
+        
+        if ($validated['jumlah'] > $jumlahTersedia) {
+            return back()->with('error', 'Jumlah pinjam (' . $validated['jumlah'] . ') melebihi stok yang tersedia (' . $jumlahTersedia . ').');
         }
 
         // upload file 
