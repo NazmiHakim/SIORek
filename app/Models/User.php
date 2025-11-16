@@ -19,16 +19,21 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        // data login
         'username', 
         'password',
         'role',
+        
+        // profil
+        'nama_organisasi',
+        'program_studi',
+        'fakultas',
+        'nama_pj',
+        'nomor_pj',
+        'alamat',
+        'logo',
     ];
     
-    // public function getAuthIdentifierName(): string
-    // {
-    //     return 'username';
-    // }
-
     /**
      * The attributes that should be hidden for serialization.
      *

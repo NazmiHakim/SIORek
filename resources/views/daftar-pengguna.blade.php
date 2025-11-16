@@ -6,7 +6,7 @@
 @section('content')
 @if ($errors->any())
     <div class="mb-4 rounded-lg bg-red-100 p-4 text-sm text-red-700">
-        <p class="font-bold">Oops! Ada beberapa masalah dengan input Anda:</p>
+        <p class="font-bold">Ada masalah dengan input anda</p>
         <ul class="mt-2 list-inside list-disc">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -63,6 +63,13 @@
                     <div x-data="{isPinjamModalOpen: false, selectedItem: null}" class="flex flex-wrap gap-8">                        
                         @forelse ($items as $item)
                                 <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
+                                    @if($item->foto_item)
+                                        <img src="{{ asset('storage/' . $item->foto_item) }}" alt="{{ $item->nama_item }}" class="w-full h-40 object-cover">
+                                    @else
+                                        <div class="w-full h-40 bg-gray-200 flex items-center justify-center">
+                                            <span class="text-gray-400 text-sm">(Tidak ada foto)</span>
+                                        </div>
+                                    @endif
                                     <div class="p-5">
                                         <div class="flex justify-between items-start mb-2">
                                             <h3 class="text-lg font-semibold text-gray-900">{{ $item->nama_item }}</h3>
@@ -84,7 +91,7 @@
                                                     {{ $item->jumlah_tersedia }} / {{ $item->jumlah_total }} unit
                                                 </span>
                                                 
-                                                {{-- tampilkan status --}}
+                                                <!-- status barang -->
                                                 @if ($item->jumlah_tersedia > 0)
                                                     <span class="bg-green-400 text-white text-xs font-semibold px-3 py-1 rounded-md">Tersedia</span>
                                                 @else
@@ -95,7 +102,7 @@
                                     </div>
                                     
                                     <div class="bg-gray-50 p-4">
-                                        {{-- nonaktifkan tombol jika stok habis --}}
+                                        <!-- tombol nonaktif saat habis -->
                                         @if ($item->jumlah_tersedia > 0)
                                             <button @click="isPinjamModalOpen = true; selectedItem = {{ $item->toJson() }}" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700">
                                                 Pinjam
@@ -110,12 +117,9 @@
                             @empty
                                 <p class="text-sm text-gray-500">Belum ada barang yang tersedia dari pengguna lain.</p>
                             @endforelse
-
                         @include('partials.modal-pinjam-barang')  
-                </div>
-                
+                    </div>
                 </div>
         </section>
-        
     </div>
 @endsection

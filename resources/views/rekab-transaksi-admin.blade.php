@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Rekap Transaksi')
-@section('subtitle', 'Lihat semua riwayat transaksi di sistem')
+@section('subtitle', 'Lihat semua riwayat transaksi disistem')
 
 @section('content')
 
@@ -12,6 +12,39 @@
             <p class="text-biru-primary">@yield('subtitle')</p>
         </div>
     </div>
+
+    <!-- filter transaksi -->
+    <form action="{{ route('rekabTransaksiAdmin') }}" method="GET" class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div class="flex flex-col md:flex-row gap-4 items-end">
+            
+            <!-- dropdown akun -->
+            <div class="flex-1 w-full">
+                <label for="user_id" class="block text-sm font-medium text-gray-700">Filter berdasarkan pengguna</label>
+                <select name="user_id" id="user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <option value="">Semua Transaksi</option>
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}" 
+                            {{-- Buat dropdown "mengingat" pilihan filter --}}
+                            {{ $selectedUserId == $user->id ? 'selected' : '' }}>
+                            {{ $user->username }} ({{ $user->role }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <!-- reset -->
+            <button type="submit" class="w-full md:w-auto px-5 py-2.5 bg-biru-primary text-white rounded-lg font-semibold hover:bg-biru-tua transition-colors">Filter</button>
+            <a href="{{ route('rekabTransaksiAdmin') }}" class="w-full md:w-auto px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 text-center">Reset</a>
+        </div>
+    </form>
+
+
+    <!-- notif -->
+    @if (session('success'))
+        <div class="mb-4 rounded-lg bg-green-100 p-4 text-sm text-green-700">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <div class="overflow-x-auto mt-8">
         <table class="min-w-full divide-y divide-gray-200">
@@ -61,17 +94,16 @@
                 @empty
                 <tr>
                     <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
-                        Belum ada transaksi di sistem.
+                        @if($selectedUserId)
+                            Tidak ada transaksi yang ditemukan untuk pengguna ini.
+                        @else
+                            Belum ada transaksi di sistem.
+                        @endif
                     </td>
                 </tr>
                 @endforelse
-
             </tbody>
         </table>
     </div>
-
 </div>
-
-@include('partials.modal-riwayat-lengkap')
-
 @endsection

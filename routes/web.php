@@ -10,7 +10,6 @@ use App\Http\Controllers\RiwayatPeminjamanController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 
-// akses untuk upblik
 // halaman login
 Route::get('/', function () {
     return view('login');
