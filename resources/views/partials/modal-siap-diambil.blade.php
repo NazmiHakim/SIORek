@@ -32,11 +32,37 @@
             <p class="text-sm text-gray-700">
                 Sebagai bukti serah terima, silakan upload foto kondisi awal barang yang Anda terima dari pemilik.
             </p>
-            <div>
+            
+            <div x-data="{ fileError: null }">
                 <label for="foto_kondisi_awal" class="block text-sm font-medium text-gray-700">Foto Kondisi Awal</label>
-                <input type="file" name="foto_kondisi_awal" id="foto_kondisi_awal" 
-                       class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
-                       required>
+                
+                <input type="file" 
+                       name="foto_kondisi_awal" 
+                       id="foto_kondisi_awal" 
+                       class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                       accept="image/png, image/jpeg" 
+                       required
+                       @change="
+                           const file = $el.files[0];
+                           const limit = 5 * 1024 * 1024; 
+                           
+                           if(file && file.size > limit) {
+                               fileError = 'Ukuran Gambar Melebihi Batas Maksimal!';
+                               $el.value = ''; 
+                           } else {
+                               fileError = null; 
+                           }
+                       "
+                >
+
+                <p x-show="fileError" 
+                   x-text="fileError" 
+                   class="mt-1 text-sm text-red-600 font-medium">
+                </p>
+                
+                <p class="mt-1 text-xs text-gray-500">
+                    Format: PNG/JPG, Maksimal: 5MB
+                </p>
             </div>
         </div>
 
