@@ -44,12 +44,6 @@
                      style="display: none;"
                      class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
                     
-                    <!-- link profil (buatkah ni?) -->
-                    <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        Profil Saya
-                    </a> -->
-
-                    <!-- tombol logout (ini form) -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

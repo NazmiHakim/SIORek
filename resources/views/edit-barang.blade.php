@@ -26,8 +26,22 @@
             </div>
             
             <div>
-                <label for="jumlah_total" class="block text-sm font-medium text-gray-700">Jumlah Barang</label>
-                <input type="number" name="jumlah_total" id="jumlah_total" value="{{ old('jumlah_total', $item->jumlah_total) }}" min="1" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                <label for="jumlah_total" class="block text-sm font-medium text-gray-700">Jumlah Total Barang</label>
+                <input 
+                    type="number" 
+                    name="jumlah_total" 
+                    id="jumlah_total" 
+                    value="{{ old('jumlah_total', $item->jumlah_total) }}" 
+                    min="{{ isset($jumlahDipinjam) && $jumlahDipinjam > 1 ? $jumlahDipinjam : 1 }}" 
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
+                    required>
+                
+                @if(isset($jumlahDipinjam) && $jumlahDipinjam > 0)
+                    <p class="text-xs text-amber-600 mt-1">
+                        <i class="fa-solid fa-circle-info mr-1"></i>
+                        Minimal: <strong>{{ $jumlahDipinjam }}</strong> unit (Karena {{ $jumlahDipinjam }} unit sedang dipinjam/aktif).
+                    </p>
+                @endif
             </div>
             
             <div>

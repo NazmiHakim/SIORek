@@ -44,7 +44,7 @@
                        required
                        @change="
                            const file = $el.files[0];
-                           const limit = 5 * 1024 * 1024; 
+                           const limit = 10 * 1024 * 1024; 
                            
                            if(file && file.size > limit) {
                                fileError = 'Ukuran Gambar Melebihi Batas Maksimal!';

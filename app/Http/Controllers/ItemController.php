@@ -80,14 +80,28 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
-        // Pengecekan Keamanan (sama seperti destroy)
+        // Pengecekan Keamanan
         if ($item->user_id != Auth::id()) {
             return redirect()->route('barang')->with('error', 'Anda tidak berhak mengedit barang ini!');
         }
 
+        $activeStatuses = [
+            'menunggu_persetujuan',
+            'disetujui',
+            'sedang_dipinjam',
+            'menungggu_konfirmasi_pengembalian',
+            'bermasalah'
+
+        ];
+
+        $JumlahDipinjam = $item->loans()
+                                ->whereIn('status', $activeStatuses)
+                                ->sum('jumlah');
+
         // menampilkan view dari edit-barang.blade dan mengirim data item
         return view('edit-barang', [
-            'item' => $item
+            'item' => $item,
+            'jumlahDipinjam' => $JumlahDipinjam
         ]);
     }
 
@@ -107,6 +121,25 @@ class ItemController extends Controller
             'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
+        $activeStatuses = [
+            'menunggu_persetujuan',
+            'disetujui',
+            'sedang_dipinjam',
+            'menungggu_konfirmasi_pengembalian',
+            'bermasalah'
+
+        ];
+
+        $JumlahDipinjam = $item->loans()
+                                ->whereIn('status', $activeStatuses)
+                                ->sum('jumlah');
+        
+        if ($validated['jumlah_total'] < $JumlahDipinjam) {
+            return back()
+                ->withInput()
+                ->withErrors(['jumlah_total' => 'Jumlah total tidak boleh kurang dari' . $JumlahDipinjam . 'unit (karena sedang ada barang yang dipinjam).' ]);
+        }
+
         if ($request->hasFile('foto_item')) {
             // hapus foto lama
             if ($item->foto_item) {
@@ -120,7 +153,6 @@ class ItemController extends Controller
 
         // update data item ke db
         $item->update($validated);
-
         return redirect()->route('barang')->with('success', 'Barang berhasil diperbarui.');
     }
 

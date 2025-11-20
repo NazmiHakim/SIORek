@@ -62,7 +62,7 @@
                         </span>
                     </div>
 
-                    {{-- Tampilkan Keterangan Sanksi --}}
+                    {{-- Keterangan pemilik --}}
                     <div>
                         <h3 class="text-lg font-bold text-red-600 mb-2">Keterangan dari Pemilik</h3>
                         <p class="text-gray-700 bg-red-50 border border-red-200 p-3 rounded-lg" x-text="selectedLoan.keterangan_sanksi ? selectedLoan.keterangan_sanksi : 'Tidak ada keterangan.'"></p>
@@ -89,8 +89,30 @@
                 </div>
             </div>
 
-            <div class="p-6 text-right">
-                <button @click="isPengembalianBermasalahModalOpen = false" type="button" class="w-full px-6 py-2 bg-white border border-black rounded-lg text-gray-700 font-medium hover:bg-gray-50">Tutup</button>
+            <div class="p-6 bg-gray-50 rounded-b-lg flex flex-col gap-3" x-show="selectedLoan">  
+                <template x-if="selectedLoan.pemilik_id == {{ Auth::id() }}">
+                    
+                    <form :action="'/loan/selesaikan-masalah/' + selectedLoan.id" method="POST" class="w-full">
+                        @csrf
+                        <button type="submit" 
+                            class="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 shadow-md transition-colors"
+                            onclick="return confirm('Apakah masalah sudah selesai (misal: ganti rugi diterima)? Transaksi akan ditutup.')">
+                            <i class="fa-solid fa-check-circle mr-2"></i> Masalah Selesai & Tutup Transaksi
+                        </button>
+                        <p class="text-xs text-center text-gray-500 mt-2">Klik ini jika peminjam sudah bertanggung jawab.</p>
+                    </form>
+                </template>
+
+                <template x-if="selectedLoan.peminjam_id == {{ Auth::id() }}">
+                    <div class="w-full text-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                        Silakan hubungi pemilik barang untuk menyelesaikan masalah/sanksi ini.
+                    </div>
+                </template>
+
+                <button @click="isPengembalianBermasalahModalOpen = false" type="button" class="w-full px-6 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
+                    Tutup
+                </button>
             </div>
         </div>
 </div>

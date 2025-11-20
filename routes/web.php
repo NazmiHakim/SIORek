@@ -52,7 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/loan/ajukan-pengembalian/{loan}', [LoanController::class, 'ajukanPengembalian'])->name('loan.ajukanPengembalian');
     // konfirmasi pengembalian
     Route::post('/loan/konfirmasi-pengembalian/{loan}', [LoanController::class, 'konfirmasiPengembalian'])->name('loan.konfirmasiPengembalian');
-
+    // konfirmasi selesai barang bermasalah
+    Route::post('/Loan/selesaikan-masalah/{loan}', [LoanController::class, 'selesaikanMasalah'])->name('loan.selesaikanMasalah');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
