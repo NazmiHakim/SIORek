@@ -35,6 +35,9 @@
             <!-- reset -->
             <button type="submit" class="w-full md:w-auto px-5 py-2.5 bg-biru-primary text-white rounded-lg font-semibold hover:bg-biru-tua transition-colors">Filter</button>
             <a href="{{ route('rekabTransaksiAdmin') }}" class="w-full md:w-auto px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 text-center">Reset</a>
+            <a href="{{ route('rekabTransaksiAdmin.exportPdf', ['user_id' => request('user_id')]) }}" target="_blank" 
+                class="w-full md:w-auto px-5 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i> Export PDF</a>
         </div>
     </form>
 

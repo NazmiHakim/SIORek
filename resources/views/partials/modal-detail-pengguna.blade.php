@@ -86,9 +86,13 @@
             </div> 
             <div class="p-6 bg-gray-50 border-t rounded-b-lg space-y-2">
             <!-- edit -->
-            <button type="button" class="w-full px-6 py-2.5 bg-yellow-400 text-black rounded-lg text-sm font-medium hover:bg-yellow-500" disabled>Edit</button>
-                <!-- button delete -->
-                <button type="button" class="w-full px-6 py-2.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700"
+            <button type="button" 
+                class="w-full px-6 py-2.5 bg-yellow-400 text-black rounded-lg text-sm font-medium hover:bg-yellow-500"
+                @click="isDetailPenggunaModalOpen = false; isEditPenggunaModalOpen = true">
+                Edit
+            </button>
+            <!-- button delete -->
+            <button type="button" class="w-full px-6 py-2.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700"
                     @click.prevent="
                         if(confirm('Apakah Anda yakin ingin menghapus pengguna ' + selectedUser.username + '?')) {
                             document.getElementById('delete-user-form-' + selectedUser.id).submit();
@@ -96,9 +100,8 @@
                         }
                     ">
                     Hapus
-                </button>
-                
-                <button @click="isDetailPenggunaModalOpen = false" type="button" class="w-full px-6 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-700 text-sm font-medium hover:bg-gray-50">Tutup</button>
+            </button>    
+            <button @click="isDetailPenggunaModalOpen = false" type="button" class="w-full px-6 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-700 text-sm font-medium hover:bg-gray-50">Tutup</button>
             </div>
         </div> 
 </div>

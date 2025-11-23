@@ -7,9 +7,10 @@
 
 <div class="bg-white p-6 rounded-lg shadow-lg" 
      x-data="{ 
-        isTambahPenggunaModalOpen: {{ $errors->any() ? 'true' : 'false' }},
+        isTambahPenggunaModalOpen: {{ $errors->any() ? 'true' : 'false' }}, 
         isDetailPenggunaModalOpen: false, 
-        selectedUser: null 
+        isEditPenggunaModalOpen: {{ session('edit_mode') ? 'true' : 'false' }},
+        selectedUser: null
      }">
 
     <div class="flex justify-between items-center mb-6 ">
@@ -63,7 +64,7 @@
                 <div @click="selectedUser = {{ $user->toJson() }}; isDetailPenggunaModalOpen = true" class="border border-[#C6D2FF] bg-[#EEF2FF] rounded-lg p-3 mb-3 cursor-pointer hover:shadow-md transition-shadow">
                     <p class="font-semibold">{{ $user->nama_organisasi ?: $user->username }}</p>
                     <div class="mt-1 leading-5 text-sm text-gray-600">
-                        <p>{{ $user->fakultas ?: 'Universitas Lambung Mangkurat' }}</p>
+                        <p>{{ $user->fakultas ?: 'Universitas' }}</p>
                     </div>
                     <form id="delete-user-form-{{ $user->id }}" 
                           action="{{ route('admin.pengguna.destroy', $user->id) }}" 
@@ -84,7 +85,7 @@
                 <div @click="selectedUser = {{ $user->toJson() }}; isDetailPenggunaModalOpen = true" class="border border-[#C6D2FF] bg-[#EEF2FF] rounded-lg p-3 mb-3 cursor-pointer hover:shadow-md transition-shadow">
                     <p class="font-semibold">{{ $user->nama_organisasi ?: $user->username }}</p>
                     <div class="mt-1 leading-5 text-sm text-gray-600">
-                        <p>{{ $user->fakultas ?: 'Universitas Lambung Mangkurat' }}</p>
+                        <p>{{ $user->fakultas ?: 'Universitas' }}</p>
                     </div>
                     <form id="delete-user-form-{{ $user->id }}" 
                           action="{{ route('admin.pengguna.destroy', $user->id) }}" 
@@ -99,5 +100,6 @@
         </section>
     </div>
     @include('partials.modal-detail-pengguna')
+    @include('partials.modal-edit-pengguna')
 </div>
 @endsection

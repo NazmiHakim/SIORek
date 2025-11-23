@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -35,14 +37,10 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // validasi akun
         $validated = $request->validate([
-            // data untukn login
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6',
             'role'     => ['required', Rule::in(['admin', 'user'])],
-            
-            // profil
             'nama_organisasi' => 'nullable|string|max:255',
             'program_studi'   => 'nullable|string|max:255',
             'fakultas'        => 'nullable|string|max:255',
@@ -52,30 +50,51 @@ class UserController extends Controller
             'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5048'
         ]);
 
-        // data siap akan disimpan
         $dataToStore = $validated;
-        
-        // pass hash
         $dataToStore['password'] = Hash::make($validated['password']);
 
-        // logonya
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('public/logo_organisasi');
             $dataToStore['logo'] = str_replace('public/', '', $path);
         }
 
-        // buat akun
-        User::create($dataToStore);
+        $user = User::create($dataToStore);
 
-        // balik ke halaman/sukses
-        return redirect()->route('daftarPenggunaAdmin')->with('success', 'Pengguna baru berhasil ditambahkan.');
+        // notif wa dengan api fonte dan cek nomor pj
+        if (!empty($user->nomor_pj)) {
+            try {
+                $message = "Halo *{$user->nama_pj}*,\n\n";
+                $message .= "Akun SIORek Anda telah berhasil dibuat oleh Admin.\n\n";
+                $message .= "Detail Akun:\n";
+                $message .= "Username: {$user->username}\n";
+                $message .= "Password: {$validated['password']}\n\n"; // pw asli bukan yang hash
+                $message .= "Silakan login dan segera ganti password Anda demi keamanan.\n";
+                $message .= "Terima kasih.";
+
+                // request ke api fontenya
+                $response = Http::withHeaders([
+                    'Authorization' => 'X1qzkz3tqpx3n2UJrvk7', // menggunakan token dari nomor wa jopan
+                ])->post('https://api.fonnte.com/send', [
+                    'target' => $user->nomor_pj,
+                    'message' => $message,
+                    'countryCode' => '62',
+                ]);
+
+                // Opsional: Cek respons jika perlu debug
+                // if ($response->failed()) { \Log::error('Fonnte Error: ' . $response->body()); }
+
+            } catch (\Exception $e) {}
+            // pembuatan akun tetap terjadi jika pesan tidak terkirim, simpan di log 
+        }
+
+        return redirect()->route('daftarPenggunaAdmin')->with('success', 'Pengguna berhasil ditambahkan dan notifikasi WhatsApp dikirim (jika nomor valid).');
     }
 
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'role'     => ['required', Rule::in(['Admin', 'User'])],
+            'role'     => ['required', Rule::in(['admin', 'user'])],
             'password' => 'nullable|string|min:6',
             
             'nama_organisasi' => 'nullable|string|max:255',
@@ -87,14 +106,26 @@ class UserController extends Controller
             'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
+        // cek validasi
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('edit_mode', true);
+        }
+
+        // ambil data yang sudah divalidasi
+        $validated = $validator->validated();
+
+        // update
         $user->username = $validated['username'];
         $user->role = $validated['role'];
-        $user->nama_organisasi = $validated['nama_organisasi'];
-        $user->program_studi = $validated['program_studi'];
-        $user->fakultas = $validated['fakultas'];
-        $user->nama_pj = $validated['nama_pj'];
-        $user->nomor_pj = $validated['nomor_pj'];
-        $user->alamat = $validated['alamat'];
+        $user->nama_organisasi = $validated['nama_organisasi'] ?? $user->nama_organisasi;
+        $user->program_studi = $validated['program_studi'] ?? $user->program_studi;
+        $user->fakultas = $validated['fakultas'] ?? $user->fakultas;
+        $user->nama_pj = $validated['nama_pj'] ?? $user->nama_pj;
+        $user->nomor_pj = $validated['nomor_pj'] ?? $user->nomor_pj;
+        $user->alamat = $validated['alamat'] ?? $user->alamat;
 
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
@@ -108,7 +139,6 @@ class UserController extends Controller
             $user->logo = str_replace('public/', '', $path);
         }
 
-        // simpan
         $user->save();
 
         return redirect()->route('daftarPenggunaAdmin')->with('success', 'Data pengguna berhasil diperbarui.');

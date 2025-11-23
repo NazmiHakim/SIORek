@@ -59,23 +59,20 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     
     // rute daftar pengguna (admin)
-    Route::get('/daftar-pengguna-admin', [AdminUserController::class, 'index'])
-         ->name('daftarPenggunaAdmin');
+    Route::get('/daftar-pengguna-admin', [AdminUserController::class, 'index'])->name('daftarPenggunaAdmin');
     
     // rute rekap transaksi (admin)
-    Route::get('/rekab-transaksi-admin', [AdminTransactionController::class, 'index'])
-         ->name('rekabTransaksiAdmin');
+    Route::get('/rekab-transaksi-admin', [AdminTransactionController::class, 'index'])->name('rekabTransaksiAdmin');
 
     // rute untuk menyimpan pengguna baru
-    Route::post('/admin/pengguna', [AdminUserController::class, 'store'])
-         ->name('admin.pengguna.store');
+    Route::post('/admin/pengguna', [AdminUserController::class, 'store'])->name('admin.pengguna.store');
     
     // rute memperbarui pengguna
-    Route::put('/admin/pengguna/{user}', [AdminUserController::class, 'update'])
-         ->name('admin.pengguna.update');
+    Route::put('/admin/pengguna/{user}', [AdminUserController::class, 'update'])->name('admin.pengguna.update');
     
     // Rute delete pengguna
-    Route::delete('/admin/pengguna/{user}', [AdminUserController::class, 'destroy'])
-         ->name('admin.pengguna.destroy');
+    Route::delete('/admin/pengguna/{user}', [AdminUserController::class, 'destroy'])->name('admin.pengguna.destroy');
+
+     Route::get('/rekab-transaksi-admin/export-pdf', [AdminTransactionController::class, 'exportPdf'])->name('rekabTransaksiAdmin.exportPdf');
 
 });
