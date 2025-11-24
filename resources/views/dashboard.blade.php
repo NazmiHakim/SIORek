@@ -49,7 +49,7 @@
 
                         {{-- grid Hari --}}
                         <div class="-mx-1 -mb-1">
-                            <div class="flex flex-wrap" style="margin-bottom: -40px;">
+                            <div class="flex flex-wrap" style="">
                                 <template x-for="(day, index) in days" :key="index">	
                                     <div style="width: 14.26%" class="px-2 py-2">
                                         <div x-text="day" class="text-gray-600 text-sm uppercase font-bold text-center"></div>
@@ -411,6 +411,19 @@
             },
 
             getNoOfDays() {
+                // --- PERBAIKAN DI SINI ---
+                // Jika bulan < 0 (mundur dari Januari), pindah ke Desember tahun sebelumnya
+                if (this.month < 0) {
+                    this.month = 11;
+                    this.year--;
+                }
+                // Jika bulan > 11 (maju dari Desember), pindah ke Januari tahun berikutnya
+                if (this.month > 11) {
+                    this.month = 0;
+                    this.year++;
+                }
+                // -------------------------
+
                 let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
                 let dayOfWeek = new Date(this.year, this.month).getDay();
                 let blankdaysArray = [];
@@ -426,8 +439,8 @@
                 this.blankdays = blankdaysArray;
                 this.no_of_days = daysArray;
 
-                // langsung menampilkan event untuk hari ini saat load
-                this.showEvents(new Date().getDate());
+                // Opsional: jika ingin otomatis select tanggal 1 saat pindah bulan
+                // this.showEvents(1); 
             }
         }
     }
