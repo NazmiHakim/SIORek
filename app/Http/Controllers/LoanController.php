@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Http;
 
 class LoanController extends Controller
 {
-    
     // menyimpan permintaan peminjaman baru kedatabase
     public function store(Request $request)
     {
@@ -31,24 +30,29 @@ class LoanController extends Controller
         $pemilikId = $item->user_id;
 
         // cek stok
-        $jumlahTersedia = $item->getJumlahTersedia();
-        
-        if ($validated['jumlah'] > $jumlahTersedia) {
-            return back()->with('error', 'Jumlah pinjam (' . $validated['jumlah'] . ') melebihi stok yang tersedia (' . $jumlahTersedia . ').');
+        if ($item->getJumlahTersedia() < $validated['jumlah']) {
+            return back()->with('error', 'Jumlah pinjam melebihi stok yang tersedia.');
         }
 
         // upload file 
         $fotoKimPath = $request->file('foto_kim')->store('public/dokumen_peminjam');
         $suratPath = $request->file('surat_peminjaman')->store('public/dokumen_peminjam');
 
-        // simpan data ke database
+        // simpan data ke database DAN TANGKAP KE VARIABEL $loan
         $loan = Loan::create([
             'item_id'         => $validated['item_id'],
+            'peminjam_id'     => $peminjamId,
+            'pemilik_id'      => $pemilikId,
+            'jumlah'          => $validated['jumlah'],
+            'tanggal_mulai'   => $validated['tanggal_mulai'],
+            'tanggal_selesai' => $validated['tanggal_selesai'],
+            'status'          => 'menunggu_persetujuan',
+            'foto_kim'        => str_replace('public/', '', $fotoKimPath),
             'surat_peminjaman'=> str_replace('public/', '', $suratPath),
         ]);
 
-        // notif wa dan load nama, nomor
-        $loan->load(['item', 'peminjam', 'pemilik']);
+        // notif wa pemilik
+        $loan->load(['item', 'peminjam', 'pemilik']); // load data
         
         $pesan = "Halo *{$loan->pemilik->nama_pj}*,\n\n";
         $pesan .= "Ada permintaan peminjaman baru!\n";
@@ -65,24 +69,22 @@ class LoanController extends Controller
 
     public function handlePermintaan(Request $request, Loan $loan)
     {
-        // memastikan login pemilik
         if (Auth::id() != $loan->pemilik_id) {
             return redirect()->route('dashboard')->with('error', 'Aksi tidak diizinkan!');
         }
 
-        // cek status
         if ($loan->status != 'menunggu_persetujuan') {
             return redirect()->route('dashboard')->with('error', 'Permintaan ini sudah diproses.');
         }
 
-        // konfirmasi request
         $action = $request->input('action');
+        $loan->load(['item', 'peminjam', 'pemilik']); // load untuk notif
 
         if ($action == 'setujui') {
             $loan->status = 'disetujui';
             $loan->save();
             
-            // notif wa
+            // notif peminjam
             $pesan = "Halo *{$loan->peminjam->nama_pj}*,\n\n";
             $pesan .= "Permintaan peminjaman *{$loan->item->nama_item}* telah DISETUJUI oleh pemilik.\n";
             $pesan .= "Silakan ambil barang dan lakukan konfirmasi di dashboard.";
@@ -91,12 +93,12 @@ class LoanController extends Controller
             return redirect()->route('dashboard')->with('success', 'Permintaan berhasil disetujui.');
 
         } elseif ($action == 'tolak') {
-            // validasi alasan
+            $request->validate(['alasan_penolakan' => 'required|string|min:10']);
+            
             $loan->status = 'ditolak';
             $loan->alasan_penolakan = $request->input('alasan_penolakan');
             $loan->save();
 
-            // notif wa
             $pesan = "Halo *{$loan->peminjam->nama_pj}*,\n\n";
             $pesan .= "Mohon maaf, permintaan peminjaman *{$loan->item->nama_item}* DITOLAK.\n";
             $pesan .= "Alasan: {$loan->alasan_penolakan}";
@@ -104,76 +106,68 @@ class LoanController extends Controller
 
             return redirect()->route('dashboard')->with('success', 'Permintaan berhasil ditolak.');
         }
+
+        return redirect()->route('dashboard')->with('error', 'Aksi tidak dikenal.');
     }
 
     public function konfirmasiPengambilan(Request $request, Loan $loan)
     {
-        // memastikan login peminjam
         if (Auth::id() != $loan->peminjam_id) {
             return redirect()->route('dashboard')->with('error', 'Aksi tidak diizinkan!');
         }
 
-        // cek status peminjam
         if ($loan->status != 'disetujui') {
             return redirect()->route('dashboard')->with('error', 'Peminjaman ini tidak dalam status siap diambil.');
         }
 
-        // validasi upload foto
         $validated = $request->validate([
             'foto_kondisi_awal' => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
         ]);
 
-        // upload file
         $path = $request->file('foto_kondisi_awal')->store('public/kondisi_barang');
 
-        // update status peminjaman
         $loan->status = 'sedang_dipinjam';
         $loan->foto_kondisi_awal = str_replace('public/', '', $path);
         $loan->save();
 
         // notif pemilik
+        $loan->load(['item', 'peminjam', 'pemilik']);
         $pesan = "Halo *{$loan->pemilik->nama_pj}*,\n\n";
-        $pesan .= "Barang *{$loan->item->nama_item}* telah diambil oleh peminjam ({$loan->peminjam->username}).\n";
+        $pesan .= "Barang *{$loan->item->nama_item}* telah DIAMBIL oleh peminjam ({$loan->peminjam->username}).\n";
         $pesan .= "Status sekarang: Sedang Dipinjam.";
         $this->kirimNotifWA($loan->pemilik->nomor_pj, $pesan);
 
-        // balik ke dashboard
         return redirect()->route('dashboard')->with('success', 'Barang berhasil diambil! Selamat meminjam.');
     }
 
     public function ajukanPengembalian(Request $request, Loan $loan)
     {
-        // login peminjam
         if (Auth::id() != $loan->peminjam_id) {
             return redirect()->route('dashboard')->with('error', 'Aksi tidak diizinkan!');
         }
 
-        // statusnya
         if ($loan->status != 'sedang_dipinjam') {
             return redirect()->route('dashboard')->with('error', 'Barang ini tidak dalam status sedang dipinjam.');
         }
 
-        // input foto
         $validated = $request->validate([
             'foto_kondisi_akhir' => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
         ]);
 
-        // upload file
         $path = $request->file('foto_kondisi_akhir')->store('public/kondisi_barang');
 
-        // update status peminjaman
         $loan->status = 'menunggu_konfirmasi_pengembalian';
         $loan->foto_kondisi_akhir = str_replace('public/', '', $path);
         $loan->tanggal_pengembalian_aktual = now(); 
         $loan->save();
 
         // notif pemilik
+        $loan->load(['item', 'peminjam', 'pemilik']);
         $pesan = "Halo *{$loan->pemilik->nama_pj}*,\n\n";
-        $pesan .= "Peminjam telah mengajukan pengembalian barang *{$loan->item->nama_item}*.\n";
+        $pesan .= "Peminjam telah mengajukan PENGEMBALIAN barang *{$loan->item->nama_item}*.\n";
         $pesan .= "Silakan cek kondisi barang dan konfirmasi di dashboard.";
         $this->kirimNotifWA($loan->pemilik->nomor_pj, $pesan);
 
-        // kedashboard
         return redirect()->route('dashboard')->with('success', 'Pengajuan pengembalian berhasil dikirim. Menunggu konfirmasi pemilik.');
     }
 
@@ -188,6 +182,7 @@ class LoanController extends Controller
         }
 
         $action = $request->input('action');
+        $loan->load(['item', 'peminjam', 'pemilik']);
 
         if ($action == 'selesai') {
             $loan->status = 'selesai';
@@ -202,12 +197,12 @@ class LoanController extends Controller
             return redirect()->route('dashboard')->with('success', 'Peminjaman telah selesai.');
 
         } elseif ($action == 'bermasalah') {
-            // validasi masalah
+            $request->validate(['keterangan_sanksi' => 'required|string|min:10']);
+            
             $loan->status = 'bermasalah';
             $loan->keterangan_sanksi = $request->input('keterangan_sanksi');
             $loan->save();
 
-            // notif
             $pesan = "Halo *{$loan->peminjam->nama_pj}*,\n\n";
             $pesan .= "PERHATIAN: Pengembalian barang *{$loan->item->nama_item}* ditandai BERMASALAH oleh pemilik.\n";
             $pesan .= "Keterangan: {$loan->keterangan_sanksi}\n";
@@ -233,7 +228,8 @@ class LoanController extends Controller
         $loan->status = 'selesai';
         $loan->save();
 
-        // notif msalah end
+        // notif peminjam
+        $loan->load(['item', 'peminjam', 'pemilik']);
         $pesan = "Halo *{$loan->peminjam->nama_pj}*,\n\n";
         $pesan .= "Kabar Baik! Masalah pada peminjaman *{$loan->item->nama_item}* telah diselesaikan oleh pemilik.\n";
         $pesan .= "Transaksi kini ditutup (SELESAI).";
@@ -244,15 +240,14 @@ class LoanController extends Controller
 
     private function kirimNotifWA($nomorTujuan, $pesan)
     {
-        // mengeecek apakah nomor tujuan ada
         if (empty($nomorTujuan)) {
-            return; // jika tidak ada nomor, batalkan kirim (jangan error)
+            return; 
         }
 
         try {
-            Http::withOptions(['verify' => false]) // bypass SSL
+            Http::withOptions(['verify' => false]) 
                 ->withHeaders([
-                    'Authorization' => 'X1qzkz3tqpx3n2UJrvk7', // tokrn nomor jopan
+                    'Authorization' => 'X1qzkz3tqpx3n2UJrvk7',
                 ])->post('https://api.fonnte.com/send', [
                     'target' => $nomorTujuan,
                     'message' => $pesan,
