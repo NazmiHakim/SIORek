@@ -27,7 +27,7 @@
             x-transition:leave-end="opacity-0 scale-95"
             class="relative bg-white w-full max-w-lg rounded-lg shadow-xl">
             
-            <div class="p-6 overflow-auto max-h-[85vh] mt-4 sm:mt-0">
+            <div class="p-6 overflow-auto max-h-[70vh] mt-4 sm:mt-0">
                 <div class="mb-4">
                     <h2 class="text-xl font-bold text-red-600">Pengembalian Bermasalah</h2>
                     <p class="text-gray-600">Pemilik menandai pengembalian ini bermasalah.</p>
@@ -95,7 +95,7 @@
                     <form :action="'/loan/selesaikan-masalah/' + selectedLoan.id" method="POST" class="w-full">
                         @csrf
                         <button type="submit" 
-                            class="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 shadow-md transition-colors"
+                            class="w-full px-6 py-1.5 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 shadow-md transition-colors"
                             onclick="return confirm('Apakah masalah sudah selesai (misal: ganti rugi diterima)? Transaksi akan ditutup.')">
                             <i class="fa-solid fa-check-circle mr-2"></i> Masalah Selesai & Tutup Transaksi
                         </button>
@@ -110,7 +110,7 @@
                     </div>
                 </template>
 
-                <button @click="isPengembalianBermasalahModalOpen = false" type="button" class="w-full px-6 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
+                <button @click="isPengembalianBermasalahModalOpen = false" type="button" class="w-full px-6 py-1.5 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
                     Tutup
                 </button>
             </div>
