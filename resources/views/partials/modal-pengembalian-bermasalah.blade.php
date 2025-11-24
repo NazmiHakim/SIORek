@@ -96,8 +96,8 @@
                         @csrf
                         <button type="submit" 
                             class="w-full px-6 py-1.5 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 shadow-md transition-colors"
-                            onclick="return confirm('Apakah masalah sudah selesai (misal: ganti rugi diterima)? Transaksi akan ditutup.')">
-                            <i class="fa-solid fa-check-circle mr-2"></i> Masalah Selesai & Tutup Transaksi
+                            onclick="return confirm('Apakah masalah sudah selesai? Transaksi akan ditutup.')">
+                            <i class="fa-solid fa-check-circle mr-2"></i> Masalah Selesai & Selesaikan Transaksi
                         </button>
                         <p class="text-xs text-center text-gray-500 mt-2">Klik ini jika peminjam sudah bertanggung jawab.</p>
                     </form>
@@ -106,7 +106,7 @@
                 <template x-if="selectedLoan.peminjam_id == {{ Auth::id() }}">
                     <div class="w-full text-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm">
                         <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-                        Silakan hubungi pemilik barang untuk menyelesaikan masalah/sanksi ini.
+                        Silakan hubungi pemilik barang untuk menyelesaikan masalah ini.
                     </div>
                 </template>
 
