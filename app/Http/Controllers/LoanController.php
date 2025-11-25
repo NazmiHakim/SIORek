@@ -119,7 +119,7 @@ class LoanController extends Controller
         }
 
         $validated = $request->validate([
-            'foto_kondisi_awal' => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'foto_kondisi_awal' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
 
         $path = $request->file('foto_kondisi_awal')->store('public/kondisi_barang');
@@ -149,7 +149,7 @@ class LoanController extends Controller
         }
 
         $validated = $request->validate([
-            'foto_kondisi_akhir' => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'foto_kondisi_akhir' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
 
         $path = $request->file('foto_kondisi_akhir')->store('public/kondisi_barang');
