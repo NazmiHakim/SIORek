@@ -10,6 +10,9 @@
         <h1 class="text-3xl font-bold text-biru-primary">@yield('title')</h1>
         <p class="text-biru-primary">@yield('subtitle')</p>
     </div>
+    <a href="{{ route('riwayat-peminjaman.exportPdf') }}" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-md flex items-center gap-2">
+        <i class="fa-solid fa-file-pdf"></i> Download PDF
+    </a>
 </div>
 
 <div x-data="{ tab: 'saya_meminjam' }" class="space-y-6">

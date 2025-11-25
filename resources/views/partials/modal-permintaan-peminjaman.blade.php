@@ -9,15 +9,28 @@
         @click="isPermintaanPeminjamanModalOpen = false" 
         class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
         x-show="isPermintaanPeminjamanModalOpen"
-        x-transition:enter="ease-out duration-300" ... >
+        x-transition:enter="ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0">
     </div>
 
-    {{-- selectedLoan.id untuk membuat action URL yang unik --}}
     <form
         method="POST" 
         :action="'/loan/handle-permintaan/' + (selectedLoan ? selectedLoan.id : '')"
         x-show="isPermintaanPeminjamanModalOpen"
-        x-transition:enter="ease-out duration-300" ...
+        
+        {{-- 1. INISIALISASI VARIABEL UNTUK MEMANTAU ALASAN --}}
+        x-data="{ alasan: '' }"
+
+        x-transition:enter="ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95"
         class="relative bg-white w-full max-w-lg rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
 
         @csrf
@@ -73,19 +86,37 @@
             <hr>
 
             <div>
-                <label for="alasan_penolakan" class="block text-sm font-medium text-gray-700">Alasan Penolakan (Opsional)</label>
-                <textarea id="alasan_penolakan" name="alasan_penolakan" rows="2" placeholder="Isi hanya jika Anda ingin menolak..." class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                <label for="alasan_penolakan" class="block text-sm font-medium text-gray-700">Alasan Penolakan</label>
+                <textarea 
+                    id="alasan_penolakan" 
+                    name="alasan_penolakan" 
+                    rows="2" 
+                    x-model="alasan"
+                    placeholder="Wajib diisi jika Anda ingin menolak (Min. 10 karakter)..." 
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </textarea>
+                
+                {{-- pesan eror real time --}}
+                <p x-show="alasan.length > 0 && alasan.length < 10" class="text-red-500 text-xs mt-1">
+                    Alasan terlalu pendek (minimal 10 karakter).
+                </p>
+                <p class="text-xs text-gray-500 mt-1">Alasan wajib diisi jika ingin menekan tombol <strong>Tolak</strong>.</p>
             </div>
         </div>
 
         <div class="p-6 bg-gray-50 rounded-b-lg mt-6 flex gap-4">
+            {{-- tombol ini mati jika alasan < 10 karakter --}}
             <button type="submit" name="action" value="tolak"
-                    class="w-full bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700">
+                    :disabled="alasan.length < 10"
+                    :class="alasan.length < 10 ? 'bg-red-300 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'"
+                    class="w-full text-white py-2 px-4 rounded-lg font-medium transition-colors">
                 Tolak
             </button>
+            
+            {{-- tombol Setuju --}}
             <button type="submit" name="action" value="setujui"
-                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700">
-                Setujui
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                Setuju
             </button>
         </div>
     </form>

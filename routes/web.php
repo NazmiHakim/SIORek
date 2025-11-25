@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/loan/konfirmasi-pengembalian/{loan}', [LoanController::class, 'konfirmasiPengembalian'])->name('loan.konfirmasiPengembalian');
     // konfirmasi selesai barang bermasalah
     Route::post('/loan/selesaikan-masalah/{loan}', [LoanController::class, 'selesaikanMasalah'])->name('loan.selesaikanMasalah');
+    // pdf
+    Route::get('/riwayat-peminjaman/export-pdf', [RiwayatPeminjamanController::class, 'exportPdf'])->name('riwayat-peminjaman.exportPdf');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -73,6 +75,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Rute delete pengguna
     Route::delete('/admin/pengguna/{user}', [AdminUserController::class, 'destroy'])->name('admin.pengguna.destroy');
 
-     Route::get('/rekab-transaksi-admin/export-pdf', [AdminTransactionController::class, 'exportPdf'])->name('rekabTransaksiAdmin.exportPdf');
+    Route::get('/rekab-transaksi-admin/export-pdf', [AdminTransactionController::class, 'exportPdf'])->name('rekabTransaksiAdmin.exportPdf');
 
 });

@@ -41,11 +41,17 @@
                 <div class="space-y-4">
                     @forelse ($users as $user)
                             <a href="#" class="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg">
-                                {{-- avatar placeholder --}}
-                                <img src="https://ui-avatars.com/api/?name={{ $user->username }}&background=random" alt="{{ $user->username }}" class="w-10 h-10 rounded-full object-cover">
+                                {{-- foto profil --}}
+                                @if($user->logo)
+                                    {{-- logo asli --}}
+                                    <img src="{{ asset('storage/' . $user->logo) }}" alt="{{ $user->username }}" class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                                @else
+                                    {{-- placeholder jika tidak ada logo --}}
+                                    <img src="https://ui-avatars.com/api/?name={{ $user->username }}&background=random" alt="{{ $user->username }}" class="w-10 h-10 rounded-full object-cover">
+                                @endif
                                 <div>
                                     <h4 class="font-semibold text-gray-900">{{ $user->username }}</h4>
-                                    {{-- Kita bisa tampilkan role jika perlu --}}
+                                    {{-- tampilkan role --}}
                                     <p class="text-sm text-gray-500 capitalize">{{ $user->role }}</p>
                                 </div>
                             </a>

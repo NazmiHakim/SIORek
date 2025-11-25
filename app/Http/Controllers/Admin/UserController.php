@@ -40,7 +40,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'role'     => ['required', Rule::in(['admin', 'user'])],
+            // 'role'     => ['required', Rule::in(['admin', 'user'])],
             'nama_organisasi' => 'nullable|string|max:255',
             'program_studi'   => 'nullable|string|max:255',
             'fakultas'        => 'nullable|string|max:255',
@@ -52,6 +52,7 @@ class UserController extends Controller
 
         $dataToStore = $validated;
         $dataToStore['password'] = Hash::make($validated['password']);
+        $dataToStore['role'] = 'user'; // otomatis user
 
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('public/logo_organisasi');

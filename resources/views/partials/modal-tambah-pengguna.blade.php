@@ -62,7 +62,7 @@
                 <h3 class="text-lg font-medium text-gray-900">Data Login</h3>
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700">Username <span class="text-red-500">*</span></label>
-                    <input type="text" name="username" id="username" placeholder="Masukkan username unik" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required value="{{ old('username') }}">
+                    <input type="text" name="username" id="username" placeholder="Masukkan username" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required value="{{ old('username') }}">
                 </div>
                 
                 <div>
@@ -70,6 +70,7 @@
                     <input type="password" name="password" id="password" placeholder="Minimal 6 karakter" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
                 
+                {{--
                 <div>
                     <label for="role" class="block text-sm font-medium text-gray-700">Role <span class="text-red-500">*</span></label>
                     <select id="role" name="role" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
@@ -77,6 +78,7 @@
                         <option value="admin">Admin</option>
                     </select>
                 </div>
+                --}}
             </div>
 
             <!-- profil akun -->
@@ -115,7 +117,7 @@
                 
                 <div>
                     <label for="logo" class="block text-sm font-medium text-gray-700">Logo Organisasi</label>
-                    <input id="logo" name="logo" type="file" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <input id="logo" name="logo" type="file" accept="image/* "class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 </div>
             </div> 
         </div> 

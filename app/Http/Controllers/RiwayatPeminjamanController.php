@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RiwayatPeminjamanController extends Controller
 {
@@ -47,5 +48,31 @@ class RiwayatPeminjamanController extends Controller
             'totalAktif'         => $totalAktif,
             'totalSanksi'        => $totalSanksi,
         ]);
+    }
+
+    public function exportPdf()
+    {
+        $userId = Auth::id();
+        $user = Auth::user();
+
+        // mengambil data yang sama
+        $pinjamanSaya = Loan::where('peminjam_id', $userId)
+                            ->with(['item', 'pemilik'])
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+
+        $pinjamanOrangLain = Loan::where('pemilik_id', $userId)
+                                ->with(['item', 'peminjam'])
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+
+        // load view PDF
+        $pdf = Pdf::loadView('pdf.riwayat_peminjaman_user', [
+            'pinjamanSaya' => $pinjamanSaya,
+            'pinjamanOrangLain' => $pinjamanOrangLain,
+            'user' => $user
+        ]);
+
+        return $pdf->download('riwayat-peminjaman-' . $user->username . '.pdf');
     }
 }
