@@ -50,11 +50,11 @@ class ItemController extends Controller
     {
         // validasi input
         $validated = $request->validate([
-            'nama_item'    => 'required|string|max:255',
-            'kategori'     => 'nullable|string|max:100',
-            'jumlah_total' => 'required|integer|min:1',
-            'deskripsi'    => 'nullable|string',
-            'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'nama_item'    => 'required|string|max:100', // Diubah: max 255 -> 100
+            'kategori'     => 'nullable|string|max:50',  // Diubah: max 100 -> 50
+            'jumlah_total' => 'required|integer|min:1|max:10000', // Ditambah: max 10000
+            'deskripsi'    => 'nullable|string|max:500', // Ditambah: max 500
+            'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Disesuaikan: hapus webp agar sesuai frontend accept
         ]);
 
         // siapkan data untuk disimpan
@@ -114,11 +114,11 @@ class ItemController extends Controller
 
         // validasi input
         $validated = $request->validate([
-            'nama_item'    => 'required|string|max:255',
-            'kategori'     => 'nullable|string|max:100',
-            'jumlah_total' => 'required|integer|min:1',
-            'deskripsi'    => 'nullable|string',
-            'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'nama_item'    => 'required|string|max:100', // Diubah: max 255 -> 100
+            'kategori'     => 'nullable|string|max:50',  // Diubah: max 100 -> 50
+            'jumlah_total' => 'required|integer|min:1|max:10000', // Ditambah: max 10000
+            'deskripsi'    => 'nullable|string|max:500', // Ditambah: max 500
+            'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Disesuaikan: hapus webp
         ]);
 
         $activeStatuses = [
@@ -174,4 +174,5 @@ class ItemController extends Controller
         // kembalikan ke halaman
         return redirect()->route('barang')->with('success', 'Barang berhasil dihapus.');
     }
+    
 }

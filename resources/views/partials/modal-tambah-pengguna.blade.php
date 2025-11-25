@@ -20,7 +20,7 @@
     <form
         method="POST" 
         action="{{ route('admin.pengguna.store') }}"
-        enctype="multipart/form-data" {{-- Wajib untuk upload file --}}
+        enctype="multipart/form-data"
         x-show="isTambahPenggunaModalOpen"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-95"
@@ -29,9 +29,10 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         class="relative bg-white w-full max-w-lg rounded-lg shadow-xl"
-    >
+    > 
+
+        // Untuk Scroll
         @csrf
-        <!-- untuk scroll -->
         <div class="max-h-[85vh] overflow-y-auto">
             
             <div class="flex items-start justify-between p-6 border-b">
@@ -57,7 +58,6 @@
                 </div>
             @endif
 
-            <!-- data login akun -->
             <div class="p-6 space-y-4 border-b">
                 <h3 class="text-lg font-medium text-gray-900">Data Login</h3>
                 <div>
@@ -67,7 +67,7 @@
                 
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
-                    <input type="password" name="password" id="password" placeholder="Minimal 6 karakter" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <input type="password" name="password" id="password" minlength="6" maxlength="64" placeholder="Minimal 6 karakter" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
                 
                 {{--
@@ -81,38 +81,37 @@
                 --}}
             </div>
 
-            <!-- profil akun -->
             <div class="p-6 space-y-4">
                 <h3 class="text-lg font-medium text-gray-900">Data Profil</h3>
                 
                 <div>
                     <label for="nama_organisasi" class="block text-sm font-medium text-gray-700">Nama Organisasi</label>
-                    <input type="text" name="nama_organisasi" id="nama_organisasi" placeholder="Masukkan nama Organisasi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('nama_organisasi') }}">
+                    <input type="text" name="nama_organisasi" id="nama_organisasi" maxlength="100" placeholder="Masukkan nama Organisasi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('nama_organisasi') }}">
                 </div>
                 
                 <div>
                     <label for="program_studi" class="block text-sm font-medium text-gray-700">Program Studi</label>
-                    <input type="text" name="program_studi" id="program_studi" placeholder="Masukkan Nama Program Studi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('program_studi') }}">
+                    <input type="text" name="program_studi" id="program_studi" maxlength="100" placeholder="Masukkan Nama Program Studi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('program_studi') }}">
                 </div>
                 
                 <div>
                     <label for="fakultas" class="block text-sm font-medium text-gray-700">Fakultas</label>
-                    <input type="text" name="fakultas" id="fakultas" placeholder="Contoh: Teknik, Kehutanan, dll" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('fakultas') }}">
+                    <input type="text" name="fakultas" id="fakultas" maxlength="100" placeholder="Contoh: Teknik, Kehutanan, dll" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('fakultas') }}">
                 </div>
                 
                 <div>
                     <label for="nama_pj" class="block text-sm font-medium text-gray-700">Nama Penanggung Jawab</label>
-                    <input type="text" name="nama_pj" id="nama_pj" placeholder="Masukkan Nama Penanggung Jawab" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('nama_pj') }}">
+                    <input type="text" name="nama_pj" id="nama_pj" maxlength="100" placeholder="Masukkan Nama Penanggung Jawab" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('nama_pj') }}">
                 </div>
                 
                 <div>
                     <label for="nomor_pj" class="block text-sm font-medium text-gray-700">Nomor Penanggung Jawab</label>
-                    <input type="tel" name="nomor_pj" id="nomor_pj" placeholder="Masukkan Nomor Penanggung Jawab" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('nomor_pj') }}">
+                    <input type="tel" name="nomor_pj" id="nomor_pj" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Masukkan Nomor Penanggung Jawab" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" value="{{ old('nomor_pj') }}">
                 </div>
                 
                 <div>
                     <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                    <textarea id="alamat" name="alamat" rows="3" placeholder="Masukkan Alamat dari Lokasi Sekretariat Organisasi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('alamat') }}</textarea>
+                    <textarea id="alamat" name="alamat" rows="3" maxlength="255" placeholder="Masukkan Alamat dari Lokasi Sekretariat Organisasi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('alamat') }}</textarea>
                 </div>
                 
                 <div>

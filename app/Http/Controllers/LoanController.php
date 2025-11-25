@@ -11,17 +11,15 @@ use Illuminate\Support\Facades\Http;
 
 class LoanController extends Controller
 {
-    // menyimpan permintaan peminjaman baru kedatabase
     public function store(Request $request)
     {
-        // validasi input form
         $validated = $request->validate([
             'item_id'         => 'required|exists:items,id',
-            'jumlah'          => 'required|integer|min:1',
+            'jumlah'          => 'required|integer|min:1|max:10000', 
             'tanggal_mulai'   => 'required|date|after_or_equal:today',
             'tanggal_selesai' => 'required|date|after:tanggal_mulai',
-            'foto_kim'        => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
-            'surat_peminjaman'=> 'required|file|mimes:pdf|max:10048',
+            'foto_kim'        => 'required|image|mimes:jpeg,png,jpg|max:10240', 
+            'surat_peminjaman'=> 'required|file|mimes:pdf|max:10240', 
         ]);
 
         // ambil data tambahan
@@ -93,7 +91,7 @@ class LoanController extends Controller
             return redirect()->route('dashboard')->with('success', 'Permintaan berhasil disetujui.');
 
         } elseif ($action == 'tolak') {
-            $request->validate(['alasan_penolakan' => 'required|string|min:10']);
+            $request->validate(['alasan_penolakan' => 'required|string|min:10|max:255']);
             
             $loan->status = 'ditolak';
             $loan->alasan_penolakan = $request->input('alasan_penolakan');
@@ -121,7 +119,7 @@ class LoanController extends Controller
         }
 
         $validated = $request->validate([
-            'foto_kondisi_awal' => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'foto_kondisi_awal' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
 
         $path = $request->file('foto_kondisi_awal')->store('public/kondisi_barang');
@@ -151,7 +149,7 @@ class LoanController extends Controller
         }
 
         $validated = $request->validate([
-            'foto_kondisi_akhir' => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'foto_kondisi_akhir' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
 
         $path = $request->file('foto_kondisi_akhir')->store('public/kondisi_barang');
@@ -197,7 +195,8 @@ class LoanController extends Controller
             return redirect()->route('dashboard')->with('success', 'Peminjaman telah selesai.');
 
         } elseif ($action == 'bermasalah') {
-            $request->validate(['keterangan_sanksi' => 'required|string|min:10']);
+
+            $request->validate(['keterangan_sanksi' => 'required|string|min:10|max:500']);
             
             $loan->status = 'bermasalah';
             $loan->keterangan_sanksi = $request->input('keterangan_sanksi');
@@ -214,7 +213,7 @@ class LoanController extends Controller
 
         return redirect()->route('dashboard')->with('error', 'Aksi tidak dikenal.');
     }
-
+    
     public function selesaikanMasalah(Loan $loan)
     {
         if (Auth::id() != $loan->pemilik_id) {
@@ -240,20 +239,15 @@ class LoanController extends Controller
 
     private function kirimNotifWA($nomorTujuan, $pesan)
     {
-        if (empty($nomorTujuan)) {
-            return; 
-        }
-
+        if (empty($nomorTujuan)) { return; }
         try {
             Http::withOptions(['verify' => false]) 
-                ->withHeaders([
-                    'Authorization' => 'X1qzkz3tqpx3n2UJrvk7',
-                ])->post('https://api.fonnte.com/send', [
+                ->withHeaders(['Authorization' => 'X1qzkz3tqpx3n2UJrvk7'])
+                ->post('https://api.fonnte.com/send', [
                     'target' => $nomorTujuan,
                     'message' => $pesan,
                     'countryCode' => '62', 
                 ]);
-        } catch (\Exception $e) {
-        }
+        } catch (\Exception $e) {}
     }
 }
