@@ -80,7 +80,7 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
-        // Pengecekan Keamanan
+        // pengecekan Keamanan
         if ($item->user_id != Auth::id()) {
             return redirect()->route('barang')->with('error', 'Anda tidak berhak mengedit barang ini!');
         }

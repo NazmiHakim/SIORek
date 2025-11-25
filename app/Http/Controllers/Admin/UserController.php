@@ -37,7 +37,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // VALIDASI DIPERKETAT (Sesuai Frontend)
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6',
@@ -90,19 +89,18 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        // VALIDASI DIPERKETAT (Sesuai Frontend)
         $validator = Validator::make($request->all(), [
             'username'        => ['required', 'string', 'max:50', Rule::unique('users')->ignore($user->id)], // Max 50
             'role'            => ['required', Rule::in(['admin', 'user'])],
-            'password'        => 'nullable|string|min:6|max:64', // Max 64
+            'password'        => 'nullable|string|min:6|max:64', 
             
-            'nama_organisasi' => 'nullable|string|max:100', // Max 100
-            'program_studi'   => 'nullable|string|max:100', // Max 100
-            'fakultas'        => 'nullable|string|max:100', // Max 100
-            'nama_pj'         => 'nullable|string|max:100', // Max 100
+            'nama_organisasi' => 'nullable|string|max:100', 
+            'program_studi'   => 'nullable|string|max:100', 
+            'fakultas'        => 'nullable|string|max:100', 
+            'nama_pj'         => 'nullable|string|max:100', 
             
-            'nomor_pj'        => 'nullable|string|max:15|regex:/^[0-9]+$/', // Hanya angka & Max 15
-            'alamat'          => 'nullable|string|max:255', // Max 255
+            'nomor_pj'        => 'nullable|string|max:15|regex:/^[0-9]+$/',
+            'alamat'          => 'nullable|string|max:255', 
             'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ], [
             'nomor_pj.regex' => 'Nomor Penanggung Jawab hanya boleh berisi angka.',
@@ -113,7 +111,7 @@ class UserController extends Controller
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('edit_mode', true); // Trigger modal edit terbuka kembali jika error
+                ->with('edit_mode', true);
         }
 
         // ambil data yang sudah divalidasi
