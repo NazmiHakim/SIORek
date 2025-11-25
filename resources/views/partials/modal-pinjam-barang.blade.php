@@ -19,8 +19,8 @@
 
     <form
         method="POST" 
-        action="{{ route('loan.store') }}" {{-- Kita akan buat rute ini nanti --}}
-        enctype="multipart/form-data" {{-- Wajib untuk upload file --}}
+        action="{{ route('loan.store') }}"
+        enctype="multipart/form-data"
         x-show="isPinjamModalOpen"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-95"
@@ -50,8 +50,18 @@
 
             <div>
                 <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah yang Dipinjam</label>
-                {{-- batasi jumlah pinjam berdasarkan stok --}}
-                <input type="number" name="jumlah" id="jumlah" value="1" min="1" :max="selectedItem ? selectedItem.jumlah_total : 1" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                {{-- Validasi: Min 1, Max sesuai stok dari Alpine, plus Script pencegah ketik manual berlebih --}}
+                <input 
+                    type="number" 
+                    name="jumlah" 
+                    id="jumlah" 
+                    value="1" 
+                    min="1" 
+                    :max="selectedItem ? selectedItem.jumlah_total : 1" 
+                    oninput="let max = parseInt(this.getAttribute('max')); if(parseInt(this.value) > max) this.value = max; if(this.value < 1) this.value = 1;"
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
+                    required
+                >
                 <p class="text-xs text-gray-500 mt-1">
                     Stok tersedia: <span x-text="selectedItem ? selectedItem.jumlah_total : '...' "></span> unit
                 </p>
@@ -60,22 +70,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                    <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <input type="date" name="tanggal_mulai" id="tanggal_mulai" min="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
                 <div>
-                    <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</glabel>
-                    <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
+                    <input type="date" name="tanggal_selesai" id="tanggal_selesai" min="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
             </div>
 
             <div>
                 <label for="foto_kim" class="block text-sm font-medium text-gray-700">Upload KTM/KTP (Foto)</label>
-                <input type="file" name="foto_kim" id="foto_kim" accept="image/*" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+                <input type="file" name="foto_kim" id="foto_kim" accept=".jpg, .jpeg, .png" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+                <p class="text-xs text-gray-500 mt-1">Format: JPG, JPEG, PNG (Max 10MB)</p>
             </div>
             
             <div>
                 <label for="surat_peminjaman" class="block text-sm font-medium text-gray-700">Upload Surat Peminjaman (PDF)</label>
-                <input type="file" name="surat_peminjaman" id="surat_peminjaman" accept="application/pdf" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+                <input type="file" name="surat_peminjaman" id="surat_peminjaman" accept=".pdf" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+                <p class="text-xs text-gray-500 mt-1">Format: PDF (Max 10MB)</p>
             </div>
         </div>
 

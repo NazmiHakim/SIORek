@@ -37,17 +37,27 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        // VALIDASI DIPERKETAT (Sesuai Frontend)
         $validated = $request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'role'     => ['required', Rule::in(['admin', 'user'])],
-            'nama_organisasi' => 'nullable|string|max:255',
-            'program_studi'   => 'nullable|string|max:255',
-            'fakultas'        => 'nullable|string|max:255',
-            'nama_pj'         => 'nullable|string|max:255',
-            'nomor_pj'        => 'nullable|string|max:20',
-            'alamat'          => 'nullable|string',
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5048'
+            'username'        => 'required|string|max:50|unique:users', // Diubah: max 255 -> 50
+            'password'        => 'required|string|min:6|max:64',        // Ditambah: max 64
+            'role'            => ['required', Rule::in(['admin', 'user'])],
+            
+            'nama_organisasi' => 'nullable|string|max:100', // Diubah: max 255 -> 100
+            'program_studi'   => 'nullable|string|max:100', // Diubah: max 255 -> 100
+            'fakultas'        => 'nullable|string|max:100', // Diubah: max 255 -> 100
+            'nama_pj'         => 'nullable|string|max:100', // Diubah: max 255 -> 100
+            
+            //regex (hanya angka) dan max 15
+            'nomor_pj'        => 'nullable|string|max:15|regex:/^[0-9]+$/', 
+            
+            'alamat'          => 'nullable|string|max:255', // Ditambah: max 255
+            'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Limit 2MB, hapus webp jika tidak perlu
+        ], [
+            // custom Error Messages
+            'nomor_pj.regex' => 'Nomor Penanggung Jawab hanya boleh berisi angka.',
+            'nomor_pj.max'   => 'Nomor Penanggung Jawab maksimal 15 digit.',
+            'username.max'   => 'Username tidak boleh lebih dari 50 karakter.',
         ]);
 
         $dataToStore = $validated;
@@ -73,37 +83,37 @@ class UserController extends Controller
 
                 // request ke api fontenya
                 $response = Http::withHeaders([
-                    'Authorization' => 'X1qzkz3tqpx3n2UJrvk7', // menggunakan token dari nomor wa jopan
+                    'Authorization' => 'X1qzkz3tqpx3n2UJrvk7', // Token WA
                 ])->post('https://api.fonnte.com/send', [
                     'target' => $user->nomor_pj,
                     'message' => $message,
                     'countryCode' => '62',
                 ]);
 
-                // Opsional: Cek respons jika perlu debug
-                // if ($response->failed()) { \Log::error('Fonnte Error: ' . $response->body()); }
-
             } catch (\Exception $e) {}
-            // pembuatan akun tetap terjadi jika pesan tidak terkirim, simpan di log 
         }
 
-        return redirect()->route('daftarPenggunaAdmin')->with('success', 'Pengguna berhasil ditambahkan dan notifikasi WhatsApp dikirim (jika nomor valid).');
+        return redirect()->route('daftarPenggunaAdmin')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
     public function update(Request $request, User $user)
     {
+        // VALIDASI DIPERKETAT (Sesuai Frontend)
         $validator = Validator::make($request->all(), [
-            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'role'     => ['required', Rule::in(['admin', 'user'])],
-            'password' => 'nullable|string|min:6',
+            'username'        => ['required', 'string', 'max:50', Rule::unique('users')->ignore($user->id)], // Max 50
+            'role'            => ['required', Rule::in(['admin', 'user'])],
+            'password'        => 'nullable|string|min:6|max:64', // Max 64
             
-            'nama_organisasi' => 'nullable|string|max:255',
-            'program_studi'   => 'nullable|string|max:255',
-            'fakultas'        => 'nullable|string|max:255',
-            'nama_pj'         => 'nullable|string|max:255',
-            'nomor_pj'        => 'nullable|string|max:20',
-            'alamat'          => 'nullable|string',
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'nama_organisasi' => 'nullable|string|max:100', // Max 100
+            'program_studi'   => 'nullable|string|max:100', // Max 100
+            'fakultas'        => 'nullable|string|max:100', // Max 100
+            'nama_pj'         => 'nullable|string|max:100', // Max 100
+            
+            'nomor_pj'        => 'nullable|string|max:15|regex:/^[0-9]+$/', // Hanya angka & Max 15
+            'alamat'          => 'nullable|string|max:255', // Max 255
+            'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ], [
+            'nomor_pj.regex' => 'Nomor Penanggung Jawab hanya boleh berisi angka.',
         ]);
 
         // cek validasi
@@ -111,13 +121,13 @@ class UserController extends Controller
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('edit_mode', true);
+                ->with('edit_mode', true); // Trigger modal edit terbuka kembali jika error
         }
 
         // ambil data yang sudah divalidasi
         $validated = $validator->validated();
 
-        // update
+        // update data
         $user->username = $validated['username'];
         $user->role = $validated['role'];
         $user->nama_organisasi = $validated['nama_organisasi'] ?? $user->nama_organisasi;
