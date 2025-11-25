@@ -91,7 +91,7 @@ class LoanController extends Controller
             return redirect()->route('dashboard')->with('success', 'Permintaan berhasil disetujui.');
 
         } elseif ($action == 'tolak') {
-            $request->validate(['alasan_penolakan' => 'required|string|min:10']);
+            $request->validate(['alasan_penolakan' => 'required|string|min:10|max:255']);
             
             $loan->status = 'ditolak';
             $loan->alasan_penolakan = $request->input('alasan_penolakan');
