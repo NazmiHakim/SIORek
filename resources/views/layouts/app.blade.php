@@ -29,7 +29,13 @@
                         <!-- juga mengambil role user yang login -->
                         <p class="text-sm text-gray-600 capitalize">{{ Auth::user()->role }}</p>
                     </div>
-                    <img src="https://ui-avatars.com/api/?name={{ Auth::user()->username }}&background=random" alt="{{ Auth::user()->username }}" class="w-10 h-10 rounded-full">
+                    @if(Auth::user()->logo)
+                        {{-- logo jika ada --}}
+                        <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="{{ Auth::user()->username }}" class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                    @else
+                        {{-- jika tidak placeholder saja --}}
+                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->username }}&background=random" alt="{{ Auth::user()->username }}" class="w-10 h-10 rounded-full object-cover">
+                    @endif
                 </button>
 
                 <!-- konten dropdownnya -->

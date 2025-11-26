@@ -31,7 +31,6 @@
         class="relative bg-white w-full max-w-lg rounded-lg shadow-xl"
     > 
 
-        // Untuk Scroll
         @csrf
         <div class="max-h-[85vh] overflow-y-auto">
             
