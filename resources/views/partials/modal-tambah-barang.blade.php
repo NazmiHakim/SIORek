@@ -60,9 +60,28 @@
                 <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea id="deskripsi" name="deskripsi" rows="3" maxlength="500" placeholder="Deskripsikan barang Anda (Max 500 karakter)" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
             </div>
-            <div>
-                <label for="foto_item" class="block text-sm font-medium text-gray-700">Foto Barang (Opsional)</label>
-                <input type="file" name="foto_item" id="foto_item" accept=".jpg, .jpeg, .png" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            <div x-data="{ fileError: null }">
+                <label for="foto_item" class="block text-sm font-medium text-gray-700">Foto Barang</label>
+                <input type="file" name="foto_item" id="foto_item" accept=".jpg, .jpeg, .png" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    @change="
+                        const file = $el.files[0];
+                        const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                        const maxSize = 5 * 1024 * 1024;
+                        
+                        if (file) {
+                            if (!validTypes.includes(file.type)) {
+                                fileError = 'File harus berupa gambar!';
+                                $el.value = '';
+                            } else if (file.size > maxSize) {
+                                fileError = 'Ukuran gambar terlalu besar (Max 5MB)!';
+                                $el.value = '';
+                            } else {
+                                fileError = null;
+                            }
+                        }
+                    "
+                >
+                <p x-show="fileError" x-text="fileError" class="mt-1 text-sm text-red-600 font-medium"></p>
             </div>
         </div>
 

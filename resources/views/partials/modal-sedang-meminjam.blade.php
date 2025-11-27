@@ -38,17 +38,23 @@
                        class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
                        accept="image/png, image/jpeg"
                        required
-                       @change="
-                           const file = $el.files[0];
-                           const limit = 5 * 1024 * 1024; 
-                           
-                           if(file && file.size > limit) {
-                               fileError = 'Ukuran Gambar Melebihi Batas Maksimal!';
-                               $el.value = ''; 
-                           } else {
-                               fileError = null; 
-                           }
-                       "                       
+                       @change= "
+                            const file = $el.files[0];
+                            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                            const maxSize = 5 * 1024 *1024;
+
+                            if (file) {
+                                `if (!validTypes.includes(file.type)) {
+                                    fileError = 'File harus berupa gambar';
+                                    $el.value = '';
+                                } else if (file.size > maxSize) {
+                                    fileError = 'Ukuran file terlalu besar (Max 5MB);
+                                    $el.value = ''; 
+                                } else {
+                                    fileError = null;    
+                                }
+                            }
+                        "                       
                 >
 
                 <p x-show="fileError" 

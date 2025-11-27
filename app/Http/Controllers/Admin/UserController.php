@@ -90,7 +90,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validator = Validator::make($request->all(), [
-            'username'        => ['required', 'string', 'max:50', Rule::unique('users')->ignore($user->id)], // Max 50
+            'username'        => ['required', 'string', 'max:50', Rule::unique('users')->ignore($user->id)],
             'role'            => ['required', Rule::in(['admin', 'user'])],
             'password'        => 'nullable|string|min:6|max:64', 
             

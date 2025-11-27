@@ -113,9 +113,26 @@
                     <textarea id="alamat" name="alamat" rows="3" maxlength="255" placeholder="Masukkan Alamat dari Lokasi Sekretariat Organisasi" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('alamat') }}</textarea>
                 </div>
                 
-                <div>
+                <div x-data="{ fileError: null }">
                     <label for="logo" class="block text-sm font-medium text-gray-700">Logo Organisasi</label>
-                    <input id="logo" name="logo" type="file" accept="image/* "class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <input id="logo" name="logo" type="file" accept="image/* "class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        @change="
+                            const file= $el.files[0];
+                            const validTypes= ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                            const maxSize= 5 * 1024 * 1024;
+                            
+                            if (file) {
+                                if (!validTypes.include(file.type)) {
+                                    fileError = 'File harus berupa gambar!';
+                                    $el.value = '';
+                                } else if (file.size > maxSize) {
+                                    fileError = Ukuran file terlalu besar (Max 5MB)'';
+                                    $el.value = '';
+                                } else {
+                                    fileError = null;
+                                }
+                            }>
+                    <p x-show="fileError" x-text="fileError" class="mt-1 text-sm text-red-600 font-medium"></p>
                 </div>
             </div> 
         </div> 
