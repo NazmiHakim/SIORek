@@ -17,12 +17,16 @@
             <div>
                 <label for="nama_item" class="block text-sm font-medium text-gray-700">Nama Barang</label>
                 {{-- menampilkan data lama di value --}}
-                <input type="text" name="nama_item" id="nama_item" value="{{ old('nama_item', $item->nama_item) }}" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                <input type="text" name="nama_item" id="nama_item" value="{{ old('nama_item', $item->nama_item) }}" 
+                class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 
+                focus:ring-blue-500" required>
             </div>
             
             <div>
                 <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori</label>
-                <input type="text" name="kategori" id="kategori" value="{{ old('kategori', $item->kategori) }}" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <input type="text" name="kategori" id="kategori" value="{{ old('kategori', $item->kategori) }}" 
+                class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 
+                focus:ring-blue-500">
             </div>
             
             <div>
@@ -33,29 +37,36 @@
                     id="jumlah_total" 
                     value="{{ old('jumlah_total', $item->jumlah_total) }}" 
                     min="{{ isset($jumlahDipinjam) && $jumlahDipinjam > 1 ? $jumlahDipinjam : 1 }}" 
-                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm 
+                    focus:border-blue-500 focus:ring-blue-500" 
                     required>
                 
                 @if(isset($jumlahDipinjam) && $jumlahDipinjam > 0)
                     <p class="text-xs text-amber-600 mt-1">
                         <i class="fa-solid fa-circle-info mr-1"></i>
-                        Minimal: <strong>{{ $jumlahDipinjam }}</strong> unit (Karena {{ $jumlahDipinjam }} unit sedang dipinjam/aktif).
+                        Minimal: <strong>{{ $jumlahDipinjam }}</strong> unit (Karena {{ $jumlahDipinjam }} 
+                        unit sedang dipinjam/aktif).
                     </p>
                 @endif
             </div>
             
             <div>
                 <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                <textarea id="deskripsi" name="deskripsi" rows="3" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('deskripsi', $item->deskripsi) }}</textarea>
+                <textarea id="deskripsi" name="deskripsi" rows="3" class="mt-1 block w-full rounded-md
+                 border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                 {{ old('deskripsi', $item->deskripsi) }}</textarea>
             </div>
             <div>
                     <label for="foto_item" class="block text-sm font-medium text-gray-700">Ganti Foto</label>
-                    <input type="file" name="foto_item" id="foto_item" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <input type="file" name="foto_item" id="foto_item" class="mt-1 block w-full text-sm 
+                    text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm 
+                    file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 </div>
         </div>
 
         <div class="pt-6">
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700">
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium
+             hover:bg-blue-700">
                 Simpan Perubahan
             </button>
         </div>

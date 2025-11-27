@@ -13,10 +13,14 @@
 </div>
 
 <div>
-    <div class="bg-white p-6 rounded-lg shadow-lg xl:flex justify-between gap-10" x-data="app()" x-init="[initDate(), getNoOfDays()]">
+    <div class="bg-white p-6 rounded-lg shadow-lg xl:flex justify-between gap-10" 
+    x-data="app()" 
+    x-init="[initDate(), getNoOfDays()]">
         <div class=" flex-1">
-            <h2 class="text-xl font-bold mb-4 text-blue-600 "><i class="fa-solid fa-calendar-days"></i> Kalender Peminjaman</h2>
-            <p class="text-sm text-gray-600 mb-4">Tanggal untuk melihat agenda peminjaman barang.</p>
+            <h2 class="text-xl font-bold mb-4 text-blue-600 "><i class="fa-solid 
+                fa-calendar-days"></i> Kalender Peminjaman</h2>
+            <p class="text-sm text-gray-600 mb-4">Tanggal untuk melihat agenda 
+                peminjaman barang.</p>
             <!-- Kalender -->
             <div class="antialiased sans-serif flex-1">
                 <div class="container mx-auto">
@@ -25,22 +29,32 @@
                         {{-- header Kalender (Bulan/Tahun dan Tombol Navigasi) --}}
                         <div class="flex items-center justify-between py-2 px-6">
                             <div>
-                                <span x-text="MONTH_NAMES[month]" class="text-lg font-bold text-gray-800"></span>
-                                <span x-text="year" class="ml-1 text-lg text-gray-600 font-normal"></span>
+                                <span x-text="MONTH_NAMES[month]" class="text-lg 
+                                font-bold text-gray-800"></span>
+                                <span x-text="year" class="ml-1 text-lg text-gray-600 
+                                font-normal"></span>
                             </div>
                             <div class="border rounded-lg px-1" style="padding-top: 2px;">
                                 <button 
                                     type="button"
-                                    class="leading-none rounded-lg transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 items-center" 
-                                    :class="{'cursor-not-allowed opacity-25': month == 0 && year == new Date().getFullYear()}" 
-                                    :disabled="month == 0 && year == new Date().getFullYear() ? true : false"
+                                    class="leading-none rounded-lg transition ease-in-out 
+                                    duration-100 
+                                    inline-flex cursor-pointer hover:bg-gray-200 p-1 
+                                    items-center" 
+                                    :class="{'cursor-not-allowed opacity-25': month == 0 
+                                    && year == new Date().getFullYear()}" 
+                                    :disabled="month == 0 && year == new Date().getFullYear() 
+                                    ? true : false"
                                     @click="month--; getNoOfDays()">
                                     <i class="fa-solid fa-chevron-left fa-sm"></i>
                                 </button>
                                 <div class="border-r inline-flex h-6"></div>		
                                 <button 
                                     type="button"
-                                    class="leading-none rounded-lg transition ease-in-out duration-100 inline-flex items-center cursor-pointer hover:bg-gray-200 p-1" 
+                                    class="leading-none rounded-lg transition ease-in-out 
+                                    duration-100 
+                                    inline-flex items-center cursor-pointer 
+                                    hover:bg-gray-200 p-1" 
                                     @click="month++; getNoOfDays()">
                                     <i class="fa-solid fa-chevron-right fa-sm"></i>
                                 </button>
@@ -52,7 +66,8 @@
                             <div class="flex flex-wrap" style="">
                                 <template x-for="(day, index) in days" :key="index">	
                                     <div style="width: 14.26%" class="px-2 py-2">
-                                        <div x-text="day" class="text-gray-600 text-sm uppercase font-bold text-center"></div>
+                                        <div x-text="day" class="text-gray-600 text-sm 
+                                        uppercase font-bold text-center"></div>
                                     </div>
                                 </template>
                             </div>
@@ -61,22 +76,32 @@
                             <div class="flex flex-wrap border-t border-l">
                                 {{-- kotak kosong untuk sebelum tanggal 1 --}}
                                 <template x-for="blankday in blankdays">
-                                    <div style="width: 14.28%; height: 6rem;" class="text-center border-r border-b px-4 pt-2"></div>
+                                    <div style="width: 14.28%; height: 6rem;" class="text-center 
+                                    border-r border-b px-4 pt-2"></div>
                                 </template>	
                                 {{-- tanggal --}}
                                 <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">	
-                                    <div style="width: 14.28%; height: 6rem;" class="px-2 pt-2 border-r border-b relative cursor-pointer"
-                                        :class="{'bg-blue-50': isToday(date) == true, 'text-gray-700 hover:bg-blue-100': isToday(date) == false }"
+                                    <div style="width: 14.28%; height: 6rem;" class="px-2 pt-2 
+                                    border-r border-b 
+                                    relative cursor-pointer"
+                                        :class="{'bg-blue-50': isToday(date) == true, 'text-gray-700 
+                                        hover:bg-blue-100': isToday(date) == false }"
                                         @click="showEvents(date)">
                                         
-                                        <div x-text="date" class="inline-flex items-center justify-center w-6 h-6 rounded-full text-center"
-                                            :class="{'bg-blue-600 text-white': isToday(date) == true, 'text-gray-700': isToday(date) == false }"></div>
+                                        <div x-text="date" class="inline-flex items-center justify-center w-6 h-6 
+                                        rounded-full text-center"
+                                            :class="{'bg-blue-600 text-white': isToday(date) == true, 
+                                            'text-gray-700': isToday(date) == false }"></div>
                                         
                                         {{-- titik event jika ada --}}
                                         <div style="height: 1rem;" class="overflow-y-hidden mt-1">
                                             <div class="absolute bottom-2 left-2 flex -mx-1">
-                                                <template x-for="event in events.filter(e => new Date(e.event_date).toDateString() === new Date(year, month, date).toDateString())">
-                                                    <div class="h-2 w-2 rounded-full mx-1" :class="themes[event.event_theme] || themes['blue']"></div>
+                                                <template x-for="event in events.filter(e => 
+                                                    new Date(e.event_date).toDateString() 
+                                                    === new Date(year, month, date).toDateString())">
+                                                    <div class="h-2 w-2 rounded-full mx-1" 
+                                                    :class="themes[event.event_theme] 
+                                                    || themes['blue']"></div>
                                                 </template>
                                             </div>
                                         </div>
@@ -112,20 +137,24 @@
                         
                         {{-- menampilkan info berdasarkan type --}}
                         <template x-if="event.type === 'meminjam'">
-                            <p class="text-sm text-gray-600">Dipinjam dari: <span x-text="event.pemilik"></span></p>
+                            <p class="text-sm text-gray-600">Dipinjam dari: <span 
+                                x-text="event.pemilik"></span></p>
                         </template>
                         <template x-if="event.type === 'meminjamkan'">
-                            <p class="text-sm text-gray-600">Dipinjam oleh: <span x-text="event.peminjam"></span></p>
+                            <p class="text-sm text-gray-600">Dipinjam oleh: <span 
+                                x-text="event.peminjam"></span></p>
                         </template>
                         
-                        <p class="text-sm text-gray-500">Status: <span x-text="event.status"></span></p>
+                        <p class="text-sm text-gray-500">Status: <span 
+                            x-text="event.status"></span></p>
                     </div>
 
                 </template>
                 
                 {{-- tampilan jika tidak ada event --}}
                 <template x-if="events_on_selected_date.length === 0">
-                    <p class="text-sm text-gray-500">Tidak ada agenda peminjaman pada tanggal ini.</p>
+                    <p class="text-sm text-gray-500">Tidak ada agenda 
+                        peminjaman pada tanggal ini.</p>
                 </template>
             </div>
         </div>
@@ -134,22 +163,32 @@
     <div class=" mt-8 xl:flex gap-6">
 
         <div class="bg-white p-6 rounded-lg shadow-lg flex-1">
-            <h2 class="text-xl font-bold text-blue-600 mb-4"><i class="fa-solid fa-box"></i> Barang yang Saya Pinjam</h2>
+            <h2 class="text-xl font-bold text-blue-600 mb-4"><i class="fa-solid fa-box">
+                </i> Barang yang Saya Pinjam</h2>
             
             <div class="space-y-4">
                 <div >
                     <h1 class="font-semibold mb-4 text-[#FF9D00]">Menunggu Persetujuan:</h1>
-                    <div x-data="{ isMenungguPersetujuanModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >                        
+                    <div x-data="{ isMenungguPersetujuanModalOpen: false, selectedLoan: null }" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >                        
                         @forelse ($saya_menunggu_persetujuan as $loan)
-                            <div @click="isMenungguPersetujuanModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
-                                 class="bg-warning-fill border-2 border-warning-stroke  p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isMenungguPersetujuanModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}"
+                                 class="bg-warning-fill border-2 border-warning-stroke  
+                                 p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
                                 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
-                                <p class="text-sm text-gray-600">dari: {{ $loan->pemilik->username }}</p>
-                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
+                                <p class="text-sm text-gray-600">dari: 
+                                    {{ $loan->pemilik->username }}</p>
+                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::
+                                parse($loan->tanggal_mulai)->format('d/m/Y') }} - 
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->
+                                    format('d/m/Y') }}</p>
                             </div>
                         @empty
-                            <p class="text-sm text-gray-400">Tidak ada barang yang menunggu persetujuan.</p>
+                            <p class="text-sm text-gray-400">Tidak ada barang 
+                                yang menunggu persetujuan.</p>
                         @endforelse
                         @include('partials.modal-menunggu-persetujuan')
                     </div>
@@ -157,14 +196,20 @@
 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#EACD00]">Siap Diambil:</h1>
-                    <div x-data="{ isSiapDIambilModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{ isSiapDIambilModalOpen: false, selectedLoan: null }" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($saya_siap_diambil as $loan)
-                            <div @click="isSiapDIambilModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
-                                class="bg-caution-fill border-2 border-caution-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isSiapDIambilModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}"
+                                class="bg-caution-fill border-2 border-caution-stroke 
+                                p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
                                 <p class="text-sm text-gray-600">dari: {{ $loan->pemilik->username }}</p>
-                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
+                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::
+                                parse($loan->tanggal_mulai)->format('d/m/Y') }} - 
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
                             </div>
                         @empty
                             <p class="text-sm text-gray-400">Belum ada barang yang siap diambil.</p>
@@ -175,17 +220,26 @@
                 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#0095FF]">Sedang Dipinjam:</h1>
-                    <div x-data="{ isSedangMeminjamModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{ isSedangMeminjamModalOpen: false, selectedLoan: null }" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($saya_sedang_meminjam as $loan)
-                            <div @click="isSedangMeminjamModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
-                                 class="bg-white border-2 border-notice-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isSedangMeminjamModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}"
+                                 class="bg-white border-2 border-notice-stroke p-4 
+                                 rounded-lg cursor-pointer transition hover:shadow-lg">
                                 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
-                                <p class="text-sm text-gray-600">dari: {{ $loan->pemilik->username }}</p>
-                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
+                                <p class="text-sm text-gray-600">dari: 
+                                    {{ $loan->pemilik->username }}</p>
+                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::
+                                parse($loan->tanggal_mulai)->format('d/m/Y') }} - 
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->
+                                    format('d/m/Y') }}</p>
                             </div>
                         @empty
-                            <p class="text-sm text-gray-400">Tidak ada barang yang sedang Anda pinjam.</p>
+                            <p class="text-sm text-gray-400">Tidak ada barang yang 
+                                sedang Anda pinjam.</p>
                         @endforelse
                         @include('partials.modal-sedang-meminjam')
                     </div>
@@ -193,17 +247,23 @@
 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#0095FF]">Proses Pengembalian:</h1>
-                    <div x-data="{ isProsesPengembalianModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{ isProsesPengembalianModalOpen: false, selectedLoan: null }" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($saya_proses_pengembalian as $loan)
-                            <div @click="isProsesPengembalianModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
-                                 class="bg-white border-2 border-notice-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isProsesPengembalianModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}"
+                                 class="bg-white border-2 border-notice-stroke p-4 rounded-lg 
+                                 cursor-pointer transition hover:shadow-lg">
                                 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
                                 <p class="text-sm text-gray-600">dari: {{ $loan->pemilik->username }}</p>
-                                <p class="text-sm text-gray-500 font-medium text-blue-600">Menunggu konfirmasi pemilik...</p>
+                                <p class="text-sm text-gray-500 font-medium text-blue-600">
+                                    Menunggu konfirmasi pemilik...</p>
                             </div>
                         @empty
-                            <p class="text-sm text-gray-400">Tidak ada pengembalian yang sedang diproses.</p>
+                            <p class="text-sm text-gray-400">Tidak ada pengembalian yang 
+                                sedang diproses.</p>
                         @endforelse
 
                         @include('partials.modal-proses-pengembalian')
@@ -213,17 +273,24 @@
                 <div>
                     <h1 class="font-semibold mb-4 text-danger-stroke">Pengembalian Bermasalah:</h1>
                     {{-- Kita buat x-data "pintar" dengan 'selectedLoan' --}}
-                    <div x-data="{ isPengembalianBermasalahModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{ isPengembalianBermasalahModalOpen: false, selectedLoan: null }" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($saya_bermasalah as $loan)
-                            <div @click="isPengembalianBermasalahModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
-                                 class="bg-danger-fill border-2 border-danger-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isPengembalianBermasalahModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}"
+                                 class="bg-danger-fill border-2 border-danger-stroke p-4 rounded-lg 
+                                 cursor-pointer transition hover:shadow-lg">
                                 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
-                                <p class="text-sm text-gray-600">dari: {{ $loan->pemilik->username }}</p>
-                                <p class="text-sm text-red-700 font-medium">Masalah: {{ $loan->keterangan_sanksi ?? 'Silakan hubungi pemilik.' }}</p>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
+                                <p class="text-sm text-gray-600">dari: 
+                                    {{ $loan->pemilik->username }}</p>
+                                <p class="text-sm text-red-700 font-medium">Masalah: 
+                                    {{ $loan->keterangan_sanksi ?? 'Silakan hubungi pemilik.' }}</p>
                             </div>
                         @empty
-                            <p class="text-sm text-gray-400">Tidak ada pengembalian yang bermasalah.</p>
+                            <p class="text-sm text-gray-400">Tidak ada pengembalian 
+                                yang bermasalah.</p>
                         @endforelse
 
                         @include('partials.modal-pengembalian-bermasalah')
@@ -233,18 +300,27 @@
         </div>    
 
         <div class="bg-white p-6 rounded-lg shadow-lg flex-1">
-            <h2 class="text-xl font-bold text-blue-600 mb-4"><i class="fa-solid fa-arrow-down"></i> Barang yang Dipinjam Orang Lain</h2>
+            <h2 class="text-xl font-bold text-blue-600 mb-4"><i class="fa-solid fa-arrow-down">
+                </i> Barang yang Dipinjam Orang Lain</h2>
             <div class="space-y-4">
                 <div>
                     <h1 class="font-semibold mb-4 text-[#FF9D00]">Permintaan Peminjaman:</h1>
-                    <div x-data="{isPermintaanPeminjamanModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{isPermintaanPeminjamanModalOpen: false, selectedLoan: null}" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($permintaan_masuk as $loan)
-                            <div @click="isPermintaanPeminjamanModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
-                                class="bg-warning-fill border-2 border-warning-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isPermintaanPeminjamanModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}" 
+                                class="bg-warning-fill border-2 border-warning-stroke p-4 
+                                rounded-lg cursor-pointer transition hover:shadow-lg">
 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
-                                <p class="text-sm text-gray-600">Oleh: {{ $loan->peminjam->username }}</p>
-                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
+                                <p class="text-sm text-gray-600">Oleh: 
+                                    {{ $loan->peminjam->username }}</p>
+                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::
+                                parse($loan->tanggal_mulai)->format('d/m/Y') }} - 
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->
+                                    format('d/m/Y') }}</p>
                             </div>
                         @empty
                             <p class="text-sm text-gray-400">Belum ada permintaan peminjaman baru.</p>
@@ -255,14 +331,21 @@
 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#EACD00]">Permintaan Pengembalian:</h1>
-                    <div x-data="{isPermintaanPengembalianModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{isPermintaanPengembalianModalOpen: false, selectedLoan: null}" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($permintaan_pengembalian as $loan)
-                            <div @click="isPermintaanPengembalianModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
-                                class="bg-caution-fill border-2 border-caution-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isPermintaanPengembalianModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}"
+                                class="bg-caution-fill border-2 border-caution-stroke p-4 
+                                rounded-lg cursor-pointer transition hover:shadow-lg">
 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
-                                <p class="text-sm text-gray-600">Oleh: {{ $loan->peminjam->username }}</p>
-                                <p class="text-sm text-gray-500">Diajukan: {{ \Carbon\Carbon::parse($loan->tanggal_pengembalian_aktual)->format('d/m/Y H:i') }}</p>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
+                                <p class="text-sm text-gray-600">Oleh: 
+                                    {{ $loan->peminjam->username }}</p>
+                                <p class="text-sm text-gray-500">Diajukan: 
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_pengembalian_aktual)
+                                    ->format('d/m/Y H:i') }}</p>
                             </div>
                         @empty
                             <p class="text-sm text-gray-400">Belum ada permintaan pengembalian.</p>
@@ -273,14 +356,18 @@
 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#EACD00]">Menunggu diambil:</h1>
-                    <div x-data="{isMenungguDiambilModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{isMenungguDiambilModalOpen: false, selectedLoan: null}" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($menunggu_diambil_peminjam as $loan)
                             <div @click="isMenungguDiambilModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
-                                class="bg-caution-fill border-2 border-caution-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                                class="bg-caution-fill border-2 border-caution-stroke 
+                                p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
 
                                 <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
                                 <p class="text-sm text-gray-600">Oleh: {{ $loan->peminjam->username }}</p>
-                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
+                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::
+                                parse($loan->tanggal_mulai)->format('d/m/Y') }} - 
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
                             </div>
                         @empty
                             <p class="text-sm text-gray-400">Belum ada barang yang menunggu diambil.</p>
@@ -291,14 +378,20 @@
 
                 <div>
                     <h1 class="font-semibold mb-4 text-[#0095FF]">Sedang Dipinjam:</h1>
-                    <div x-data="{isSedangDipinjamModalOpen: false, selectedLoan: null }" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{isSedangDipinjamModalOpen: false, selectedLoan: null }" class="flex 
+                    flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($sedang_dipinjam_orang as $loan)
-                            <div @click="isSedangDipinjamModalOpen = true; selectedLoan = {{ $loan->toJson() }}"
-                                 class="bg-white border-2 border-notice-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isSedangDipinjamModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}"
+                                 class="bg-white border-2 border-notice-stroke p-4 rounded-lg 
+                                 cursor-pointer transition hover:shadow-lg">
                                 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
                                 <p class="text-sm text-gray-600">Oleh: {{ $loan->peminjam->username }}</p>
-                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
+                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::
+                                parse($loan->tanggal_mulai)->format('d/m/Y') }} - 
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</p>
                             </div>
                         @empty
                             <p class="text-sm text-gray-400">Tidak ada barang Anda yang sedang dipinjam.</p>
@@ -309,14 +402,19 @@
             
                 <div>
                     <h1 class="font-semibold mb-4 text-danger-stroke">Pengembalian Bermasalah:</h1>
-                    <div x-data="{isPengembalianBermasalahModalOpen: false, selectedLoan: null}" class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
+                    <div x-data="{isPengembalianBermasalahModalOpen: false, selectedLoan: null}" 
+                    class="flex flex-col gap-4 max-h-80 overflow-y-auto" >
                         @forelse ($dipinjam_bermasalah as $loan)
-                            <div @click="isPengembalianBermasalahModalOpen = true; selectedLoan = {{ $loan->toJson() }}" 
-                                 class="bg-danger-fill border-2 border-danger-stroke p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
+                            <div @click="isPengembalianBermasalahModalOpen = true; 
+                            selectedLoan = {{ $loan->toJson() }}" 
+                                 class="bg-danger-fill border-2 border-danger-stroke 
+                                 p-4 rounded-lg cursor-pointer transition hover:shadow-lg">
                                 
-                                <h3 class="font-semibold">{{ $loan->item->nama_item }} ({{ $loan->jumlah }} unit)</h3>
+                                <h3 class="font-semibold">{{ $loan->item->nama_item }} 
+                                    ({{ $loan->jumlah }} unit)</h3>
                                 <p class="text-sm text-gray-600">Oleh: {{ $loan->peminjam->username }}</p>
-                                <p class="text-sm text-red-700 font-medium">Masalah: {{ $loan->keterangan_sanksi ?? 'Hubungi peminjam.' }}</p>
+                                <p class="text-sm text-red-700 font-medium">Masalah: 
+                                    {{ $loan->keterangan_sanksi ?? 'Hubungi peminjam.' }}</p>
                             </div>
                         @empty
                             <p class="text-sm text-gray-400">Tidak ada barang bermasalah.</p>
@@ -336,7 +434,8 @@
 <script>
     function app() {
         return {
-            MONTH_NAMES: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+            MONTH_NAMES: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 
+            'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
             month: '',
             year: '',
             no_of_days: [],
@@ -363,7 +462,8 @@
                 let today = new Date();
                 this.month = today.getMonth();
                 this.year = today.getFullYear();
-                this.selected_date = new Date(this.year, this.month, today.getDate()).toDateString();
+                this.selected_date = new Date(this.year, this.month, 
+                today.getDate()).toDateString();
             },
 
             isToday(date) {

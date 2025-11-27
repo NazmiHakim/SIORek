@@ -36,18 +36,26 @@
 
         <aside class="lg:col-span-2 space-y-6">
             
-            <div class="bg-white p-4 rounded-lg shadow-md max-h-[75vh] overflow-y-auto">
-                <h2 class="text-xl font-semibold flex items-center gap-2 mb-8 text-biru-primary"><i class="fa-solid fa-users w-6 text-center"></i>Pengguna</h2>
+            <div class="bg-white p-4 rounded-lg shadow-md max-h-[75vh] 
+            overflow-y-auto">
+                <h2 class="text-xl font-semibold flex items-center gap-2 mb-8 
+                text-biru-primary"><i class="fa-solid fa-users w-6 text-center">
+                    </i>Pengguna</h2>
                 <div class="space-y-4">
                     @forelse ($users as $user)
-                            <a href="#" class="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg">
+                            <a href="#" class="flex items-center space-x-3 p-2 
+                            hover:bg-gray-100 rounded-lg">
                                 {{-- foto profil --}}
                                 @if($user->logo)
                                     {{-- logo asli --}}
-                                    <img src="{{ asset('storage/' . $user->logo) }}" alt="{{ $user->username }}" class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                                    <img src="{{ asset('storage/' . $user->logo) }}" 
+                                    alt="{{ $user->username }}" class="w-10 h-10 
+                                    rounded-full object-cover border border-gray-200">
                                 @else
                                     {{-- placeholder jika tidak ada logo --}}
-                                    <img src="https://ui-avatars.com/api/?name={{ $user->username }}&background=random" alt="{{ $user->username }}" class="w-10 h-10 rounded-full object-cover">
+                                    <img src="https://ui-avatars.com/api/?name={{ $user->username }}
+                                    &background=random" alt="{{ $user->username }}" class="w-10 h-10 
+                                    rounded-full object-cover">
                                 @endif
                                 <div>
                                     <h4 class="font-semibold text-gray-900">{{ $user->username }}</h4>
@@ -56,7 +64,8 @@
                                 </div>
                             </a>
                         @empty
-                            <p class="text-sm text-gray-500 p-2">Tidak ada pengguna lain yang ditemukan.</p>
+                            <p class="text-sm text-gray-500 p-2">Tidak ada pengguna lain 
+                                yang ditemukan.</p>
                     @endforelse
                 </div>
             </div>
@@ -65,12 +74,16 @@
         <section class="lg:col-span-3 space-y-6">
             
             <div class="bg-white p-4 rounded-lg shadow-md max-h-[75vh] overflow-y-auto">
-                <h2 class="text-xl font-semibold text-biru-primary flex items-center gap-2 mb-8"><i class="fa-solid fa-archive w-6 text-cente"></i>Semua Barang</h2>
+                <h2 class="text-xl font-semibold text-biru-primary flex items-center gap-2 mb-8">
+                    <i class="fa-solid fa-archive w-6 text-cente"></i>Semua Barang</h2>
                     <div x-data="{isPinjamModalOpen: false, selectedItem: null}" class="flex flex-wrap gap-8">                        
                         @forelse ($items as $item)
-                                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
+                                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col 
+                                justify-between">
                                     @if($item->foto_item)
-                                        <img src="{{ asset('storage/' . $item->foto_item) }}" alt="{{ $item->nama_item }}" class="w-full h-40 object-cover">
+                                        <img src="{{ asset('storage/' . $item->foto_item) }}" 
+                                        alt="{{ $item->nama_item }}" 
+                                        class="w-full h-40 object-cover">
                                     @else
                                         <div class="w-full h-40 bg-gray-200 flex items-center justify-center">
                                             <span class="text-gray-400 text-sm">(Tidak ada foto)</span>
@@ -79,7 +92,9 @@
                                     <div class="p-5">
                                         <div class="flex justify-between items-start mb-2">
                                             <h3 class="text-lg font-semibold text-gray-900">{{ $item->nama_item }}</h3>
-                                            <span class="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full border border-gray-300 flex-shrink-0">{{ $item->kategori ?? 'Lainnya' }}</span>
+                                            <span class="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 
+                                            rounded-full border border-gray-300 flex-shrink-0">{{ $item->kategori 
+                                            ?? 'Lainnya' }}</span>
                                         </div>
                                         
                                         <p class="text-sm font-medium text-gray-700">{{ $item->user->username ?? '...' }}</p>
@@ -99,9 +114,11 @@
                                                 
                                                 <!-- status barang -->
                                                 @if ($item->jumlah_tersedia > 0)
-                                                    <span class="bg-green-400 text-white text-xs font-semibold px-3 py-1 rounded-md">Tersedia</span>
+                                                    <span class="bg-green-400 text-white text-xs font-semibold 
+                                                    px-3 py-1 rounded-md">Tersedia</span>
                                                 @else
-                                                    <span class="bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full">Tidak Tersedia</span>
+                                                    <span class="bg-red-100 text-red-800 text-xs font-semibold 
+                                                    px-3 py-1 rounded-full">Tidak Tersedia</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -110,11 +127,15 @@
                                     <div class="bg-gray-50 p-4">
                                         <!-- tombol nonaktif saat habis -->
                                         @if ($item->jumlah_tersedia > 0)
-                                            <button @click="isPinjamModalOpen = true; selectedItem = {{ $item->toJson() }}" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700">
+                                            <button @click="isPinjamModalOpen = true; 
+                                            selectedItem = {{ $item->toJson() }}" 
+                                                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg 
+                                                font-medium hover:bg-blue-700">
                                                 Pinjam
                                             </button>
                                         @else
-                                            <button class="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg font-medium cursor-not-allowed" disabled>
+                                            <button class="w-full bg-gray-300 text-gray-500 py-2 px-4 
+                                            rounded-lg font-medium cursor-not-allowed" disabled>
                                                 Pinjam
                                             </button>
                                         @endif

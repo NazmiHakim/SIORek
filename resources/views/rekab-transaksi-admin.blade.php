@@ -14,13 +14,17 @@
     </div>
 
     <!-- filter transaksi -->
-    <form action="{{ route('rekabTransaksiAdmin') }}" method="GET" class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+    <form action="{{ route('rekabTransaksiAdmin') }}" method="GET" 
+    class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
         <div class="flex flex-col md:flex-row gap-4 items-end">
             
             <!-- dropdown akun -->
             <div class="flex-1 w-full">
-                <label for="user_id" class="block text-sm font-medium text-gray-700">Filter berdasarkan pengguna</label>
-                <select name="user_id" id="user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <label for="user_id" class="block text-sm font-medium 
+                text-gray-700">Filter berdasarkan pengguna</label>
+                <select name="user_id" id="user_id" 
+                class="mt-1 block w-full rounded-md border-gray-300 
+                shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     <option value="">Semua Transaksi</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}" 
@@ -33,10 +37,18 @@
             </div>
             
             <!-- reset -->
-            <button type="submit" class="w-full md:w-auto px-5 py-2.5 bg-biru-primary text-white rounded-lg font-semibold hover:bg-biru-tua transition-colors">Filter</button>
-            <a href="{{ route('rekabTransaksiAdmin') }}" class="w-full md:w-auto px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 text-center">Reset</a>
-            <a href="{{ route('rekabTransaksiAdmin.exportPdf', ['user_id' => request('user_id')]) }}" target="_blank" 
-                class="w-full md:w-auto px-5 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors text-center flex items-center justify-center gap-2">
+            <button type="submit" class="w-full md:w-auto px-5 py-2.5 
+            bg-biru-primary text-white rounded-lg font-semibold 
+            hover:bg-biru-tua transition-colors">Filter</button>
+            <a href="{{ route('rekabTransaksiAdmin') }}" 
+            class="w-full md:w-auto px-5 py-2.5 bg-white border 
+            border-gray-300 text-gray-700 rounded-lg font-medium 
+            hover:bg-gray-50 text-center">Reset</a>
+            <a href="{{ route('rekabTransaksiAdmin.exportPdf', 
+            ['user_id' => request('user_id')]) }}" target="_blank" 
+                class="w-full md:w-auto px-5 py-2.5 bg-red-600 
+                text-white rounded-lg font-semibold hover:bg-red-700 
+                transition-colors text-center flex items-center justify-center gap-2">
                 <i class="fa-solid fa-file-pdf"></i> Export PDF</a>
         </div>
     </form>
@@ -53,13 +65,20 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Barang</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peminjam</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Pinjam</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Selesai</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs 
+                    font-medium text-gray-500 uppercase tracking-wider">No</th>
+                    <th class="px-6 py-3 text-left text-xs 
+                    font-medium text-gray-500 uppercase tracking-wider">Barang</th>
+                    <th class="px-6 py-3 text-left text-xs 
+                    font-medium text-gray-500 uppercase tracking-wider">Peminjam</th>
+                    <th class="px-6 py-3 text-left text-xs 
+                    font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
+                    <th class="px-6 py-3 text-left text-xs 
+                    font-medium text-gray-500 uppercase tracking-wider">Tgl Pinjam</th>
+                    <th class="px-6 py-3 text-left text-xs 
+                    font-medium text-gray-500 uppercase tracking-wider">Tgl Selesai</th>
+                    <th class="px-6 py-3 text-left text-xs 
+                    font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -70,25 +89,33 @@
                     <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
                         {{ $loan->item->nama_item ?? 'Barang Dihapus' }} ({{ $loan->jumlah }} unit)
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ $loan->peminjam->username ?? 'User Dihapus' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ $loan->pemilik->username ?? 'User Dihapus' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $loan->peminjam->username 
+                    ?? 'User Dihapus' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $loan->pemilik->username 
+                    ?? 'User Dihapus' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::
+                    parse($loan->tanggal_mulai)->format('d/m/Y') }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::
+                    parse($loan->tanggal_selesai)->format('d/m/Y') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         @if($loan->status == 'selesai')
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            <span class="px-2 inline-flex text-xs leading-5 
+                            font-semibold rounded-full bg-green-100 text-green-800">
                                 Selesai
                             </span>
                         @elseif($loan->status == 'bermasalah' || $loan->status == 'ditolak')
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            <span class="px-2 inline-flex text-xs leading-5 
+                            font-semibold rounded-full bg-red-100 text-red-800">
                                 {{ $loan->status == 'bermasalah' ? 'Bermasalah' : 'Ditolak' }}
                             </span>
                         @elseif($loan->status == 'sedang_dipinjam')
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            <span class="px-2 inline-flex text-xs leading-5 
+                            font-semibold rounded-full bg-blue-100 text-blue-800">
                                 Dipinjam
                             </span>
                         @else
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            <span class="px-2 inline-flex text-xs 
+                            leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                 {{ ucwords(str_replace('_', ' ', $loan->status)) }}
                             </span>
                         @endif

@@ -10,7 +10,9 @@
         <h1 class="text-3xl font-bold text-biru-primary">@yield('title')</h1>
         <p class="text-biru-primary">@yield('subtitle')</p>
     </div>
-    <a href="{{ route('riwayat-peminjaman.exportPdf') }}" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-md flex items-center gap-2">
+    <a href="{{ route('riwayat-peminjaman.exportPdf') }}" target="_blank" 
+    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 
+    transition shadow-md flex items-center gap-2">
         <i class="fa-solid fa-file-pdf"></i> Download PDF
     </a>
 </div>
@@ -20,7 +22,8 @@
 <div class="relative w-full max-w-sm bg-gray-200 rounded-full p-1 flex">
     
     <div 
-        class="absolute top-1 left-1 w-1/2 h-[calc(100%-8px)] bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out"
+        class="absolute top-1 left-1 w-1/2 h-[calc(100%-8px)] 
+        bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out"
         :class="{
             'translate-x-0': tab === 'saya_meminjam',
             'translate-x-full': tab === 'orang_lain'
@@ -31,7 +34,8 @@
         type="button"
         @click="tab = 'saya_meminjam'"
         :class="tab === 'saya_meminjam' ? 'text-gray-900' : 'text-gray-600'"
-        class="relative z-10 w-1/2 py-2 text-center font-medium rounded-full transition-colors duration-300"
+        class="relative z-10 w-1/2 py-2 text-center font-medium rounded-full 
+        transition-colors duration-300"
     >
         Saya Meminjam
     </button>
@@ -40,7 +44,8 @@
         type="button"
         @click="tab = 'orang_lain'"
         :class="tab === 'orang_lain' ? 'text-gray-900' : 'text-gray-600'"
-        class="relative z-10 w-1/2 py-2 text-center font-medium rounded-full transition-colors duration-300"
+        class="relative z-10 w-1/2 py-2 text-center font-medium rounded-full 
+        transition-colors duration-300"
     >
         Dipinjam Orang Lain
     </button>
@@ -56,31 +61,44 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Barang</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Pinjam</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Kembali</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dikembalikan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Nama Barang</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Jumlah</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Pemilik</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Tanggal Pinjam</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Tanggal Kembali</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Dikembalikan</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($pinjamanSaya as $loan)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm 
+                                font-medium text-gray-900">
                                     {{ $loan->item->nama_item }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm 
+                                text-gray-500">
                                     {{ $loan->jumlah }} unit
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm 
+                                text-gray-500">
                                     {{ $loan->pemilik->username }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ \Carbon\Carbon::parse($loan->tanggal_mulai)->format('d/m/Y') }}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm 
+                                text-gray-500">
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_mulai)->
+                                    format('d/m/Y') }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm 
+                                text-gray-500">
+                                    {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->
+                                    format('d/m/Y') }}
                                 </td>
                                 {{-- Kolom Status (Menggantikan "Dikembalikan") --}}
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -91,13 +109,15 @@
                                     @elseif($loan->status == 'bermasalah')
                                         <span class="text-red-600">Bermasalah</span>
                                     @else
-                                        <span class="text-yellow-600 capitalize">{{ str_replace('_', ' ', $loan->status) }}</span>
+                                        <span class="text-yellow-600 capitalize">
+                                            {{ str_replace('_', ' ', $loan->status) }}</span>
                                     @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm 
+                                text-gray-500 text-center">
                                     Anda belum pernah meminjam barang.
                                 </td>
                             </tr>
@@ -117,19 +137,27 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Barang</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peminjam</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Pinjam</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Kembali</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dikembalikan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keterangan</th>                    
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Nama Barang</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Jumlah</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Peminjam</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Tanggal Pinjam</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Tanggal Kembali</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Dikembalikan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium 
+                            text-gray-500 uppercase tracking-wider">Keterangan</th>                    
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($pinjamanOrangLain as $loan)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm 
+                                font-medium text-gray-900">
                                     {{ $loan->item->nama_item }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -145,7 +173,8 @@
                                     {{ \Carbon\Carbon::parse($loan->tanggal_selesai)->format('d/m/Y') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $loan->tanggal_pengembalian_aktual ? \Carbon\Carbon::parse($loan->tanggal_pengembalian_aktual)->format('d/m/Y') : '-' }}
+                                    {{ $loan->tanggal_pengembalian_aktual ? \Carbon\Carbon::
+                                    parse($loan->tanggal_pengembalian_aktual)->format('d/m/Y') : '-' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     @if($loan->status == 'selesai')
@@ -155,13 +184,15 @@
                                     @elseif($loan->status == 'bermasalah')
                                         <span class="text-red-600">Bermasalah</span>
                                     @else
-                                        <span class="text-yellow-600 capitalize">{{ str_replace('_', ' ', $loan->status) }}</span>
+                                        <span class="text-yellow-600 capitalize">{{ str_replace('_', ' ', 
+                                        $loan->status) }}</span>
                                     @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm 
+                                text-gray-500 text-center">
                                     Belum ada barang Anda yang dipinjam.
                                 </td>
                             </tr>
