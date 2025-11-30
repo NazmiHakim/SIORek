@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/loan/handle-permintaan/{loan}', [LoanController::class, 'handlePermintaan'])->name('loan.handlePermintaan');
     // konfirmasi pengambilan
     Route::post('/loan/konfirmasi-pengambilan/{loan}', [LoanController::class, 'konfirmasiPengambilan'])->name('loan.konfirmasiPengambilan');
+    // konfirmasi foto awal
+    Route::post('/loan/validasi-barang-keluar/{loan}', [LoanController::class, 'validasiBarangKeluar'])->name('loan.validasiBarangKeluar');
     // mengajukan pengembalian
     Route::post('/loan/ajukan-pengembalian/{loan}', [LoanController::class, 'ajukanPengembalian'])->name('loan.ajukanPengembalian');
     // konfirmasi pengembalian

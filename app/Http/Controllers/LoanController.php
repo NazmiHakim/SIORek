@@ -124,7 +124,7 @@ class LoanController extends Controller
 
         $path = $request->file('foto_kondisi_awal')->store('public/kondisi_barang');
 
-        $loan->status = 'sedang_dipinjam';
+        $loan->status = 'menunggu_konfirmasi_pemilik';
         $loan->foto_kondisi_awal = str_replace('public/', '', $path);
         $loan->save();
 
@@ -136,6 +136,61 @@ class LoanController extends Controller
         $this->kirimNotifWA($loan->pemilik->nomor_pj, $pesan);
 
         return redirect()->route('dashboard')->with('success', 'Barang berhasil diambil! Selamat meminjam.');
+    }
+
+    public function validasiBarangKeluar(Request $request, Loan $loan)
+    {
+        // 1. Pastikan yang login adalah PEMILIK
+        if (Auth::id() != $loan->pemilik_id) {
+            return redirect()->route('dashboard')->with('error', 'Aksi tidak diizinkan!');
+        }
+
+        // 2. Pastikan statusnya benar
+        if ($loan->status != 'menunggu_konfirmasi_pemilik') {
+            return redirect()->route('dashboard')->with('error', 'Status peminjaman tidak valid.');
+        }
+
+        $action = $request->input('action');
+
+        // meload data agar bisa ambil nama & nomor HP
+        $loan->load(['item', 'peminjam', 'pemilik']);
+
+        if ($action == 'setujui') {
+            $loan->status = 'sedang_dipinjam';
+            $loan->save();
+
+            // notif setuju
+            $pesan = "Halo *{$loan->peminjam->nama_pj}*,\n\n";
+            $pesan .= "✅ *Peminjaman Dimulai*\n";
+            $pesan .= "Pemilik telah menerima bukti foto pengambilan barang *{$loan->item->nama_item}*.\n";
+            $pesan .= "Selamat menggunakan barang tersebut.";
+            
+            $this->kirimNotifWA($loan->peminjam->nomor_pj, $pesan);
+
+
+            return redirect()->route('dashboard')->with('success', 'Barang resmi dipinjamkan.');
+
+        } elseif ($action == 'tolak') {
+            // tolak dan bisa upload ulang
+            $loan->status = 'disetujui';
+            
+            // $loan->foto_kondisi_awal = null;
+            
+            $loan->save();
+
+            // notif tolak
+            $pesan = "Halo *{$loan->peminjam->nama_pj}*,\n\n";
+            $pesan .= "⚠️ *Bukti Foto Ditolak*\n";
+            $pesan .= "Foto kondisi awal untuk barang *{$loan->item->nama_item}* ditolak oleh pemilik.\n";
+            $pesan .= "Silakan upload ulang foto yang lebih jelas/sesuai.";
+            
+            $this->kirimNotifWA($loan->peminjam->nomor_pj, $pesan);
+
+
+            return redirect()->route('dashboard')->with('warning', 'Bukti ditolak. Peminjam diminta upload ulang.');
+        }
+
+        return redirect()->route('dashboard')->with('error', 'Aksi tidak dikenal.');
     }
 
     public function ajukanPengembalian(Request $request, Loan $loan)

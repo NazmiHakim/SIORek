@@ -50,7 +50,6 @@
 
             <div>
                 <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah yang Dipinjam</label>
-                {{-- Validasi: Min 1, Max sesuai stok dari Alpine, plus Script pencegah ketik manual berlebih --}}
                 <input 
                     type="number" 
                     name="jumlah" 
@@ -67,14 +66,32 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4"
+                x-data="{
+                    minDate: new Date().toISOString().split('T')[0],
+                    maxDate: new Date(new Date().setMonth(new Date().getMonth() + 1. )).toISOString().split('T')[0]
+                }">
+
                 <div>
-                    <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                    <input type="date" name="tanggal_mulai" id="tanggal_mulai" min="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <label for="tanggal_mulai" class="block teks-sm font-medium text-gray-700">Tanggal Mulai</label>
+                    <input 
+                        type="date"
+                        name="tanggal_mulai"
+                        id="tanggal_mulai"
+                        :min="minDate"
+                        :max="maxDate"
+                        class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
+
                 <div>
-                    <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
-                    <input type="date" name="tanggal_selesai" id="tanggal_selesai" min="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                    <label for="tanggal_selesai" class="block teks-sm font-medium text-gray-700">Tanggal Selesai</label>
+                    <input 
+                        type="Date"
+                        name="tanggal_selesai"
+                        id="tanggal_selesai"
+                        :min="minDate"
+                        :max="maxDate"
+                        class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                 </div>
             </div>
 
@@ -91,7 +108,7 @@
                                 fileError = 'File harus berupa gambar';
                                 $el.value = '';
                             } else if {
-                                fileError = 'Ukuran file terlalu besar (Mx 5MB)';
+                                fileError = 'Ukuran file terlalu besar (Max 10MB)';
                                 $el.value = '';
                             } else {
                                 fileError = null;

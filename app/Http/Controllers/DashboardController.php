@@ -35,7 +35,8 @@ class DashboardController extends Controller
                 'menunggu_konfirmasi_pengembalian', 
                 'bermasalah', 
                 'selesai',
-                'menunggu_persetujuan'
+                'menunggu_persetujuan',
+                'menunggu_konfirmasi_pemilik'
             ]);
         });
 
@@ -51,7 +52,7 @@ class DashboardController extends Controller
             }
             
             // warna status
-            if (in_array($loan->status, ['disetujui', 'menunggu_konfirmasi_pengembalian', 'menunggu_persetujuan'])) {
+            if (in_array($loan->status, ['disetujui', 'menunggu_konfirmasi_pemilik', 'menunggu_konfirmasi_pengembalian', 'menunggu_persetujuan'])) {
                 $theme = 'yellow';
             }
             if ($loan->status == 'bermasalah') {
@@ -81,14 +82,14 @@ class DashboardController extends Controller
             'calendarEvents' => $calendarEvents,
             // data untuk barang yang saya pinjam
             'saya_menunggu_persetujuan' => $pinjamanSaya->where('status', 'menunggu_persetujuan'),
-            'saya_siap_diambil' => $pinjamanSaya->where('status', 'disetujui'),
+            'saya_siap_diambil' => $pinjamanSaya->whereIn('status', ['disetujui', 'menunggu_konfirmasi_pemilik']),
             'saya_sedang_meminjam' => $pinjamanSaya->where('status', 'sedang_dipinjam'),
             'saya_proses_pengembalian' => $pinjamanSaya->where('status', 'menunggu_konfirmasi_pengembalian'),
             'saya_bermasalah' => $pinjamanSaya->where('status', 'bermasalah'),
 
             // data untuk barang yang dipinjam org Lain
             'permintaan_masuk' => $pinjamanOrangLain->where('status', 'menunggu_persetujuan'),
-            'menunggu_diambil_peminjam' => $pinjamanOrangLain->where('status', 'disetujui'),
+            'menunggu_diambil_peminjam' => $pinjamanOrangLain->whereIn('status', ['disetujui', 'menunggu_konfirmasi_pemilik']),
             'sedang_dipinjam_orang' => $pinjamanOrangLain->where('status', 'sedang_dipinjam'),
             'permintaan_pengembalian' => $pinjamanOrangLain->where('status', 'menunggu_konfirmasi_pengembalian'),
             'dipinjam_bermasalah' => $pinjamanOrangLain->where('status', 'bermasalah'),
