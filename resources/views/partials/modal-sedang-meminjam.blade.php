@@ -41,7 +41,7 @@
                        @change= "
                             const file = $el.files[0];
                             const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-                            const maxSize = 5 * 1024 *1024;
+                            const maxSize = 10 * 1024 *1024;
 
                             if (file) {
                                 `if (!validTypes.includes(file.type)) {
@@ -63,7 +63,7 @@
                 </p>
                 
                 <p class="mt-1 text-xs text-gray-500">
-                    Format: PNG/JPG, Maksimal: 5MB
+                    Format: PNG/JPG. Maksimal: 10MB.
                 </p>
             </div>
 

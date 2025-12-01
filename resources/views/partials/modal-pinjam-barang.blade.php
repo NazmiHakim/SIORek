@@ -95,19 +95,19 @@
                 </div>
             </div>
 
-            <div x-data="{ fileError: null }>
+            <div x-data="{ fileError: null }">
                 <label for="foto_kim" class="block text-sm font-medium text-gray-700">Upload KTM/KTP (Foto)</label>
-                <input type="file" name="foto_kim" id="foto_kim" accept=".jpg, .jpeg, .png" class="mt-1 block w-full text-sm text-grhangeay-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
+                <input type="file" name="foto_kim" id="foto_kim" accept=".jpg, .jpeg, .png" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
                     @change="
                         const file = $el.files[0];
                         const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-                        const maxSize = 10 * 1024 * 1024;
+                        const maxSize = 10 * 1024 * 1024; 
 
                         if (file) {
                             if (!validTypes.includes(file.type)) {
                                 fileError = 'File harus berupa gambar';
                                 $el.value = '';
-                            } else if {
+                            } else if (file.size > maxSize) {
                                 fileError = 'Ukuran file terlalu besar (Max 10MB)';
                                 $el.value = '';
                             } else {
@@ -120,20 +120,20 @@
                 <p x-show="fileError" x-text="fileError" class="mt-1 text-sm text-red-600 font-medium"></p>
             </div>
             
-            <div x-data="{ fileError: null }>
+            <div x-data="{ fileError: null }">
                 <label for="surat_peminjaman" class="block text-sm font-medium text-gray-700">Upload Surat Peminjaman (PDF)</label>
                 <input type="file" name="surat_peminjaman" id="surat_peminjaman" accept=".pdf" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required
-                    @change= "
+                    @change="
                         const file = $el.files[0];
-                        const validTypes = ['image/jpeg'. 'image/png', 'image/jpg', 'image/webp'];
+                        const validTypes = ['application/pdf'];
                         const maxSize = 10 * 1024 * 1024;
 
                         if (file) {
                             if (!validTypes.includes(file.type)) {
-                                fileError = 'File harus berupa gambar!';
+                                fileError = 'File harus berupa PDF!';
                                 $el.value = '';
                             } else if (file.size > maxSize) {
-                                fileError = 'Ukuran file terlalu besar (Max 10mb)' ;
+                                fileError = 'Ukuran file terlalu besar (Max 10MB)';
                                 $el.value = '';
                             } else {
                                 fileError = null;    
@@ -144,7 +144,6 @@
                 <p class="text-xs text-gray-500 mt-1">Format: PDF (Max 10MB)</p>
                 <p x-show="fileError" x-text="fileError" class="mt-1 text-sm text-red-600 font-medium"></p>
             </div>
-        </div>
 
         <div class="p-6 bg-gray-50 rounded-b-lg mt-6">
             <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700">

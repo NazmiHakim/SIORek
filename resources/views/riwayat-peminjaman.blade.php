@@ -42,7 +42,6 @@
         </button>
     </div>
 
-    {{-- peminjaman saya --}}
     <div x-show="tab === 'saya_meminjam'" class="space-y-6">
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-semibold mb-4">Barang yang saya pinjam</h3>
@@ -52,6 +51,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Barang</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Dokumen</th> 
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Foto Awal</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Foto Akhir</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
@@ -69,6 +69,24 @@
                                     {{ $loan->pemilik->username }}
                                 </td>
                                 
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="flex justify-center items-center gap-2">
+                                        @if($loan->foto_kim)
+                                            <a href="{{ asset('storage/' . $loan->foto_kim) }}" target="_blank" title="Lihat KTP/KTM">
+                                                <img src="{{ asset('storage/' . $loan->foto_kim) }}" class="w-8 h-8 object-cover rounded border border-gray-200 hover:scale-110 transition">
+                                            </a>
+                                        @else 
+                                            <span class="text-xs text-gray-400" title="Tidak ada KTP/KTM">No ID</span> 
+                                        @endif
+
+                                        @if($loan->surat_peminjaman)
+                                            <a href="{{ asset('storage/' . $loan->surat_peminjaman) }}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Surat">
+                                                <i class="fa-solid fa-file-lines text-lg"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </td>
+
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     @if($loan->foto_kondisi_awal)
                                         <a href="{{ asset('storage/' . $loan->foto_kondisi_awal) }}" target="_blank">
@@ -98,7 +116,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="6" class="px-6 py-8 text-center text-gray-500">Anda belum pernah meminjam barang.</td></tr>
+                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">Anda belum pernah meminjam barang.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -106,7 +124,6 @@
         </div>
     </div>
 
-    {{-- barang dipinjam oleh orang lain --}}
     <div x-show="tab === 'orang_lain'" class="space-y-6" style="display: none;">
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-semibold mb-4">Barang yang dipinjam orang Lain</h3>
@@ -116,6 +133,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Barang</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peminjam</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Dokumen</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Foto Awal</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Foto Akhir</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
@@ -131,6 +149,24 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $loan->peminjam->username }}
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="flex justify-center items-center gap-2">
+                                        @if($loan->foto_kim)
+                                            <a href="{{ asset('storage/' . $loan->foto_kim) }}" target="_blank" title="Lihat KTP/KTM">
+                                                <img src="{{ asset('storage/' . $loan->foto_kim) }}" class="w-8 h-8 object-cover rounded border border-gray-200 hover:scale-110 transition">
+                                            </a>
+                                        @else 
+                                            <span class="text-xs text-gray-400" title="Tidak ada KTP/KTM">No ID</span> 
+                                        @endif
+
+                                        @if($loan->surat_peminjaman)
+                                            <a href="{{ asset('storage/' . $loan->surat_peminjaman) }}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Surat">
+                                                <i class="fa-solid fa-file-lines text-lg"></i>
+                                            </a>
+                                        @endif
+                                    </div>
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
@@ -162,7 +198,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="6" class="px-6 py-8 text-center text-gray-500">Belum ada barang Anda yang dipinjam.</td></tr>
+                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">Belum ada barang Anda yang dipinjam.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

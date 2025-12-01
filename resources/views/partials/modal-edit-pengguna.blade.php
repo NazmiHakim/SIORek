@@ -140,10 +140,9 @@
                     <textarea id="edit_alamat" name="alamat" rows="3" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" x-text="selectedUser ? selectedUser.alamat : ''"></textarea>
                 </div>
                 
-                <div x-data="{ fileError: null }>
+                <div x-data="{ fileError: null }">
                     <label for="edit_logo" class="block text-sm font-medium text-gray-700">Ganti Logo</label>
                     
-                    <!-- logo lama -->
                     <template x-if="selectedUser && selectedUser.logo">
                         <div class="mb-2 mt-1">
                             <p class="text-xs text-gray-500 mb-1">Logo Saat Ini:</p>
@@ -151,21 +150,21 @@
                         </div>
                     </template>
 
-                    <input id="edit_logo" name="logo" type="file" accept="image/* "class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                        @change= "
+                    <input id="edit_logo" name="logo" type="file" accept="image/*" class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        @change="
                             const file = $el.files[0];
                             const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-                            const maxSize = 5 * 1024 *1024;
+                            const maxSize = 5 * 1024 * 1024; // Limit 5MB
 
                             if (file) {
-                                `if (!validTypes.includes(file.type)) {
-                                    errorFile = 'File harus berupa gambar';
+                                if (!validTypes.includes(file.type)) {
+                                    fileError = 'File harus berupa gambar';
                                     $el.value = '';
                                 } else if (file.size > maxSize) {
-                                    errorFile = 'Ukuran file terlalu besar (Max 5MB);
+                                    fileError = 'Ukuran file terlalu besar (Max 5MB)';
                                     $el.value = ''; 
                                 } else {
-                                    errorFile = null;    
+                                    fileError = null;    
                                 }
                             }
                         "

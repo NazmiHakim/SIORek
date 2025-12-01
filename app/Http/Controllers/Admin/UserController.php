@@ -47,7 +47,7 @@ class UserController extends Controller
             'nama_pj'         => 'nullable|string|max:255',
             'nomor_pj'        => 'nullable|string|max:20',
             'alamat'          => 'nullable|string',
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5048'
+            'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:5048'
         ]);
 
         $dataToStore = $validated;
@@ -101,7 +101,7 @@ class UserController extends Controller
             
             'nomor_pj'        => 'nullable|string|max:15|regex:/^[0-9]+$/',
             'alamat'          => 'nullable|string|max:255', 
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:5048'
         ], [
             'nomor_pj.regex' => 'Nomor Penanggung Jawab hanya boleh berisi angka.',
         ]);

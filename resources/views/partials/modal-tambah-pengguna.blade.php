@@ -133,6 +133,7 @@
                                 }
                             }>
                     <p x-show="fileError" x-text="fileError" class="mt-1 text-sm text-red-600 font-medium"></p>
+                    <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG. Maksimal: 5MB.</p>
                 </div>
             </div> 
         </div> 
