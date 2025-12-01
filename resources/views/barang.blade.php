@@ -16,7 +16,7 @@
         <p class="text-biru-primary">@yield('subtitle')</p>
     </div>
 
-    <div x-data="{isTambahBarangModalOpen: false}" class="flex justify-end mb-4">
+    <div x-data="{ isTambahBarangModalOpen: {{ $errors->any() ? 'true' : 'false' }} }" class="flex justify-end mb-4">
         <a @click="isTambahBarangModalOpen = true" class="px-4 py-1.5 bg-biru-primary 
         text-white rounded-md hover:bg-blue-700 transition cursor-pointer">
             <i class="fa-solid fa-plus"></i> Tambah Barang

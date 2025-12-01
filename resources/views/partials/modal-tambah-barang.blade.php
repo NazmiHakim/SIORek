@@ -54,11 +54,18 @@
                     required
                     x-on:blur="$el.value = $el.value.trim()"
                 >
+
+                @error('nama_item')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>  
             
             <div>
                 <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori</label>
                 <input type="text" name="kategori" id="kategori" maxlength="50" placeholder="Contoh: Elektronik, Logistik, P3K" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                @error('kategori')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
             
             <div>

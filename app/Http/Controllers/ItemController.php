@@ -50,11 +50,14 @@ class ItemController extends Controller
     {
         // validasi input
         $validated = $request->validate([
-            'nama_item'    => 'required|string|max:100', 
-            'kategori'     => 'nullable|string|max:50',  
+            'nama_item'    => ['required', 'string', 'max:100', 'regex:/^[a-zA-Z0-9\s]+$/'], 
+            'kategori'     => ['nullable', 'string', 'max:50', 'regex:/^[a-zA-Z0-9\s]+$/'],  
             'jumlah_total' => 'required|integer|min:1|max:10000', 
             'deskripsi'    => 'nullable|string|max:500', 
             'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg|max:5048'
+        ], [
+            'nama_item.regex' => 'Nama barang tidak boleh mengandung simbol.',
+            'kategori.regex'  => 'Kategori tidak boleh mengandung simbol.',
         ]);
 
         // siapkan data untuk disimpan
@@ -114,11 +117,14 @@ class ItemController extends Controller
 
         // validasi input
         $validated = $request->validate([
-            'nama_item'    => 'required|string|max:100', 
-            'kategori'     => 'nullable|string|max:50',  
+            'nama_item'    => ['required', 'string', 'max:100', 'regex:/^[a-zA-Z0-9\s]+$/'], 
+            'kategori'     => ['nullable', 'string', 'max:50', 'regex:/^[a-zA-Z0-9\s]+$/'],  
             'jumlah_total' => 'required|integer|min:1|max:10000', 
             'deskripsi'    => 'nullable|string|max:500', 
             'foto_item'    => 'nullable|image|mimes:jpeg,png,jpg|max:5048' 
+        ], [
+            'nama_item.regex' => 'Nama barang tidak boleh mengandung simbol.',
+            'kategori.regex'  => 'Kategori tidak boleh mengandung simbol.',
         ]);
 
         $activeStatuses = [
@@ -137,7 +143,7 @@ class ItemController extends Controller
         if ($validated['jumlah_total'] < $JumlahDipinjam) {
             return back()
                 ->withInput()
-                ->withErrors(['jumlah_total' => 'Jumlah total tidak boleh kurang dari' . $JumlahDipinjam . 'unit (karena sedang ada barang yang dipinjam).' ]);
+                ->withErrors(['jumlah_total' => 'Jumlah total tidak boleh kurang dari ' . $JumlahDipinjam . ' unit (karena sedang ada barang yang dipinjam).' ]);
         }
 
         if ($request->hasFile('foto_item')) {
@@ -170,5 +176,4 @@ class ItemController extends Controller
         // kembalikan ke halaman
         return redirect()->route('barang')->with('success', 'Barang berhasil dihapus.');
     }
-    
 }

@@ -83,9 +83,9 @@
                         type="password" 
                         name="password" 
                         id="password" 
-                        minlength="8" 
+                        minlength="6" 
                         maxlength="128" 
-                        placeholder="Minimal 8 karakter" 
+                        placeholder="Minimal 6 karakter" 
                         class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
                         required
                     >

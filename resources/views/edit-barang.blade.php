@@ -29,6 +29,9 @@
                     {{-- UX: Auto trim --}}
                     onblur="this.value = this.value.trim()"
                 >
+                @error('nama_item')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
             
             <div>
@@ -40,6 +43,9 @@
                     value="{{ old('kategori', $item->kategori) }}" 
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 >
+                @error('kategori')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
             
             <div>
