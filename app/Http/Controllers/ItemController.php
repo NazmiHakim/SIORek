@@ -164,10 +164,6 @@ class ItemController extends Controller
             return redirect()->route('barang')->with('error', 'Anda tidak berhak menghapus barang ini!');
         }
 
-        if ($item->foto_item) {
-            Storage::delete('public/' . $item->foto_item);
-        }
-
         // aman, hapus barang
         $item->delete();
 
