@@ -224,7 +224,7 @@ class LoanController extends Controller
         return redirect()->route('dashboard')->with('success', 'Pengajuan pengembalian berhasil dikirim. Menunggu konfirmasi pemilik.');
     }
 
-    public function konfirmasiPengembalian(Request $request, Loan $loan)
+public function konfirmasiPengembalian(Request $request, Loan $loan)
     {
         if (Auth::id() != $loan->pemilik_id) {
             return redirect()->route('dashboard')->with('error', 'Aksi tidak diizinkan!');
@@ -248,6 +248,24 @@ class LoanController extends Controller
             $this->kirimNotifWA($loan->peminjam->nomor_pj, $pesan);
             
             return redirect()->route('dashboard')->with('success', 'Peminjaman telah selesai.');
+
+        } elseif ($action == 'tolak_foto') {
+            // LOGIKA BARU: Tolak Foto
+            // Kembalikan status ke 'sedang_dipinjam' agar user bisa upload ulang
+            $loan->status = 'sedang_dipinjam';
+            
+            // Opsional: hapus foto lama jika ingin bersih, tapi dibiarkan tertimpa juga tidak masalah
+            // $loan->foto_kondisi_akhir = null; 
+            
+            $loan->save();
+
+            $pesan = "Halo *{$loan->peminjam->nama_pj}*,\n\n";
+            $pesan .= "⚠️ *Bukti Foto Pengembalian Ditolak*\n";
+            $pesan .= "Foto kondisi akhir barang *{$loan->item->nama_item}* ditolak oleh pemilik karena tidak sesuai/kurang jelas.\n";
+            $pesan .= "Silakan upload ulang foto yang sesuai di menu pengembalian.";
+            $this->kirimNotifWA($loan->peminjam->nomor_pj, $pesan);
+
+            return redirect()->route('dashboard')->with('warning', 'Bukti foto ditolak. Peminjam diminta upload ulang.');
 
         } elseif ($action == 'bermasalah') {
 
