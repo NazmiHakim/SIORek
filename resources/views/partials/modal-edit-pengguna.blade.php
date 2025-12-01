@@ -17,20 +17,16 @@
         x-transition:leave-end="opacity-0">
     </div>
 
-    {{-- Form Edit Standar (Tanpa AJAX) --}}
     <form
         method="POST" 
         :action="selectedUser ? '{{ route('admin.pengguna.update', '') }}/' + selectedUser.id : '#'"
         enctype="multipart/form-data"
         x-show="isEditPenggunaModalOpen"
-        {{-- 
-            1. INISIALISASI STATE ALPINE DI FORM
-            Kita butuh state ini di level form agar bisa diakses oleh Input Password DAN Tombol Submit
-        --}}
+        {{-- State Alpine untuk validasi password real-time --}}
         x-data="{ 
             passwordInput: '', 
             get isPasswordInvalid() { 
-                // Invalid jika: ada isinya DAN panjangnya kurang dari 6
+                // Invalid jika: ada isinya (>0) TAPI kurang dari 6 karakter
                 return this.passwordInput.length > 0 && this.passwordInput.length < 6;
             }
         }"
@@ -72,11 +68,14 @@
 
             <div class="p-6 space-y-4 border-b">
                 <h3 class="text-lg font-medium text-gray-900">Data Login</h3>
+                
                 <div>
                     <label for="edit_username" class="block text-sm font-medium text-gray-700">Username</label>
                     <input type="text" name="username" id="edit_username" 
                            class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
-                           :value="selectedUser ? selectedUser.username : ''" required>
+                           :value="selectedUser ? selectedUser.username : ''" required
+                           {{-- Validasi: Lowercase & Regex --}}
+                           x-on:input="$el.value = $el.value.toLowerCase().replace(/[^a-z0-9._-]/g, '')">
                 </div>
                 
                 <div>
@@ -84,7 +83,8 @@
                     <input type="password" 
                            name="password" 
                            id="edit_password" 
-                           x-model="passwordInput" {{-- Hubungkan input dengan state Alpine --}}
+                           x-model="passwordInput"
+                           maxlength="128" 
                            placeholder="Isi hanya jika ingin mengganti password" 
                            class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors"
                            {{-- Ubah warna border jadi merah jika invalid --}}
@@ -112,32 +112,40 @@
                 
                 <div>
                     <label for="edit_nama_organisasi" class="block text-sm font-medium text-gray-700">Nama Organisasi</label>
-                    <input type="text" name="nama_organisasi" id="edit_nama_organisasi" :value="selectedUser ? selectedUser.nama_organisasi : ''" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <input type="text" name="nama_organisasi" id="edit_nama_organisasi" :value="selectedUser ? selectedUser.nama_organisasi : ''" maxlength="100" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
                 
                 <div>
                     <label for="edit_program_studi" class="block text-sm font-medium text-gray-700">Program Studi</label>
-                    <input type="text" name="program_studi" id="edit_program_studi" :value="selectedUser ? selectedUser.program_studi : ''" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <input type="text" name="program_studi" id="edit_program_studi" :value="selectedUser ? selectedUser.program_studi : ''" maxlength="100" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
                 
                 <div>
                     <label for="edit_fakultas" class="block text-sm font-medium text-gray-700">Fakultas</label>
-                    <input type="text" name="fakultas" id="edit_fakultas" :value="selectedUser ? selectedUser.fakultas : ''" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <input type="text" name="fakultas" id="edit_fakultas" :value="selectedUser ? selectedUser.fakultas : ''" maxlength="100" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
                 
                 <div>
                     <label for="edit_nama_pj" class="block text-sm font-medium text-gray-700">Nama Penanggung Jawab</label>
-                    <input type="text" name="nama_pj" id="edit_nama_pj" :value="selectedUser ? selectedUser.nama_pj : ''" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <input type="text" name="nama_pj" id="edit_nama_pj" :value="selectedUser ? selectedUser.nama_pj : ''" maxlength="100" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
                 
                 <div>
                     <label for="edit_nomor_pj" class="block text-sm font-medium text-gray-700">Nomor Penanggung Jawab</label>
-                    <input type="tel" name="nomor_pj" id="edit_nomor_pj" :value="selectedUser ? selectedUser.nomor_pj : ''" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <input 
+                        type="tel" 
+                        name="nomor_pj" 
+                        id="edit_nomor_pj" 
+                        maxlength="15" 
+                        :value="selectedUser ? selectedUser.nomor_pj : ''" 
+                        class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        {{-- Hanya angka --}}
+                        x-on:input="$el.value = $el.value.replace(/[^0-9]/g, '')">
                 </div>
                 
                 <div>
                     <label for="edit_alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                    <textarea id="edit_alamat" name="alamat" rows="3" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" x-text="selectedUser ? selectedUser.alamat : ''"></textarea>
+                    <textarea id="edit_alamat" name="alamat" rows="3" maxlength="255" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" x-text="selectedUser ? selectedUser.alamat : ''"></textarea>
                 </div>
                 
                 <div x-data="{ fileError: null }">
@@ -158,7 +166,7 @@
 
                             if (file) {
                                 if (!validTypes.includes(file.type)) {
-                                    fileError = 'File harus berupa gambar';
+                                    fileError = 'File harus berupa gambar (JPG/PNG/WEBP)';
                                     $el.value = '';
                                 } else if (file.size > maxSize) {
                                     fileError = 'Ukuran file terlalu besar (Max 5MB)';
@@ -175,12 +183,10 @@
             </div> 
         </div> 
         
-        <!-- tombol simpan -->
         <div class="p-6 border-t rounded-b-lg">
             <button type="submit" 
-                    {{-- Kunci tombol jika password invalid --}}
+                    {{-- Disable tombol jika password invalid --}}
                     :disabled="isPasswordInvalid"
-                    {{-- Ubah warna jadi abu-abu jika terkunci, kuning jika aktif --}}
                     :class="isPasswordInvalid ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-yellow-400 hover:bg-yellow-500 text-black'"
                     class="p-2 rounded-lg font-bold w-full transition-colors">
                 Simpan Perubahan

@@ -80,7 +80,7 @@
                     placeholder="Wajib diisi jika barang bermasalah (Min. 10 karakter)..." 
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </textarea>
-                <p class="text-xs text-gray-500 mt-1">Hanya wajib diisi jika Anda memilih tombol <strong>Bermasalah</strong>.</p>
+                <p class="text-xs text-gray-500 mt-1">Hanya wajib diisi jika barang bermasalah.</p>
                 
                 <p x-show="keterangan.length > 0 && keterangan.length < 10" class="text-red-500 text-xs mt-1">
                     (min. 10 karakter).

@@ -250,12 +250,8 @@ public function konfirmasiPengembalian(Request $request, Loan $loan)
             return redirect()->route('dashboard')->with('success', 'Peminjaman telah selesai.');
 
         } elseif ($action == 'tolak_foto') {
-            // LOGIKA BARU: Tolak Foto
             // Kembalikan status ke 'sedang_dipinjam' agar user bisa upload ulang
             $loan->status = 'sedang_dipinjam';
-            
-            // Opsional: hapus foto lama jika ingin bersih, tapi dibiarkan tertimpa juga tidak masalah
-            // $loan->foto_kondisi_akhir = null; 
             
             $loan->save();
 
