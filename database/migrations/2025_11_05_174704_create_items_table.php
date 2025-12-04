@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             
-            // Foreign key ke tabel users untuk menandakan siapa pemilik item
+            // foreign key ke tabel users untuk menandakan siapa pemilik item
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             
             $table->string('nama_item');

@@ -36,7 +36,7 @@ class LoanController extends Controller
         $fotoKimPath = $request->file('foto_kim')->store('public/dokumen_peminjam');
         $suratPath = $request->file('surat_peminjaman')->store('public/dokumen_peminjam');
 
-        // simpan data ke database DAN TANGKAP KE VARIABEL $loan
+        // simpan data ke database, $loan
         $loan = Loan::create([
             'item_id'         => $validated['item_id'],
             'peminjam_id'     => $peminjamId,
