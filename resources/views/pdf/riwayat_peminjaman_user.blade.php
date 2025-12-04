@@ -10,27 +10,27 @@
         
         h3 { border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 30px; color: #444; font-size: 14px; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; }
-        th, td { border: 1px solid #ddd; padding: 6px; text-align: left; vertical-align: middle; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; table-layout: fixed; }
+        th, td { border: 1px solid #ddd; padding: 5px; text-align: left; vertical-align: middle; }
         th { background-color: #f2f2f2; font-weight: bold; text-align: center; }
         td.center { text-align: center; }
         
+        .wrap-text {
+            word-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
+
         .status-selesai { color: green; font-weight: bold; }
         .status-bermasalah { color: red; font-weight: bold; }
         .status-dipinjam { color: blue; }
 
-        .bukti-foto {
-            width: 35px;
-            height: 35px;
-            object-fit: cover;
-            border: 1px solid #999;
-            display: inline-block;
-        }
-        .no-foto {
-            color: #aaa;
-            font-style: italic;
-            font-size: 9px;
-        }
+        .bukti-foto { width: 35px; height: 35px; object-fit: cover; border: 1px solid #999; display: inline-block; }
+        .ktm-foto { width: 40px; height: auto; border: 1px solid #999; }
+        .no-foto { color: #aaa; font-style: italic; font-size: 9px; }
+        
+        a.link-surat { text-decoration: none; color: #2563EB; font-weight: bold; }
+        a.link-surat:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -45,39 +45,48 @@
     <table>
         <thead>
             <tr>
-                <th width="5%">No</th>
-                <th width="20%">Barang</th>
-                <th width="15%">Pemilik</th>
-                <th width="10%">Foto Awal</th>
-                <th width="10%">Foto Akhir</th>
-                <th width="25%">Tanggal</th>
-                <th width="15%">Status</th>
+                <th width="4%">No</th>
+                <th width="18%">Barang</th>
+                <th width="12%">Pemilik</th>
+                <th width="10%">ID (KTM)</th>
+                <th width="8%">Surat</th>
+                <th width="8%">Awal</th>
+                <th width="8%">Akhir</th>
+                <th width="20%">Tanggal</th>
+                <th width="12%">Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse($pinjamanSaya as $loan)
             <tr>
                 <td class="center">{{ $loop->iteration }}</td>
-                <td>
+                <td class="wrap-text">
                     <strong>{{ $loan->item->nama_item ?? 'Item Dihapus' }}</strong><br>
                     <span style="color: #666;">({{ $loan->jumlah }} unit)</span>
                 </td>
-                <td>{{ $loan->pemilik->username ?? 'User Dihapus' }}</td>
+                <td class="wrap-text">{{ $loan->pemilik->username ?? 'User Dihapus' }}</td>
 
                 <td class="center">
-                    @if($loan->foto_kondisi_awal)
-                        <img src="{{ public_path('storage/' . $loan->foto_kondisi_awal) }}" class="bukti-foto">
+                    @if($loan->foto_kim)
+                        <img src="{{ public_path('storage/' . $loan->foto_kim) }}" class="ktm-foto">
+                    @else <span class="no-foto">-</span> @endif
+                </td>
+
+                <td class="center">
+                    @if($loan->surat_peminjaman)
+                        <a href="{{ asset('storage/' . $loan->surat_peminjaman) }}" target="_blank" class="link-surat">
+                            Lihat
+                        </a>
                     @else
                         <span class="no-foto">-</span>
                     @endif
                 </td>
 
                 <td class="center">
-                    @if($loan->foto_kondisi_akhir)
-                        <img src="{{ public_path('storage/' . $loan->foto_kondisi_akhir) }}" class="bukti-foto">
-                    @else
-                        <span class="no-foto">-</span>
-                    @endif
+                    @if($loan->foto_kondisi_awal) <img src="{{ public_path('storage/' . $loan->foto_kondisi_awal) }}" class="bukti-foto"> @else <span class="no-foto">-</span> @endif
+                </td>
+                <td class="center">
+                    @if($loan->foto_kondisi_akhir) <img src="{{ public_path('storage/' . $loan->foto_kondisi_akhir) }}" class="bukti-foto"> @else <span class="no-foto">-</span> @endif
                 </td>
 
                 <td>
@@ -95,7 +104,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="7" class="center">Tidak ada riwayat peminjaman.</td></tr>
+            <tr><td colspan="9" class="center">Tidak ada riwayat peminjaman.</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -104,39 +113,44 @@
     <table>
         <thead>
             <tr>
-                <th width="5%">No</th>
-                <th width="20%">Barang</th>
-                <th width="15%">Peminjam</th>
-                <th width="10%">Foto Awal</th>
-                <th width="10%">Foto Akhir</th>
-                <th width="25%">Tanggal</th>
-                <th width="15%">Status</th>
+                <th width="4%">No</th>
+                <th width="18%">Barang</th>
+                <th width="12%">Peminjam</th>
+                <th width="10%">ID (KTM)</th>
+                <th width="8%">Surat</th>
+                <th width="8%">Awal</th>
+                <th width="8%">Akhir</th>
+                <th width="20%">Tanggal</th>
+                <th width="12%">Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse($pinjamanOrangLain as $loan)
             <tr>
                 <td class="center">{{ $loop->iteration }}</td>
-                <td>
+                <td class="wrap-text">
                     <strong>{{ $loan->item->nama_item ?? 'Item Dihapus' }}</strong><br>
                     <span style="color: #666;">({{ $loan->jumlah }} unit)</span>
                 </td>
-                <td>{{ $loan->peminjam->username ?? 'User Dihapus' }}</td>
+                <td class="wrap-text">{{ $loan->peminjam->username ?? 'User Dihapus' }}</td>
 
                 <td class="center">
-                    @if($loan->foto_kondisi_awal)
-                        <img src="{{ public_path('storage/' . $loan->foto_kondisi_awal) }}" class="bukti-foto">
-                    @else
-                        <span class="no-foto">-</span>
-                    @endif
+                    @if($loan->foto_kim) <img src="{{ public_path('storage/' . $loan->foto_kim) }}" class="ktm-foto"> @else <span class="no-foto">-</span> @endif
                 </td>
 
                 <td class="center">
-                    @if($loan->foto_kondisi_akhir)
-                        <img src="{{ public_path('storage/' . $loan->foto_kondisi_akhir) }}" class="bukti-foto">
-                    @else
-                        <span class="no-foto">-</span>
-                    @endif
+                    @if($loan->surat_peminjaman)
+                        <a href="{{ asset('storage/' . $loan->surat_peminjaman) }}" target="_blank" class="link-surat">
+                            Lihat
+                        </a>
+                    @else <span class="no-foto">-</span> @endif
+                </td>
+
+                <td class="center">
+                    @if($loan->foto_kondisi_awal) <img src="{{ public_path('storage/' . $loan->foto_kondisi_awal) }}" class="bukti-foto"> @else <span class="no-foto">-</span> @endif
+                </td>
+                <td class="center">
+                    @if($loan->foto_kondisi_akhir) <img src="{{ public_path('storage/' . $loan->foto_kondisi_akhir) }}" class="bukti-foto"> @else <span class="no-foto">-</span> @endif
                 </td>
 
                 <td>
@@ -154,7 +168,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="7" class="center">Belum ada barang Anda yang dipinjam.</td></tr>
+            <tr><td colspan="9" class="center">Belum ada barang Anda yang dipinjam.</td></tr>
             @endforelse
         </tbody>
     </table>

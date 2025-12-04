@@ -137,7 +137,7 @@ class ItemController extends Controller
         if ($validated['jumlah_total'] < $JumlahDipinjam) {
             return back()
                 ->withInput()
-                ->withErrors(['jumlah_total' => 'Jumlah total tidak boleh kurang dari' . $JumlahDipinjam . 'unit (karena sedang ada barang yang dipinjam).' ]);
+                ->withErrors(['jumlah_total' => 'Jumlah total tidak boleh kurang dari ' . $JumlahDipinjam . ' unit (karena sedang ada barang yang dipinjam).' ]);
         }
 
         if ($request->hasFile('foto_item')) {
@@ -164,15 +164,10 @@ class ItemController extends Controller
             return redirect()->route('barang')->with('error', 'Anda tidak berhak menghapus barang ini!');
         }
 
-        if ($item->foto_item) {
-            Storage::delete('public/' . $item->foto_item);
-        }
-
         // aman, hapus barang
         $item->delete();
 
         // kembalikan ke halaman
         return redirect()->route('barang')->with('success', 'Barang berhasil dihapus.');
     }
-    
 }

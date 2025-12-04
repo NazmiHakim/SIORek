@@ -88,7 +88,7 @@
                                 accept="image/png, image/jpeg, image/jpg" required
                                 @change="
                                     const file = $el.files[0];
-                                    const limit = 5 * 1024 * 1024;
+                                    const limit = 10 * 1024 * 1024;
                                     if(file) {
                                         if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
                                             fileError = 'File harus berupa gambar!'; $el.value = '';
@@ -100,6 +100,7 @@
                             >
                             <p x-show="fileError" x-text="fileError" class="mt-1 text-sm text-red-600 font-medium"></p>
                             <p x-show="errors.foto_kondisi_awal" x-text="errors.foto_kondisi_awal" class="text-red-500 text-xs mt-1"></p>
+                            <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG. Maksimal: 10MB.</p>
                         </div>
                     </div>
 

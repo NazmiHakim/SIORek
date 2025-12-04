@@ -76,7 +76,7 @@
                     id="keterangan_sanksi" 
                     name="keterangan_sanksi" 
                     rows="2" 
-                    x-model="keterangan" {{-- Hubungkan dengan variabel Alpine --}}
+                    x-model="keterangan" 
                     placeholder="Wajib diisi jika barang bermasalah (Min. 10 karakter)..." 
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </textarea>
@@ -88,19 +88,25 @@
             </div>
         </div>
 
-        <div class="p-6 bg-gray-50 rounded-b-lg flex gap-3">
+        <div class="p-6 bg-gray-50 rounded-b-lg flex flex-col md:flex-row gap-3">
+            
+            <button type="submit" name="action" value="tolak_foto"
+                    onclick="return confirm('Apakah Anda yakin foto ini tidak sesuai? Status akan kembali dipinjam dan peminjam diminta upload ulang.')"
+                    class="flex-1 bg-yellow-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors order-2 md:order-1">
+                Tolak Foto (Upload Ulang)
+            </button>
+
             <button type="submit" name="action" value="bermasalah"
-                    {{-- Kunci tombol jika keterangan kurang dari 10 karakter --}}
                     :disabled="keterangan.length < 10"
                     :class="keterangan.length < 10 ? 'bg-red-300 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'"
-                    class="flex-1 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                    class="flex-1 text-white py-2 px-4 rounded-lg font-medium transition-colors order-3 md:order-2">
                 Bermasalah
             </button>
 
             <button type="submit" name="action" value="selesai"
                     onclick="return confirm('Apakah Anda yakin barang sudah kembali dengan baik? Transaksi akan ditutup.')"
-                    class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                Selesaikan Peminjaman
+                    class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors order-1 md:order-3">
+                Selesaikan
             </button>
         </div>
     </form>

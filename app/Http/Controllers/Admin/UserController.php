@@ -18,7 +18,7 @@ class UserController extends Controller
         // mengambil semua akun pengguna
         $allUsers = User::all();
 
-        // untuk rektorak atau admin
+        // untuk rektorat atau admin
         $rektoratUsers = $allUsers->where('role', 'admin');
         
         // himpunan
@@ -38,16 +38,26 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            // 'role'     => ['required', Rule::in(['admin', 'user'])],
-            'nama_organisasi' => 'nullable|string|max:255',
-            'program_studi'   => 'nullable|string|max:255',
-            'fakultas'        => 'nullable|string|max:255',
-            'nama_pj'         => 'nullable|string|max:255',
-            'nomor_pj'        => 'nullable|string|max:20',
-            'alamat'          => 'nullable|string',
+            'username' => [
+                'required', 
+                'string', 
+                'max:50', 
+                'unique:users', 
+                'regex:/^[a-z0-9._-]+$/'
+            ],
+            'password' => 'required|string|min:6|max:128',
+            
+            'nama_organisasi' => 'nullable|string|max:100',
+            'program_studi'   => 'nullable|string|max:100',
+            'fakultas'        => 'nullable|string|max:100',
+            'nama_pj'         => 'nullable|string|max:100',
+            'nomor_pj'        => 'nullable|string|max:15|regex:/^[0-9]+$/', // Pastikan angka
+            'alamat'          => 'nullable|string|max:255',
             'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5048'
+        ], [
+            'username.regex' => 'Username hanya boleh berisi huruf kecil, angka, titik (.), garis bawah (_), atau hubung (-). Tanpa spasi.',
+            'password.min'   => 'Password minimal 6 karakter. Disarankan menggunakan kalimat (Passphrase).',
+            'nomor_pj.regex' => 'Nomor Penanggung Jawab hanya boleh berisi angka.'
         ]);
 
         $dataToStore = $validated;
@@ -61,7 +71,7 @@ class UserController extends Controller
 
         $user = User::create($dataToStore);
 
-        // notif wa dengan api fonte dan cek nomor pj
+        // notif wa dengan api fonnte dan cek nomor pj
         if (!empty($user->nomor_pj)) {
             try {
                 $message = "Halo *{$user->nama_pj}*,\n\n";
@@ -90,9 +100,15 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validator = Validator::make($request->all(), [
-            'username'        => ['required', 'string', 'max:50', Rule::unique('users')->ignore($user->id)],
+            'username' => [
+                'required', 
+                'string', 
+                'max:50', 
+                Rule::unique('users')->ignore($user->id),
+                'regex:/^[a-z0-9._-]+$/'
+            ],
             'role'            => ['required', Rule::in(['admin', 'user'])],
-            'password'        => 'nullable|string|min:6|max:64', 
+            'password'        => 'nullable|string|min:6|max:128',
             
             'nama_organisasi' => 'nullable|string|max:100', 
             'program_studi'   => 'nullable|string|max:100', 
@@ -101,9 +117,11 @@ class UserController extends Controller
             
             'nomor_pj'        => 'nullable|string|max:15|regex:/^[0-9]+$/',
             'alamat'          => 'nullable|string|max:255', 
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'logo'            => 'nullable|image|mimes:jpeg,png,jpg|max:5048'
         ], [
+            'username.regex' => 'Username hanya boleh berisi huruf kecil, angka, titik (.), garis bawah (_), atau hubung (-).',
             'nomor_pj.regex' => 'Nomor Penanggung Jawab hanya boleh berisi angka.',
+            'password.min'   => 'Password minimal 8 karakter.'
         ]);
 
         // cek validasi
@@ -111,7 +129,8 @@ class UserController extends Controller
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('edit_mode', true);
+                ->with('edit_mode', true)
+                ->with('user_id_error', $user->id);
         }
 
         // ambil data yang sudah divalidasi

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('jumlah_total');
             $table->string('foto_item')->nullable();
 
+            $table->softDeletes(); // [Tambahan] Kolom untuk soft delete
             $table->timestamps();
         });
     }
