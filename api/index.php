@@ -22,13 +22,24 @@ foreach ($directories as $directory) {
     }
 }
 
-// 2. Load autoload & bootstrap
+// 2. Load autoload
 require __DIR__.'/../vendor/autoload.php';
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
-
-// 3. Wajibkan Laravel menggunakan storage di /tmp
-$app->useStoragePath('/tmp/storage');
-
-// 4. Proses request HTML
-$app->handleRequest(Request::capture());
+// 3. Catch early errors during bootstrap
+try {
+    $app = require_once __DIR__.'/../bootstrap/app.php';
+    
+    // Wajibkan Laravel menggunakan storage di /tmp
+    $app->useStoragePath('/tmp/storage');
+    
+    // 4. Proses request HTML
+    $app->handleRequest(Request::capture());
+} catch (\Throwable $e) {
+    // Jika gagal di sini (sebelum View Service boot), tampilkan error mentah
+    echo "<h1>Laravel Bootstrap Error</h1>";
+    echo "<p><strong>Message:</strong> " . $e->getMessage() . "</p>";
+    echo "<p><strong>File:</strong> " . $e->getFile() . " on line " . $e->getLine() . "</p>";
+    echo "<h3>Stack Trace:</h3>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    exit(1);
+}
