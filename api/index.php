@@ -1,7 +1,6 @@
 <?php
-// Sembunyikan pesan deprecation PHP 8.5 bawaan server Vercel agar tidak merusak tampilan HTML
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+error_reporting(E_ALL & ~E_DEPRECATED);
+ini_set('display_errors', '0');
 
 use Illuminate\Http\Request;
 
