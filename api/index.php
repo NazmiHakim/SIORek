@@ -10,6 +10,7 @@ define('LARAVEL_START', microtime(true));
 // 1. Tangani Vercel Read-Only File System dengan mengalihkan storage ke folder /tmp
 $directories = [
     '/tmp/storage/app',
+    '/tmp/storage/framework',
     '/tmp/storage/framework/cache/data',
     '/tmp/storage/framework/sessions',
     '/tmp/storage/framework/views',
@@ -21,6 +22,13 @@ foreach ($directories as $directory) {
         mkdir($directory, 0755, true);
     }
 }
+
+// 2. Override Laravel cache paths to /tmp (Writable)
+putenv('APP_SERVICES_CACHE=/tmp/storage/framework/services.php');
+putenv('APP_PACKAGES_CACHE=/tmp/storage/framework/packages.php');
+putenv('APP_CONFIG_CACHE=/tmp/storage/framework/config.php');
+putenv('APP_ROUTES_CACHE=/tmp/storage/framework/routes.php');
+putenv('APP_EVENTS_CACHE=/tmp/storage/framework/events.php');
 
 // 2. Load autoload
 require __DIR__.'/../vendor/autoload.php';
