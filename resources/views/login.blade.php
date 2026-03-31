@@ -25,7 +25,7 @@
             @endif
 
             <div>
-                <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Nama Pengguna</label>
                 <input type="text" id="username" name="username" placeholder="example" required class="w-full px-3 
                 py-2 rounded-md border 
                 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent 
